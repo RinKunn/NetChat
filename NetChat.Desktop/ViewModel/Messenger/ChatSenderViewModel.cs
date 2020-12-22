@@ -25,8 +25,8 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             if (IsInDesignModeStatic)
             {
-                //TextMessage = "Hello world";
-                TextMessage = string.Empty;
+                TextMessage = "HELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLD";
+                //TextMessage = string.Empty;
             }
         }
 

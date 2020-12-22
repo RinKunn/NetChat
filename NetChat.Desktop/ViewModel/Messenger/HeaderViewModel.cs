@@ -1,7 +1,13 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Threading.Tasks;
+using System.Linq;
+using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using NetChat.Desktop.Services.Messaging.Users;
+using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.ViewModel.InnerMessages;
 using Locator = CommonServiceLocator.ServiceLocator;
+using System;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
@@ -57,6 +63,17 @@ namespace NetChat.Desktop.ViewModel.Messenger
             this.MessengerInstance.Unregister<ParticipantLoggedInIMessage>(this);
             this.MessengerInstance.Unregister<ParticipantLoggedOutIMessage>(this);
             this.MessengerInstance.Unregister<MessageUnreadChangedIMessage>(this);
+        }
+
+        private IAsyncCommand _loadCommand;
+        public IAsyncCommand LoadCommand => _loadCommand ??
+            (_loadCommand = new AsyncCommand(LoadUsers));
+
+        public async Task LoadUsers()
+        {
+            var res = await _userLoader.LoadUsers();
+            ParticipantOnlineCount = res.Count();
+            throw new Exception("Cannot load users");
         }
     }
 }

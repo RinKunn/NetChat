@@ -11,8 +11,6 @@ namespace NetChat.Desktop.Services.Messaging.Users
         public string Id { get; set; }
         public UserStatus Status { get; set; }
         public DateTime StatusChangedDateTime { get; set; }
-
-        public bool Self { get; set; }
     }
 
     public enum UserStatus

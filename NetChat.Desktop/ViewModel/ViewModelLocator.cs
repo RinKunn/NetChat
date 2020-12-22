@@ -4,6 +4,7 @@ using NetChat.Desktop.ViewModel.Messenger;
 using Autofac;
 using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
+using NetChat.Desktop.Services.Messaging.Users;
 
 namespace NetChat.Desktop.ViewModel
 {
@@ -16,12 +17,13 @@ namespace NetChat.Desktop.ViewModel
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
-        public ViewModelLocator()
+        static ViewModelLocator()
         {
             if (!ServiceLocator.IsLocationProviderSet)
             {
                 var builder = new ContainerBuilder();
                 builder.RegisterType<MainViewModel>();
+                builder.RegisterType<DefaultUserLoader>().As<IUserLoader>();
                 var container = builder.Build();
                 ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
             }
@@ -32,7 +34,7 @@ namespace NetChat.Desktop.ViewModel
             
         }
 
-        public MainViewModel MainViewModel => ServiceLocator.Current.GetService<MainViewModel>();
+        public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();
     }
 
     public static class LocatorServices

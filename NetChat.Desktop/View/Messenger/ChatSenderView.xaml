@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              Height="Auto"
              d:DataContext="{d:DesignInstance Type=vm:ChatSenderViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="40" d:DesignWidth="800"
+             d:DesignHeight="40" d:DesignWidth="400"
              MinHeight="40">
 
     <UserControl.Resources>
@@ -53,8 +53,8 @@
         <Style x:Key="TypingTextBox" TargetType="{x:Type TextBox}">
             <Setter Property="Background" Value="{StaticResource ChatSenderTextBoxBackground}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="CaretBrush" Value="#7F000000"/>
