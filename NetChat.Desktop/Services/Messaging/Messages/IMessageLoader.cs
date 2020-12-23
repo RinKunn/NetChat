@@ -24,6 +24,10 @@ namespace NetChat.Desktop.Services.Messaging.Messages
             messages.Add(new MessageText() { Id = "1", DateTime = DateTime.Now, Text = "User1HelloOffline", Sender = new User() { Id = "User1", Status = UserStatus.Offline, StatusChangedDateTime = DateTime.Now }, IsOriginNative = false });
             messages.Add(new MessageText() { Id = "2", DateTime = DateTime.Now, Text = "User2HelloOnlineMe", Sender = new User() { Id = "User2", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now }, IsOriginNative = true });
             messages.Add(new MessageText() { Id = "3", DateTime = DateTime.Now, Text = "User3HelloOnline", Sender = new User() { Id = "User3", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now }, IsOriginNative = false });
+            messages.Add(new MessageText() { Id = "4", DateTime = DateTime.Now, Text = "User3HelloOnline", Sender = new User() { Id = "User3", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now }, IsOriginNative = false });
+            messages.Add(new MessageText() { Id = "5", DateTime = DateTime.Now, Text = "User3HelloOnline", Sender = new User() { Id = "User3", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now }, IsOriginNative = false });
+            messages.Add(new MessageText() { Id = "6", DateTime = DateTime.Now, Text = "User3HelloOnline", Sender = new User() { Id = "User3", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now }, IsOriginNative = false });
+            messages.Add(new MessageText() { Id = "7", DateTime = DateTime.Now, Text = "User3HelloOnline", Sender = new User() { Id = "User3", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now }, IsOriginNative = false });
             return messages;
         }
     }

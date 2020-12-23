@@ -13,7 +13,8 @@
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
         Title="MainWindow" 
         d:DesignHeight="450" d:DesignWidth="400"
-        Height="450" Width="400">
+        Height="450" Width="400"
+        MinWidth="350" MinHeight="350">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type mvm:HeaderViewModel}">

@@ -4,10 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:conv="clr-namespace:NetChat.Desktop.View.Converters"
              xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:ChatAreaViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="450" d:DesignWidth="350"
+             MinWidth="350">
 
     <i:Interaction.Triggers>
         <i:EventTrigger>
@@ -16,6 +18,9 @@
     </i:Interaction.Triggers>
     
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        
         <DataTemplate x:Key="MessagesDataTemplate" 
                       DataType="{x:Type vm:MessageTextObservable}">
             <Grid x:Name="MessageBackGroundGrid">
@@ -63,15 +68,16 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
+
+        <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                <ItemsPresenter/>
+            </ScrollViewer>
+        </ControlTemplate>
     </UserControl.Resources>
-    
-    
+
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
         <Grid.Background>
             <SolidColorBrush Color="{StaticResource ChatBackground}"/>
         </Grid.Background>
@@ -79,9 +85,15 @@
         <ItemsControl x:Name="MessagesItemsCtrl" Margin="0,5,0,0" 
                       ItemsSource="{Binding Messages}" 
                       ItemTemplate="{DynamicResource MessagesDataTemplate}"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2">
+                      Template="{DynamicResource ChatAreaTemplate}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
         </ItemsControl>
 
-        
+        <Grid Visibility="{Binding LoadMessagesCommand, Converter={StaticResource NullToVisibilityConverter}}"
+              VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Visibility="{Binding LoadMessagesCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" Text="Loading..." />
+            <TextBlock Text="{Binding LoadMessagesCommand.Execution.ErrorMessage}" Foreground="Red" />
+        </Grid>
+
     </Grid>
 </UserControl>
