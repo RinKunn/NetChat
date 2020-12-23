@@ -1,7 +1,10 @@
 using System;
 using GalaSoft.MvvmLight;
+using NetChat.Desktop.Services.Messaging.Messages;
+using NetChat.Desktop.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel.InnerMessages;
 using NetChat.Desktop.ViewModel.Messenger;
+using Locator = CommonServiceLocator.ServiceLocator;
 
 namespace NetChat.Desktop.ViewModel
 {
@@ -47,8 +50,8 @@ namespace NetChat.Desktop.ViewModel
             }
             else
             {
-                Header = new HeaderViewModel("Default chat");
-                ChatArea = new ChatAreaViewModel(null);
+                Header = new HeaderViewModel("Default chat", Locator.Current.GetService<IUserLoader>());
+                ChatArea = new ChatAreaViewModel(Locator.Current.GetService<IMessageLoader>());
                 ChatSender = new ChatSenderViewModel("User");
                 SideArea = null;
             }

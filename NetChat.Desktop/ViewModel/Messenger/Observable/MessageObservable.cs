@@ -9,15 +9,15 @@ namespace NetChat.Desktop.ViewModel.Messenger
 {
     public abstract class MessageObservable : ObservableObject
     {
-        private bool _isReaded;
+        //private bool _isReaded;
 
-        protected MessageObservable(string id, DateTime dateTime, ParticipantObservable sender, bool isOriginNative, bool isReaded)
+        protected MessageObservable(string id, DateTime dateTime, ParticipantObservable sender, bool isOriginNative/*, bool isReaded*/)
         {
             Id = id;
             DateTime = dateTime;
             Sender = sender;
             IsOriginNative = isOriginNative;
-            IsReaded = isOriginNative || isReaded;
+            //IsReaded = isOriginNative || isReaded;
         }
 
         public string Id { get; }
@@ -26,11 +26,11 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         public bool IsOriginNative { get; }
 
-        public bool IsReaded
-        {
-            get => _isReaded;
-            set => Set(ref _isReaded, value);
-        }
+        //public bool IsReaded
+        //{
+        //    get => _isReaded;
+        //    set => Set(ref _isReaded, value);
+        //}
 
     }
 }

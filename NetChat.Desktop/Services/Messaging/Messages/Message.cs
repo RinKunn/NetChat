@@ -12,5 +12,6 @@ namespace NetChat.Desktop.Services.Messaging.Messages
         public string Id { get; set; }
         public DateTime DateTime { get; set; }
         public User Sender { get; set; }
+        public bool IsOriginNative { get; set; }
     }
 }

@@ -3,11 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:ChatAreaViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="400">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <i:InvokeCommandAction Command="{Binding LoadMessagesCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
     <UserControl.Resources>
         <DataTemplate x:Key="MessagesDataTemplate" 
                       DataType="{x:Type vm:MessageTextObservable}">

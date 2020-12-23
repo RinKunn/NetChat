@@ -11,6 +11,7 @@ using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.Services.Messaging.Messages;
 using Locator = CommonServiceLocator.ServiceLocator;
 using NetChat.Desktop.Services.Messaging.Users;
+using GalaSoft.MvvmLight.Threading;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
@@ -48,26 +49,34 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         private async Task LoadMessages()
         {
-            var messages = await _messageLoader.LoadMessagesAsync();
-            foreach(var mess in messages)
-            {
-                switch(mess)
-                {
-                    case MessageText mt:
-                        Messages.Add(new MessageTextObservable(
-                            mt.Text, 
-                            mt.Id, 
-                            mt.DateTime, 
-                            UserToObservale(mt.Sender),
-                            mt.Sender.Id == )
-                        break;
-                }
-            }
+            var loadedMessages = await _messageLoader.LoadMessagesAsync();
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                Messages = new ObservableCollection<MessageObservable>(loadedMessages.Select(m => MessageToObservable(m))));
         }
 
-        private ParticipantObservable UserToObservale(User user)
+
+
+        private ParticipantObservable UserToObservable(User user)
         {
             return new ParticipantObservable(user.Id, user.Status == UserStatus.Online, user.StatusChangedDateTime);
+        }
+        private MessageObservable MessageToObservable(Message message)
+        {
+            MessageObservable observMessage = null;
+            switch (message)
+            {
+                case MessageText mt:
+                    observMessage = new MessageTextObservable(
+                        mt.Text,
+                        mt.Id,
+                        mt.DateTime,
+                        UserToObservable(mt.Sender),
+                        mt.IsOriginNative);
+                        break;
+                default:
+                    break;
+            }
+            return observMessage;
         }
     }
 }

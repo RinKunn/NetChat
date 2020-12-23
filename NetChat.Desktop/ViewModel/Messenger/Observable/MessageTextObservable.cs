@@ -12,8 +12,8 @@ namespace NetChat.Desktop.ViewModel.Messenger
         public string Text { get; }
 
         public MessageTextObservable(string text, string id, DateTime dateTime, 
-            ParticipantObservable sender, bool isOriginNative = false, bool isReaded = true)
-            : base(id, dateTime, sender, isOriginNative, isReaded)
+            ParticipantObservable sender, bool isOriginNative = false/*, bool isReaded = true*/)
+            : base(id, dateTime, sender, isOriginNative/*, isReaded*/)
         {
             Text = text;
         }

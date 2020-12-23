@@ -94,7 +94,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\Commands\AsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
+    <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
+    <Compile Include="ViewModel\Commands\NotifyTaskCompletion.cs" />
     <Compile Include="ViewModel\InnerMessages\ExceptionIMessage.cs" />
     <Compile Include="View\Controls\WatermarkAdorner.cs" />
     <Compile Include="View\Controls\WatermarkService.cs" />

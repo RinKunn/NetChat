@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using NetChat.Desktop.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.ViewModel.InnerMessages;
-using Locator = CommonServiceLocator.ServiceLocator;
+
 using System;
 using GalaSoft.MvvmLight.Threading;
 
@@ -40,11 +40,6 @@ namespace NetChat.Desktop.ViewModel.Messenger
                 ParticipantOnlineCount = 189;
             }
         }
-
-        public HeaderViewModel(string title) : this(
-            title,
-            Locator.Current.GetService<IUserLoader>())
-        { }
 
         public HeaderViewModel(string title, IUserLoader userLoader)
         {
