@@ -11,6 +11,7 @@ namespace NetChat.Desktop.ViewModel.Commands
     public interface IAsyncCommand : ICommand
     {
         Task ExecuteAsync(object parameter);
+        void Refresh();
     }
     public class NotifyTaskCompletion : INotifyPropertyChanged
     {
@@ -46,6 +47,7 @@ namespace NetChat.Desktop.ViewModel.Commands
                 propertyChanged(this, new PropertyChangedEventArgs("Exception"));
                 propertyChanged(this, new PropertyChangedEventArgs("InnerException"));
                 propertyChanged(this, new PropertyChangedEventArgs("ErrorMessage"));
+                task.han
             }
             else
             {
@@ -119,13 +121,15 @@ namespace NetChat.Desktop.ViewModel.Commands
         {
             CommandManager.InvalidateRequerySuggested();
         }
+        public abstract void Refresh();
     }
 
     public class AsyncCommand : AsyncCommandBase, INotifyPropertyChanged
     {
         private readonly Func<Task> _command;
         private readonly Predicate<object> _canExecute;
-        
+        public NotifyTaskCompletion _execution;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public AsyncCommand(Func<Task> command) : this(command, null) { }
@@ -143,11 +147,24 @@ namespace NetChat.Desktop.ViewModel.Commands
         public override Task ExecuteAsync(object parameter)
         {
             Execution = new NotifyTaskCompletion(_command());
-            PropertyChanged(this, new PropertyChangedEventArgs("Execution"));
             return Execution.TaskCompletion;
         }
+        public override void Refresh()
+        {
+            Execution = null;
+        }
+
         // Raises PropertyChanged
-        public NotifyTaskCompletion Execution { get; private set; }
+        
+        public NotifyTaskCompletion Execution
+        {
+            get => _execution;
+            set
+            {
+                _execution = value;
+                PropertyChanged(this, new PropertyChangedEventArgs(nameof(Execution)));
+            }
+        }
     }
 
     public class AsyncCommand<TResult> : AsyncCommandBase, INotifyPropertyChanged
@@ -175,7 +192,20 @@ namespace NetChat.Desktop.ViewModel.Commands
             Execution = new NotifyTaskCompletion<TResult>(_command());
             return Execution.TaskCompletion;
         }
+        public override void Refresh()
+        {
+            Execution = null;
+        }
+
         // Raises PropertyChanged
-        public NotifyTaskCompletion<TResult> Execution { get; private set; }
+        public NotifyTaskCompletion<TResult> Execution
+        {
+            get => _execution;
+            set
+            {
+                _execution = value;
+                PropertyChanged(this, new PropertyChangedEventArgs(nameof(Execution)));
+            }
+        }
     }
 }

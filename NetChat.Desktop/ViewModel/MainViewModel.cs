@@ -1,4 +1,6 @@
+using System;
 using GalaSoft.MvvmLight;
+using NetChat.Desktop.ViewModel.InnerMessages;
 using NetChat.Desktop.ViewModel.Messenger;
 
 namespace NetChat.Desktop.ViewModel
@@ -47,9 +49,10 @@ namespace NetChat.Desktop.ViewModel
             {
                 Header = new HeaderViewModel("Default chat");
                 ChatArea = new ChatAreaViewModel(null);
-                ChatSender = new ChatSenderViewModel();
+                ChatSender = new ChatSenderViewModel("User");
                 SideArea = null;
             }
+            MessengerInstance.Register<ExceptionIMessage>(this, (ex) => Console.WriteLine("Error occured: " + ex.ErrorMessage));
         }
     }
 }

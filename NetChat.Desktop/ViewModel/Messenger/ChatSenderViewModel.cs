@@ -6,43 +6,68 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging.Messages;
+using NetChat.Desktop.ViewModel.Commands;
+using NetChat.Desktop.ViewModel.InnerMessages;
+using Locator = CommonServiceLocator.ServiceLocator;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
     public class ChatSenderViewModel :ViewModelBase
     {
+        private string _userId;
         private IMessageSender _messageSender;
 
         private string _textMessage;
         public string TextMessage
         {
             get => _textMessage;
-            set => Set(ref _textMessage, value);
+            set
+            {
+                Set(ref _textMessage, value);
+                if (((AsyncCommand)SendMessageCommand).Execution != null)
+                    SendMessageCommand.Refresh();
+            }
         }
 
         public ChatSenderViewModel()
         {
-            if (IsInDesignModeStatic)
+            if(IsInDesignModeStatic)
             {
-                TextMessage = "HELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLDHELLWORLD";
-                //TextMessage = string.Empty;
+                TextMessage = "Heloffffsffffffffffffasfafsfasfafsfasfafsfasfafsfasfafsfasfafsfasfafsfasfafsf";
             }
         }
 
-        public ChatSenderViewModel(IMessageSender messageSender)
+        public ChatSenderViewModel(string userId) : this(
+            userId,
+            Locator.Current.GetService<IMessageSender>())
+        { }
+
+        public ChatSenderViewModel(string userId, IMessageSender messageSender)
         {
-            _messageSender = messageSender;
+            _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
+            _userId = userId;
         }
 
-        private ICommand _sendMessageCommand;
-        public ICommand SendMessageCommand => _sendMessageCommand ??
-            (_sendMessageCommand = new RelayCommand(SendMessage, CanSendMessage));
 
-        private void SendMessage()
+        private IAsyncCommand _sendMessageCommand;
+        public IAsyncCommand SendMessageCommand => _sendMessageCommand ??
+            (_sendMessageCommand = new AsyncCommand(SendMessage, CanSendMessage));
+
+        private async Task SendMessage()
         {
-
+            try
+            {
+                await _messageSender.SendMessage(new InputMessageText(TextMessage, _userId));
+                DispatcherHelper.CheckBeginInvokeOnUI(() => TextMessage = string.Empty);
+            }
+            catch(Exception e)
+            {
+                MessengerInstance.Send<ExceptionIMessage>(new ExceptionIMessage(e.Message));
+                throw e;
+            }
         }
-        private bool CanSendMessage() => !string.IsNullOrWhiteSpace(TextMessage);
+        private bool CanSendMessage(object obj) => !string.IsNullOrWhiteSpace(TextMessage);
     }
 }

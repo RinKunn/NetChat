@@ -95,6 +95,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
+    <Compile Include="ViewModel\InnerMessages\ExceptionIMessage.cs" />
     <Compile Include="View\Controls\WatermarkAdorner.cs" />
     <Compile Include="View\Controls\WatermarkService.cs" />
     <Compile Include="Services\Messaging\Messages\IMessageLoader.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Services\Messaging\Messages\MessageText.cs" />
     <Compile Include="Services\Messaging\Users\IUserLoader.cs" />
     <Compile Include="Services\Messaging\Users\User.cs" />
+    <Compile Include="View\Converters\BoolVisibilityConverter.cs" />
     <Compile Include="View\Converters\NullVisibilityConverter.cs" />
     <Compile Include="View\Styles\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>

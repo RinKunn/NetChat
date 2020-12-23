@@ -12,6 +12,7 @@ namespace NetChat.Desktop.Services.Messaging.Users
         bool IsMe(string userId);
         Task<int> OnlineUsersCount();
     }
+
     public class DefaultUserLoader : IUserLoader
     {
         public bool IsMe(string userId)
@@ -25,13 +26,14 @@ namespace NetChat.Desktop.Services.Messaging.Users
             users.Add(new User() { Id = "UserMe", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now });
             users.Add(new User() { Id = "UserOffline", Status = UserStatus.Offline, StatusChangedDateTime = DateTime.Now });
             users.Add(new User() { Id = "UserOnline", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now });
-            await Task.Delay(5000);
+            await Task.Delay(5000).ConfigureAwait(false);
             return users;
         }
 
-        public Task<int> OnlineUsersCount()
+        public async Task<int> OnlineUsersCount()
         {
-            throw new NotImplementedException();
+            await Task.Delay(5000).ConfigureAwait(false);
+            return 3;
         }
     }
 }

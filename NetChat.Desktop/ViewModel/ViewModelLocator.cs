@@ -5,6 +5,7 @@ using Autofac;
 using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
 using NetChat.Desktop.Services.Messaging.Users;
+using NetChat.Desktop.Services.Messaging.Messages;
 
 namespace NetChat.Desktop.ViewModel
 {
@@ -24,6 +25,7 @@ namespace NetChat.Desktop.ViewModel
                 var builder = new ContainerBuilder();
                 builder.RegisterType<MainViewModel>();
                 builder.RegisterType<DefaultUserLoader>().As<IUserLoader>();
+                builder.RegisterType<DefaultMessageSender>().As<IMessageSender>();
                 var container = builder.Build();
                 ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
             }

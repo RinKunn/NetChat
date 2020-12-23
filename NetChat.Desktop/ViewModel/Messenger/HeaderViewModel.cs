@@ -8,6 +8,7 @@ using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.ViewModel.InnerMessages;
 using Locator = CommonServiceLocator.ServiceLocator;
 using System;
+using GalaSoft.MvvmLight.Threading;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
@@ -71,9 +72,8 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         public async Task LoadUsers()
         {
-            var res = await _userLoader.LoadUsers();
-            ParticipantOnlineCount = res.Count();
-            throw new Exception("Cannot load users");
+            var res = await _userLoader.OnlineUsersCount();
+            DispatcherHelper.CheckBeginInvokeOnUI(() => ParticipantOnlineCount = res);
         }
     }
 }
