@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.Services.Messaging.Messages;
+using Locator = CommonServiceLocator.ServiceLocator;
+using NetChat.Desktop.Services.Messaging.Users;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
@@ -15,8 +18,8 @@ namespace NetChat.Desktop.ViewModel.Messenger
     {
         private IMessageLoader _messageLoader;
 
-        private ObservableCollection<MessageTextObservable> _messages;
-        public ObservableCollection<MessageTextObservable> Messages
+        private ObservableCollection<MessageObservable> _messages;
+        public ObservableCollection<MessageObservable> Messages
         {
             get => _messages;
             private set => Set(ref _messages, value);
@@ -26,7 +29,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             if(IsInDesignModeStatic)
             {
-                Messages = new ObservableCollection<MessageTextObservable>();
+                Messages = new ObservableCollection<MessageObservable>();
                 Messages.Add(new MessageTextObservable("Hello, cols", "1", DateTime.Now.AddMinutes(-3), new ParticipantObservable("User1", true, DateTime.Now.AddHours(-1))));
                 Messages.Add(new MessageTextObservable("Hello, User1", "2", DateTime.Now.AddMinutes(-2), new ParticipantObservable("User2", true, DateTime.Now.AddHours(-2)), true));
                 Messages.Add(new MessageTextObservable("Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd", "3", DateTime.Now.AddMinutes(-1), new ParticipantObservable("User3", true, DateTime.Now.AddHours(-3))));
@@ -36,6 +39,35 @@ namespace NetChat.Desktop.ViewModel.Messenger
         public ChatAreaViewModel(IMessageLoader messageLoader)
         {
             _messageLoader = messageLoader;
+            Messages = new ObservableCollection<MessageObservable>();
+        }
+
+        private IAsyncCommand _loadMessagesCommand;
+        public IAsyncCommand LoadMessagesCommand => _loadMessagesCommand ??
+            (_loadMessagesCommand = new AsyncCommand(LoadMessages));
+
+        private async Task LoadMessages()
+        {
+            var messages = await _messageLoader.LoadMessagesAsync();
+            foreach(var mess in messages)
+            {
+                switch(mess)
+                {
+                    case MessageText mt:
+                        Messages.Add(new MessageTextObservable(
+                            mt.Text, 
+                            mt.Id, 
+                            mt.DateTime, 
+                            UserToObservale(mt.Sender),
+                            mt.Sender.Id == )
+                        break;
+                }
+            }
+        }
+
+        private ParticipantObservable UserToObservale(User user)
+        {
+            return new ParticipantObservable(user.Id, user.Status == UserStatus.Online, user.StatusChangedDateTime);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace NetChat.Desktop.ViewModel
                 builder.RegisterType<MainViewModel>();
                 builder.RegisterType<DefaultUserLoader>().As<IUserLoader>();
                 builder.RegisterType<DefaultMessageSender>().As<IMessageSender>();
+                builder.RegisterType<DefaultMessageLoader>().As<IMessageLoader>();
                 var container = builder.Build();
                 ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
             }

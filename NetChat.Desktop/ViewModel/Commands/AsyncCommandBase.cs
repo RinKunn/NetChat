@@ -47,7 +47,6 @@ namespace NetChat.Desktop.ViewModel.Commands
                 propertyChanged(this, new PropertyChangedEventArgs("Exception"));
                 propertyChanged(this, new PropertyChangedEventArgs("InnerException"));
                 propertyChanged(this, new PropertyChangedEventArgs("ErrorMessage"));
-                task.han
             }
             else
             {
