@@ -8,24 +8,31 @@ namespace NetChat.Desktop.Services.Messaging.Users
 {
     public interface IUserLoader
     {
-        Task<IEnumerable<User>> LoadUsers();
+        Task<IEnumerable<User>> GetUsers();
+        Task<User> GetUserById(string userId);
         bool IsMe(string userId);
         Task<int> OnlineUsersCount();
     }
 
     public class DefaultUserLoader : IUserLoader
     {
-        public bool IsMe(string userId)
+        private readonly Dictionary<string, User> _users = new Dictionary<string, User>();
+
+        public DefaultUserLoader()
         {
-            throw new NotImplementedException();
+            _users.Add(Environment.UserName, new User() { Id = Environment.UserName, IsOnline = true, LastChanged = DateTime.Now });
+            _users.Add("UserOffline", new User() { Id = "UserOffline", IsOnline = false, LastChanged = DateTime.Now });
+            _users.Add("UserOnline", new User() { Id = "UserOnline", IsOnline = true, LastChanged = DateTime.Now });
         }
 
-        public async Task<IEnumerable<User>> LoadUsers()
+        public bool IsMe(string userId)
+        {
+            return Environment.UserName == userId;
+        }
+
+        public async Task<IEnumerable<User>> GetUsers()
         {
             var users = new List<User>();
-            users.Add(new User() { Id = "UserMe", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now });
-            users.Add(new User() { Id = "UserOffline", Status = UserStatus.Offline, StatusChangedDateTime = DateTime.Now });
-            users.Add(new User() { Id = "UserOnline", Status = UserStatus.Online, StatusChangedDateTime = DateTime.Now });
             await Task.Delay(5000).ConfigureAwait(false);
             return users;
         }
@@ -34,6 +41,14 @@ namespace NetChat.Desktop.Services.Messaging.Users
         {
             await Task.Delay(5000).ConfigureAwait(false);
             return 3;
+        }
+
+        public async Task<User> GetUserById(string userId)
+        {
+            await Task.Delay(100).ConfigureAwait(false);
+            if (!_users.TryGetValue(userId, out var user))
+                throw new KeyNotFoundException(userId);
+            return user;
         }
     }
 }

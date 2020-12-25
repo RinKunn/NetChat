@@ -79,7 +79,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         private async Task LoadParticipants()
         {
-            var res = await _userLoader.LoadUsers();
+            var res = await _userLoader.GetUsers();
         }
     }
 }

@@ -94,6 +94,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Repository\FileHelper.cs" />
+    <Compile Include="Repository\IMessageRepository.cs" />
+    <Compile Include="Repository\IMessageReceiver.cs" />
+    <Compile Include="Repository\IUserRepository.cs" />
+    <Compile Include="Repository\MessageReceiver.cs" />
+    <Compile Include="Repository\MessageRecieverEvents.cs" />
+    <Compile Include="Repository\MessageRepository.cs" />
+    <Compile Include="Repository\Data\MessageData.cs" />
+    <Compile Include="Repository\Data\MessageTextData.cs" />
+    <Compile Include="Repository\Data\NetChatMessage.cs" />
+    <Compile Include="Repository\Data\RepositoryConfigs.cs" />
+    <Compile Include="Repository\Data\UserData.cs" />
+    <Compile Include="Repository\UsersRepository.cs" />
+    <Compile Include="Services\Messaging\Messages\IMessageUpdater.cs" />
+    <Compile Include="Services\Messaging\Messages\MessageLoader.cs" />
+    <Compile Include="Services\Messaging\Messages\MessageSender.cs" />
+    <Compile Include="Services\Messaging\Users\UserLoader.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
     <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
@@ -103,7 +120,6 @@
     <Compile Include="View\Controls\WatermarkService.cs" />
     <Compile Include="Services\Messaging\Messages\IMessageLoader.cs" />
     <Compile Include="Services\Messaging\Messages\IMessageSender.cs" />
-    <Compile Include="Services\Messaging\Messages\IMessageUpdater.cs" />
     <Compile Include="Services\Messaging\Messages\InputMessage.cs" />
     <Compile Include="Services\Messaging\Messages\InputTextMessage.cs" />
     <Compile Include="Services\Messaging\Messages\Message.cs" />

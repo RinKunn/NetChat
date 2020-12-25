@@ -55,10 +55,9 @@ namespace NetChat.Desktop.ViewModel.Messenger
         }
 
 
-
         private ParticipantObservable UserToObservable(User user)
         {
-            return new ParticipantObservable(user.Id, user.Status == UserStatus.Online, user.StatusChangedDateTime);
+            return new ParticipantObservable(user.Id, user.IsOnline, user.LastChanged);
         }
         private MessageObservable MessageToObservable(Message message)
         {

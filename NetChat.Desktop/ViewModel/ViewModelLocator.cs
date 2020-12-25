@@ -6,6 +6,9 @@ using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
 using NetChat.Desktop.Services.Messaging.Users;
 using NetChat.Desktop.Services.Messaging.Messages;
+using NetChat.Desktop.Repository;
+using System.IO;
+using System.Text;
 
 namespace NetChat.Desktop.ViewModel
 {
@@ -24,6 +27,15 @@ namespace NetChat.Desktop.ViewModel
             {
                 var builder = new ContainerBuilder();
                 builder.RegisterType<MainViewModel>();
+
+                RepositoryConfigs configs = new RepositoryConfigs(Path.Combine(Directory.GetCurrentDirectory(), "chat.dat"), Encoding.UTF8);
+                builder.RegisterInstance<RepositoryConfigs>(configs);
+
+                builder.RegisterType<UsersRepository>().As<IUserRepository>();
+                builder.RegisterType<MessageRepository>().As<IMessageRepository>();
+                var messageReceiver = new MessageReceiver(configs);
+                builder.RegisterInstance<IMessageReceiver>(messageReceiver);
+
                 builder.RegisterType<DefaultUserLoader>().As<IUserLoader>();
                 builder.RegisterType<DefaultMessageSender>().As<IMessageSender>();
                 builder.RegisterType<DefaultMessageLoader>().As<IMessageLoader>();

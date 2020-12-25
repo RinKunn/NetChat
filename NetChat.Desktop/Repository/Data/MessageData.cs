@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetChat.Desktop.Services.Messaging.Users
+namespace NetChat.Desktop.Repository
 {
-    public class User
+    public abstract class MessageData
     {
         public string Id { get; set; }
-        public bool IsOnline { get; set; }
-        public DateTime LastChanged { get; set; }
+        public string UserId { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }
