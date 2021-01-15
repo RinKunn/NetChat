@@ -39,20 +39,19 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             _userLoader = userLoader;
             Participants.CollectionChanged += (o, e) => RaisePropertyChanged(nameof(ParticipantOnlineCount));
-            this.MessengerInstance.Register<ParticipantLoggedInIMessage>(this, OnParticipantLoggedIn);
-            this.MessengerInstance.Register<ParticipantLoggedOutIMessage>(this, OnParticipantLoggedOut);
+            this.MessengerInstance.Register<ParticipantStatusChangedIMessage>(this, OnParticipantLoggedIn);
+            
         }
 
         public override void Cleanup()
         {
             base.Cleanup();
-            this.MessengerInstance.Unregister<ParticipantLoggedInIMessage>(this);
-            this.MessengerInstance.Unregister<ParticipantLoggedOutIMessage>(this);
+            this.MessengerInstance.Unregister<ParticipantStatusChangedIMessage>(this);
             _isLoaded = false;
         }
 
 
-        private void OnParticipantLoggedIn(ParticipantLoggedInIMessage message)
+        private void OnParticipantLoggedIn(ParticipantStatusChangedIMessage message)
         {
             var user = Participants.FirstOrDefault();
             if (user == null)
@@ -64,17 +63,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
             }
         }
 
-        private void OnParticipantLoggedOut(ParticipantLoggedOutIMessage message)
-        {
-            var user = Participants.FirstOrDefault();
-            if (user == null)
-                Participants.Add(new ParticipantObservable(message.UserId, false, message.UpdateDateTime));
-            else
-            {
-                user.ChangeStatus(false, message.UpdateDateTime);
-                RaisePropertyChanged(nameof(ParticipantOnlineCount));
-            }
-        }
+        
 
 
         private async Task LoadParticipants()

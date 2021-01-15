@@ -1,64 +1,53 @@
-﻿using System.Threading.Tasks;
-using System.Linq;
-using System.Windows.Input;
+﻿using System;
+using System.Security.Permissions;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
+using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.ViewModel.InnerMessages;
-
-using System;
-using GalaSoft.MvvmLight.Threading;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
     public class HeaderViewModel : ViewModelBase
     {
-        private IUserLoader _userLoader;
+        private readonly IUserLoader _userLoader;
+        private readonly IReceiverHub _receiverHub;
 
-        private string _title;
         private int _participantOnlineCount;
-        private int _unreadMessagesCount;
 
-        public string Title => _title;
+        public string Title { get; }
         public int ParticipantOnlineCount
         {
             get => _participantOnlineCount;
             set => Set(ref _participantOnlineCount, value);
-        }
-        public int UnreadMessagesCount
-        {
-            get => _unreadMessagesCount;
-            set => Set(ref _unreadMessagesCount, value);
         }
 
         public HeaderViewModel()
         {
             if (IsInDesignModeStatic)
             {
-                _title = "Hello world";
+                Title = "Hello world";
                 ParticipantOnlineCount = 189;
             }
+            else throw new NotImplementedException();
         }
 
-        public HeaderViewModel(string title, IUserLoader userLoader)
+        public HeaderViewModel(IUserLoader userLoader, IReceiverHub receiverHub, string title = "NetChat")
         {
-            _title = title;
-            _userLoader = userLoader;
-            _unreadMessagesCount = 0;
+            Title = title;
+            _receiverHub = receiverHub ?? throw new ArgumentNullException(nameof(receiverHub));
+            _userLoader = userLoader ?? throw new ArgumentNullException(nameof(userLoader));
             _participantOnlineCount = 0;
-            this.MessengerInstance.Register<ParticipantLoggedInIMessage>(this, (o) => ParticipantOnlineCount++);
-            this.MessengerInstance.Register<ParticipantLoggedOutIMessage>(this, (o) => ParticipantOnlineCount--);
-            this.MessengerInstance.Register<MessageUnreadChangedIMessage>(this, (o) => UnreadMessagesCount = o.Count);
+            _receiverHub.SubscribeUserStatusChanged(this, (u) => ParticipantOnlineCount += u.IsOnline ? 1 : -1);
         }
 
         public override void Cleanup()
         {
-            _userLoader = null;
+            _receiverHub.UnsubscribeUserStatusChanged(this);
             base.Cleanup();
-            this.MessengerInstance.Unregister<ParticipantLoggedInIMessage>(this);
-            this.MessengerInstance.Unregister<ParticipantLoggedOutIMessage>(this);
-            this.MessengerInstance.Unregister<MessageUnreadChangedIMessage>(this);
         }
 
         private IAsyncCommand _loadCommand;
@@ -71,4 +60,6 @@ namespace NetChat.Desktop.ViewModel.Messenger
             DispatcherHelper.CheckBeginInvokeOnUI(() => ParticipantOnlineCount = res);
         }
     }
+
+    
 }

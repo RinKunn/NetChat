@@ -8,12 +8,12 @@ namespace NetChat.Desktop.Services.Messaging.Messages
 {
     public interface IMessageSender
     {
-        Task SendMessage(InputMessage message);
+        Task SendMessage(SendingMessage message);
     }
 
     public class DefaultMessageSender : IMessageSender
     {
-        public async Task SendMessage(InputMessage message)
+        public async Task SendMessage(SendingMessage message)
         {
             await Task.Delay(3000).ConfigureAwait(false);
         }

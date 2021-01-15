@@ -94,23 +94,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Repository\FileHelper.cs" />
-    <Compile Include="Repository\IMessageRepository.cs" />
-    <Compile Include="Repository\IMessageReceiver.cs" />
-    <Compile Include="Repository\IUserRepository.cs" />
-    <Compile Include="Repository\MessageReceiver.cs" />
-    <Compile Include="Repository\MessageRecieverEvents.cs" />
-    <Compile Include="Repository\MessageRepository.cs" />
-    <Compile Include="Repository\Data\MessageData.cs" />
-    <Compile Include="Repository\Data\MessageTextData.cs" />
-    <Compile Include="Repository\Data\NetChatMessage.cs" />
-    <Compile Include="Repository\Data\RepositoryConfigs.cs" />
-    <Compile Include="Repository\Data\UserData.cs" />
-    <Compile Include="Repository\UsersRepository.cs" />
-    <Compile Include="Services\Messaging\Messages\IMessageUpdater.cs" />
+    <Compile Include="Services\Messaging\IReceiverHub.cs" />
     <Compile Include="Services\Messaging\Messages\MessageLoader.cs" />
+    <Compile Include="Services\Messaging\Messages\SendingMessage.cs" />
+    <Compile Include="Services\Messaging\Messages\SendingTextMessage.cs" />
     <Compile Include="Services\Messaging\Messages\MessageSender.cs" />
+    <Compile Include="Services\Messaging\ReceiverHub.cs" />
     <Compile Include="Services\Messaging\Users\UserLoader.cs" />
+    <Compile Include="Services\Source\FileDataSource.cs" />
+    <Compile Include="Services\Source\ISource.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
     <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
@@ -120,12 +112,7 @@
     <Compile Include="View\Controls\WatermarkService.cs" />
     <Compile Include="Services\Messaging\Messages\IMessageLoader.cs" />
     <Compile Include="Services\Messaging\Messages\IMessageSender.cs" />
-    <Compile Include="Services\Messaging\Messages\InputMessage.cs" />
-    <Compile Include="Services\Messaging\Messages\InputTextMessage.cs" />
-    <Compile Include="Services\Messaging\Messages\Message.cs" />
-    <Compile Include="Services\Messaging\Messages\MessageText.cs" />
     <Compile Include="Services\Messaging\Users\IUserLoader.cs" />
-    <Compile Include="Services\Messaging\Users\User.cs" />
     <Compile Include="View\Converters\BoolVisibilityConverter.cs" />
     <Compile Include="View\Converters\NullVisibilityConverter.cs" />
     <Compile Include="View\Styles\WindowStyle.xaml.cs">
@@ -133,14 +120,13 @@
     </Compile>
     <Compile Include="ViewModel\InnerMessages\IInnerMessage.cs" />
     <Compile Include="ViewModel\InnerMessages\MessageReceivedIMessage.cs" />
-    <Compile Include="ViewModel\InnerMessages\ParticipantLoggedOutIMessage.cs" />
-    <Compile Include="ViewModel\InnerMessages\ParticipantLoggedInIMessage.cs" />
+    <Compile Include="ViewModel\InnerMessages\ParticipantStatusChangedIMessage.cs" />
     <Compile Include="ViewModel\InnerMessages\MessageUnreadChangedIMessage.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Messenger\ChatAreaViewModel.cs" />
     <Compile Include="ViewModel\Messenger\ChatSenderViewModel.cs" />
     <Compile Include="ViewModel\Messenger\HeaderViewModel.cs" />
-    <Compile Include="ViewModel\Messenger\Observable\MessageTextObservable.cs" />
+    <Compile Include="ViewModel\Messenger\Observable\TextMessageObservable.cs" />
     <Compile Include="ViewModel\Messenger\Observable\MessageObservable.cs" />
     <Compile Include="ViewModel\Messenger\Observable\ParticipantObservable.cs" />
     <Compile Include="ViewModel\Messenger\ParticipantsViewModel.cs" />
@@ -214,7 +200,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\NetChat.FileMessaging\NetChat.FileMessaging.csproj">
+      <Project>{b5b3d2f7-de29-467b-bca0-e5be74d962ae}</Project>
+      <Name>NetChat.FileMessaging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.2.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.2.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

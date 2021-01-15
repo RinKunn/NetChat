@@ -15,6 +15,8 @@ namespace NetChat.Desktop.ViewModel.Commands
             Task = task;
             if (!task.IsCompleted)
                 TaskCompletion = WatchTaskAsync(task);
+            else
+                TaskCompletion = task;
         }
 
         public Task TaskCompletion { get; private set; }

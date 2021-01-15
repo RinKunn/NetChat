@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.ViewModel.InnerMessages;
-using Locator = CommonServiceLocator.ServiceLocator;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
@@ -35,19 +29,15 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             if(IsInDesignModeStatic)
             {
-                TextMessage = "Heloffffsffffffffffffasfafsfasfafsfasfafsfasfafsfasfafsfasfafsfasfafsfasfafsf";
+                TextMessage = "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello";
             }
+            else throw new NotImplementedException();
         }
-
-        public ChatSenderViewModel(string userId) : this(
-            userId,
-            Locator.Current.GetService<IMessageSender>())
-        { }
 
         public ChatSenderViewModel(string userId, IMessageSender messageSender)
         {
             _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
-            _userId = userId;
+            _userId = userId ?? throw new ArgumentNullException(nameof(userId));
         }
 
 

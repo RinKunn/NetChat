@@ -1,65 +1,48 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using NetChat.Desktop.Repository;
+using NetChat.Desktop.ViewModel.Messenger;
+using NetChat.FileMessaging.Models;
+using NetChat.FileMessaging.Services.Users;
 
 namespace NetChat.Desktop.Services.Messaging.Users
 {
     public class UserLoader : IUserLoader
     {
-        private readonly IUserRepository _userRepository;
-        private ConcurrentDictionary<string, User> _usersCache = new ConcurrentDictionary<string, User>();
+        private readonly IUserService _userService;
         
-        public UserLoader(IUserRepository userRepository)
+        public UserLoader(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
-        public async Task<User> GetUserById(string userId)
-        {
-            await LoadUsers();
-            if (!_usersCache.TryGetValue(userId, out var user))
-                throw new KeyNotFoundException(userId);
-            return user;
-        }
 
         public bool IsMe(string userId)
         {
-            return Environment.UserName == userId;
+            return _userService.IsMe(userId);
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<ParticipantObservable> GetUserById(string userId)
         {
-            await LoadUsers();
-            return _usersCache.Values;
+            var res = await _userService.GetUserById(userId);
+            return ToObservable(res);
+        }
+
+        public async Task<IList<ParticipantObservable>> GetUsers()
+        {
+            var res = await _userService.GetUsers();
+            return res.Select(u => ToObservable(u)).ToArray();
         }
 
         public async Task<int> OnlineUsersCount()
         {
-            await LoadUsers();
-            return _usersCache.Count;
+            return await _userService.OnlineUsersCount();
         }
 
-
-
-        private async Task LoadUsers()
+        
+        private ParticipantObservable ToObservable(User user)
         {
-            if (_usersCache.Count > 0) return;
-            var userData = await _userRepository.GetUsers();
-            userData.Select(ud => _usersCache.GetOrAdd(ud.UserId, UserDataToUser(ud)));
-        }
-
-        private User UserDataToUser(UserData userData)
-        {
-            return new User()
-            {
-                Id = userData.UserId,
-                IsOnline = userData.IsOnline,
-                LastChanged = userData.LastChanged
-            };
+            return new ParticipantObservable(user.Id, user.IsOnline, user.LastChanged);
         }
     }
 }

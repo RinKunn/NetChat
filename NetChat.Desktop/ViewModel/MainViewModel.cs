@@ -1,5 +1,6 @@
 using System;
 using GalaSoft.MvvmLight;
+using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel.InnerMessages;
@@ -50,9 +51,9 @@ namespace NetChat.Desktop.ViewModel
             }
             else
             {
-                Header = new HeaderViewModel("Default chat", Locator.Current.GetService<IUserLoader>());
-                ChatArea = new ChatAreaViewModel(Locator.Current.GetService<IMessageLoader>());
-                ChatSender = new ChatSenderViewModel("User");
+                Header = new HeaderViewModel(Locator.Current.GetService<IUserLoader>(), Locator.Current.GetService<IReceiverHub>());
+                ChatArea = new ChatAreaViewModel(Locator.Current.GetService<IMessageLoader>(), Locator.Current.GetService<IReceiverHub>());
+                ChatSender = new ChatSenderViewModel("User", Locator.Current.GetService<IMessageSender>());
                 SideArea = null;
             }
             MessengerInstance.Register<ExceptionIMessage>(this, (ex) => Console.WriteLine("Error occured: " + ex.ErrorMessage));

@@ -9,8 +9,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.Services.Messaging.Messages;
-using Locator = CommonServiceLocator.ServiceLocator;
 using NetChat.Desktop.Services.Messaging.Users;
+using NetChat.Desktop.Services.Messaging;
 using GalaSoft.MvvmLight.Threading;
 
 namespace NetChat.Desktop.ViewModel.Messenger
@@ -18,6 +18,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
     public class ChatAreaViewModel : ViewModelBase
     {
         private IMessageLoader _messageLoader;
+        private IReceiverHub _receiverHub;
 
         private ObservableCollection<MessageObservable> _messages;
         public ObservableCollection<MessageObservable> Messages
@@ -35,12 +36,26 @@ namespace NetChat.Desktop.ViewModel.Messenger
                 Messages.Add(new MessageTextObservable("Hello, User1", "2", DateTime.Now.AddMinutes(-2), new ParticipantObservable("User2", true, DateTime.Now.AddHours(-2)), true));
                 Messages.Add(new MessageTextObservable("Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd", "3", DateTime.Now.AddMinutes(-1), new ParticipantObservable("User3", true, DateTime.Now.AddHours(-3))));
             }
+            else throw new NotImplementedException();
         }
 
-        public ChatAreaViewModel(IMessageLoader messageLoader)
+        public ChatAreaViewModel(IMessageLoader messageLoader, IReceiverHub receiverHub)
         {
-            _messageLoader = messageLoader;
+            _messageLoader = messageLoader ?? throw new ArgumentNullException(nameof(messageLoader));
+            _receiverHub = receiverHub ?? throw new ArgumentNullException(nameof(receiverHub));
+            _receiverHub.SubscribeMessageReceived(this, HandleMessage);
             Messages = new ObservableCollection<MessageObservable>();
+        }
+
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            _receiverHub.UnsubscribeMessageReceived(this);
+        }
+
+        private void HandleMessage(Message message)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() => Messages.Add(MessageToObservable(message)));
         }
 
         private IAsyncCommand _loadMessagesCommand;
@@ -59,12 +74,13 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             return new ParticipantObservable(user.Id, user.IsOnline, user.LastChanged);
         }
+
         private MessageObservable MessageToObservable(Message message)
         {
             MessageObservable observMessage = null;
             switch (message)
             {
-                case MessageText mt:
+                case TextMessage mt:
                     observMessage = new MessageTextObservable(
                         mt.Text,
                         mt.Id,

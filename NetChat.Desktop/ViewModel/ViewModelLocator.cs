@@ -9,6 +9,7 @@ using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.Repository;
 using System.IO;
 using System.Text;
+using NetChat.Desktop.Services.Messaging;
 
 namespace NetChat.Desktop.ViewModel
 {
@@ -36,9 +37,10 @@ namespace NetChat.Desktop.ViewModel
                 var messageReceiver = new MessageReceiver(configs);
                 builder.RegisterInstance<IMessageReceiver>(messageReceiver);
 
-                builder.RegisterType<DefaultUserLoader>().As<IUserLoader>();
-                builder.RegisterType<DefaultMessageSender>().As<IMessageSender>();
-                builder.RegisterType<DefaultMessageLoader>().As<IMessageLoader>();
+                builder.RegisterType<UserLoader>().As<IUserLoader>();
+                builder.RegisterType<ReceiverHub>().As<IReceiverHub>();
+                builder.RegisterType<MessageSender>().As<IMessageSender>();
+                builder.RegisterType<MessageLoader>().As<IMessageLoader>();
                 var container = builder.Build();
                 ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
             }
