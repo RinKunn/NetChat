@@ -1,11 +1,22 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NetChat.FileMessaging.Models;
 
 
 namespace NetChat.FileMessaging.Services
 {
-    public delegate void OnMessageReceivedHandler(TextMessage message);
-    public delegate void OnUserStatusChangedHandler(OnUserStatusChangedArgs args);
+    public delegate Task OnMessageReceivedHandlerAsync(OnMessageReceivedArgs message);
+    public delegate Task OnUserStatusChangedHandlerAsync(OnUserStatusChangedArgs args);
+
+    public class OnMessageReceivedArgs
+    {
+        public TextMessage Message { get; }
+
+        public OnMessageReceivedArgs(TextMessage message)
+        {
+            Message = message ?? throw new ArgumentNullException(nameof(message));
+        }
+    }
 
     public class OnUserStatusChangedArgs
     {

@@ -41,7 +41,8 @@ namespace NetChat.Desktop.ViewModel.Messenger
             _receiverHub = receiverHub ?? throw new ArgumentNullException(nameof(receiverHub));
             _userLoader = userLoader ?? throw new ArgumentNullException(nameof(userLoader));
             _participantOnlineCount = 0;
-            _receiverHub.SubscribeUserStatusChanged(this, (u) => ParticipantOnlineCount += u.IsOnline ? 1 : -1);
+            _receiverHub.SubscribeUserStatusChanged(this, (u) => DispatcherHelper.CheckBeginInvokeOnUI(() => ParticipantOnlineCount += u.IsOnline ? 1 : -1));
+            
         }
 
         public override void Cleanup()

@@ -16,9 +16,9 @@ namespace NetChat.FileMessaging.Services.Messages
             _messageRepository = messageRepository;
         }
 
-        public async Task<IEnumerable<TextMessage>> LoadMessagesAsync(int limit = 0, CancellationToken token = default)
+        public async Task<IList<TextMessage>> LoadMessagesAsync(int limit = 0, CancellationToken token = default)
         {
-            var messages = await _messageRepository.GetAsync(limit);
+            var messages = await _messageRepository.GetAsync(limit, token);
             return messages
                 .Select(m => new TextMessage()
                 {
@@ -27,7 +27,7 @@ namespace NetChat.FileMessaging.Services.Messages
                     DateTime = m.DateTime,
                     Text = m.Text
                 })
-                .ToArray();
+                .ToList();
         }
 
         public async Task SendMessage(InputTextMessage message)

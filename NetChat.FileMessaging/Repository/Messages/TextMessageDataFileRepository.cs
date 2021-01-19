@@ -37,7 +37,7 @@ namespace NetChat.FileMessaging.Repository.Messages
 
         public async Task<IList<TextMessageData>> GetAsync(int limit, CancellationToken token = default)
         {
-            if (limit <= 0) throw new ArgumentNullException(nameof(limit));
+            if (limit < 0) throw new ArgumentNullException(nameof(limit));
             var lines = await FileHelper.GetStringMessagesAsync(_filename, _encoding, limit, token);
             return lines
                 .Select(l => new TextMessageData(l))

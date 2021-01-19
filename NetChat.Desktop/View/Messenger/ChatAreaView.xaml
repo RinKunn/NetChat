@@ -22,7 +22,7 @@
         <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
         
         <DataTemplate x:Key="MessagesDataTemplate" 
-                      DataType="{x:Type vm:MessageTextObservable}">
+                      DataType="{x:Type vm:TextMessageObservable}">
             <Grid x:Name="MessageBackGroundGrid">
                 <Border Name="MessageBorder"
                         MinHeight="40" MinWidth="280" BorderThickness="1" 

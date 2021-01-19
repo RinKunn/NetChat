@@ -49,7 +49,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             try
             {
-                await _messageSender.SendMessage(new InputMessageText(TextMessage, _userId));
+                await _messageSender.SendMessage(new SendingTextMessage(_userId, TextMessage));
                 DispatcherHelper.CheckBeginInvokeOnUI(() => TextMessage = string.Empty);
             }
             catch(Exception e)

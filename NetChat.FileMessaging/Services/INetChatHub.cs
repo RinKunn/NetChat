@@ -4,8 +4,8 @@ namespace NetChat.FileMessaging.Services
 {
     public interface INetChatHub : IDisposable
     {
-        event OnMessageReceivedHandler OnMessageReceived;
-        event OnUserStatusChangedHandler OnUserStatusChanged;
+        event OnMessageReceivedHandlerAsync OnMessageReceived;
+        event OnUserStatusChangedHandlerAsync OnUserStatusChanged;
 
         void Connect();
         void Disconnect();

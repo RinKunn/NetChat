@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using NetChat.Desktop.ViewModel.Commands;
-using NetChat.Desktop.Services.Messaging.Messages;
-using NetChat.Desktop.Services.Messaging.Users;
-using NetChat.Desktop.Services.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using NetChat.Desktop.Services.Messaging;
+using NetChat.Desktop.Services.Messaging.Messages;
+using NetChat.Desktop.ViewModel.Commands;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
@@ -32,9 +26,9 @@ namespace NetChat.Desktop.ViewModel.Messenger
             if(IsInDesignModeStatic)
             {
                 Messages = new ObservableCollection<MessageObservable>();
-                Messages.Add(new MessageTextObservable("Hello, cols", "1", DateTime.Now.AddMinutes(-3), new ParticipantObservable("User1", true, DateTime.Now.AddHours(-1))));
-                Messages.Add(new MessageTextObservable("Hello, User1", "2", DateTime.Now.AddMinutes(-2), new ParticipantObservable("User2", true, DateTime.Now.AddHours(-2)), true));
-                Messages.Add(new MessageTextObservable("Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd", "3", DateTime.Now.AddMinutes(-1), new ParticipantObservable("User3", true, DateTime.Now.AddHours(-3))));
+                Messages.Add(new TextMessageObservable("Hello, cols", "1", DateTime.Now.AddMinutes(-3), new ParticipantObservable("User1", true, DateTime.Now.AddHours(-1))));
+                Messages.Add(new TextMessageObservable("Hello, User1", "2", DateTime.Now.AddMinutes(-2), new ParticipantObservable("User2", true, DateTime.Now.AddHours(-2)), true));
+                Messages.Add(new TextMessageObservable("Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd", "3", DateTime.Now.AddMinutes(-1), new ParticipantObservable("User3", true, DateTime.Now.AddHours(-3))));
             }
             else throw new NotImplementedException();
         }
@@ -53,9 +47,9 @@ namespace NetChat.Desktop.ViewModel.Messenger
             _receiverHub.UnsubscribeMessageReceived(this);
         }
 
-        private void HandleMessage(Message message)
+        private void HandleMessage(MessageObservable message)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => Messages.Add(MessageToObservable(message)));
+            DispatcherHelper.CheckBeginInvokeOnUI(() => Messages.Add(message));
         }
 
         private IAsyncCommand _loadMessagesCommand;
@@ -66,32 +60,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             var loadedMessages = await _messageLoader.LoadMessagesAsync();
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                Messages = new ObservableCollection<MessageObservable>(loadedMessages.Select(m => MessageToObservable(m))));
-        }
-
-
-        private ParticipantObservable UserToObservable(User user)
-        {
-            return new ParticipantObservable(user.Id, user.IsOnline, user.LastChanged);
-        }
-
-        private MessageObservable MessageToObservable(Message message)
-        {
-            MessageObservable observMessage = null;
-            switch (message)
-            {
-                case TextMessage mt:
-                    observMessage = new MessageTextObservable(
-                        mt.Text,
-                        mt.Id,
-                        mt.DateTime,
-                        UserToObservable(mt.Sender),
-                        mt.IsOriginNative);
-                        break;
-                default:
-                    break;
-            }
-            return observMessage;
+                Messages = new ObservableCollection<MessageObservable>(loadedMessages));
         }
     }
 }

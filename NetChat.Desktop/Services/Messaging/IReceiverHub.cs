@@ -10,5 +10,8 @@ namespace NetChat.Desktop.Services.Messaging
 
         void SubscribeUserStatusChanged(object sender, Action<ParticipantObservable> callback);
         void UnsubscribeUserStatusChanged(object sender);
+
+        void Connect();
+        void Disconnect();
     }
 }

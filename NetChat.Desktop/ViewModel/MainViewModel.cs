@@ -53,7 +53,7 @@ namespace NetChat.Desktop.ViewModel
             {
                 Header = new HeaderViewModel(Locator.Current.GetService<IUserLoader>(), Locator.Current.GetService<IReceiverHub>());
                 ChatArea = new ChatAreaViewModel(Locator.Current.GetService<IMessageLoader>(), Locator.Current.GetService<IReceiverHub>());
-                ChatSender = new ChatSenderViewModel("User", Locator.Current.GetService<IMessageSender>());
+                ChatSender = new ChatSenderViewModel(Locator.Current.GetService<NetChatContext>().CurrentUserName, Locator.Current.GetService<IMessageSender>());
                 SideArea = null;
             }
             MessengerInstance.Register<ExceptionIMessage>(this, (ex) => Console.WriteLine("Error occured: " + ex.ErrorMessage));

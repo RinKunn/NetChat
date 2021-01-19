@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NetChat.FileMessaging.Models;
 using NetChat.FileMessaging.Repository.UserStatuses;
+using NLog;
 
 namespace NetChat.FileMessaging.Services.Users
 {
@@ -20,7 +21,7 @@ namespace NetChat.FileMessaging.Services.Users
         {
             var res = await _userStatusRepository.GetUsersStatuses();
             var userStatus = res.FirstOrDefault(u => u.UserId == userId);
-
+            if (userStatus == null) return null;
             return new User()
             {
                 Id = userStatus.UserId,
@@ -31,12 +32,13 @@ namespace NetChat.FileMessaging.Services.Users
 
         public bool IsMe(string userId)
         {
-            return Environment.UserName == userId;
+            return Environment.UserName.ToUpper() == userId;
         }
 
         public async Task<IList<User>> GetUsers()
         {
             var res = await _userStatusRepository.GetUsersStatuses();
+            if (res == null || res.Count == 0) return null;
             return res
                 .Select(us => new User()
                 {
@@ -44,13 +46,13 @@ namespace NetChat.FileMessaging.Services.Users
                     IsOnline = us.IsOnline,
                     LastChanged = us.UpdateDateTime
                 })
-                .ToArray();
-
+                .ToList();
         }
 
         public async Task<int> OnlineUsersCount()
         {
             var res = await _userStatusRepository.GetUsersStatuses();
+            if (res == null || res.Count == 0) return 0;
             return res.Count(u => u.IsOnline);
         }
 
