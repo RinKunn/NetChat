@@ -20,8 +20,16 @@ namespace NetChat.Desktop.Services.Messaging.Messages
         {
             if (message is SendingTextMessage mt)
             {
-                _logger.Debug("User '{0}' send message: {1}", mt.UserId, mt.Text);
-                await _messageService.SendMessage(new InputTextMessage(mt.UserId, mt.Text));
+
+                try
+                {
+                    await _messageService.SendMessage(new InputTextMessage(mt.UserId, mt.Text));
+                }
+                catch(Exception e)
+                {
+                    _logger.Error($"Error on message sending: {0} | {1}", e.Message, e.InnerException?.Message);
+                }
+                _logger.Debug("Sending message: {0}", mt.Text);
             }
             else throw new NotImplementedException(message.GetType().Name);
         }

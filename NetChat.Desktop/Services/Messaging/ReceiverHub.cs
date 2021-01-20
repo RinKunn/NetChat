@@ -69,11 +69,11 @@ namespace NetChat.Desktop.Services.Messaging
         {
             if (_mcallbacks.TryAdd(SenderObjToString(sender), callback))
             {
-                _logger.Debug("'{0}' subscribed to message receiving", sender.GetType());
+                _logger.Debug("'{0}' subscribed to message receiving", sender.GetType().Name);
             }
             else
             {
-                _logger.Warn("Cannot add subscriber '{0}' to message receiving", sender.GetType());
+                _logger.Warn("Cannot add subscriber '{0}' to message receiving", sender.GetType().Name);
             }
         }
 
@@ -82,11 +82,11 @@ namespace NetChat.Desktop.Services.Messaging
             
             if(_ucallbacks.TryAdd(SenderObjToString(sender), callback))
             {
-                _logger.Debug("'{0}' subscribed to user status receiving", sender.GetType());
+                _logger.Debug("'{0}' subscribed to user status receiving", sender.GetType().Name);
             }
             else
             {
-                _logger.Warn("Cannot add subscriber '{0}' to user status receiving", sender.GetType());
+                _logger.Warn("Cannot add subscriber '{0}' to user status receiving", sender.GetType().Name);
             }
         }
 
@@ -94,11 +94,11 @@ namespace NetChat.Desktop.Services.Messaging
         {
             if(_mcallbacks.TryRemove(SenderObjToString(sender), out var act))
             {
-                _logger.Debug("'{0}' unsubscribed from message receiving", sender.GetType());
+                _logger.Debug("'{0}' unsubscribed from message receiving", sender.GetType().Name);
             }
             else
             {
-                _logger.Warn("Cannot remove subscriber '{0}' from message receiving", sender.GetType());
+                _logger.Warn("Cannot remove subscriber '{0}' from message receiving", sender.GetType().Name);
             }
         }
 
@@ -106,11 +106,11 @@ namespace NetChat.Desktop.Services.Messaging
         {
             if (_ucallbacks.TryRemove(SenderObjToString(sender), out var act))
             {
-                _logger.Debug("'{0}' unsubscribed from message receiving", sender.GetType());
+                _logger.Debug("'{0}' unsubscribed from message receiving", sender.GetType().Name);
             }
             else
             {
-                _logger.Warn("Cannot remove subscriber '{0}' from message receiving", sender.GetType());
+                _logger.Warn("Cannot remove subscriber '{0}' from message receiving", sender.GetType().Name);
             }
         }
 

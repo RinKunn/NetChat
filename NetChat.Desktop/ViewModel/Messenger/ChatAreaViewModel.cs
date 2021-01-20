@@ -46,8 +46,8 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         public override void Cleanup()
         {
-            base.Cleanup();
             _receiverHub.UnsubscribeMessageReceived(this);
+            base.Cleanup();
         }
 
         private void HandleMessage(MessageObservable message)
@@ -61,7 +61,6 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         private async Task LoadMessages()
         {
-            _logger.Info("Hub: {0}, {1}", _receiverHub.IsConnected, _receiverHub.GetHashCode());
             var loadedMessages = await _messageLoader.LoadMessagesAsync();
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 Messages = new ObservableCollection<MessageObservable>(loadedMessages));
