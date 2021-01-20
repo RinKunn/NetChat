@@ -24,17 +24,15 @@ namespace NetChat.FileMessaging.Services
 
         public FileNetChatHub(RepositoriesConfig repositoryConfigs)
         {
-            _logger.Debug("FileWatcher initing...");
-            
             _path = repositoryConfigs.MessagesSourcePath;
             _path = !string.IsNullOrWhiteSpace(_path) ? Path.GetFullPath(_path) : throw new ArgumentNullException(nameof(_path));
             if (!Directory.Exists(Path.GetDirectoryName(_path)))
             {
-                _logger.Debug("Directory is not exists: {0}", _path);
+                _logger.Debug("FileWatcher's directory is not exists: {0}", _path);
                 try
                 {
                     var dirInfo = Directory.CreateDirectory(Path.GetDirectoryName(_path));
-                    _logger.Debug("Directory '{0}' created", dirInfo.Name);
+                    _logger.Debug("FileWatcher's directory '{0}' created", dirInfo.Name);
                 }
                 catch(Exception e)
                 {
@@ -51,14 +49,11 @@ namespace NetChat.FileMessaging.Services
                 Filter = _filename,
                 NotifyFilter = NotifyFilters.LastWrite,
             };
-            _logger.Debug("FileWatcher inited! Parameters:");
-            _logger.Debug("File path: {0}", _fileWatcher.Filter);
-            _logger.Debug("Encoding: {0}", _encoding.HeaderName);
+            _logger.Debug("FileWatcher inited! Parameters: file={0}, encoding={1}", _fileWatcher.Filter, _encoding.HeaderName);
         }
 
         public void Connect()
         {
-            _logger.Debug("FileWatcher's raising events is starting...");
             if (IsConnected) return;
             
             _fileWatcher.Changed += OnFileChangedHandler;
@@ -69,7 +64,6 @@ namespace NetChat.FileMessaging.Services
         public void Disconnect()
         {
             if (!IsConnected) return;
-            _logger.Debug("FileWatcher's raising events is stopping...");
             _fileWatcher.EnableRaisingEvents = false;
             _fileWatcher.Changed -= OnFileChangedHandler;
             _logger.Debug("FileWatcher's raising events is stopped");
@@ -78,8 +72,6 @@ namespace NetChat.FileMessaging.Services
         private void OnFileChangedHandler(object sender, FileSystemEventArgs e)
         {
             if (e.Name != _filename) return;
-            _logger.Debug("File changed event raised");
-            _logger.Debug("File '{0}' is '{1}'", e.Name, e.ChangeType);
             string newLine = FileHelper.ReadLastLine(_path, _encoding);
             var message = new TextMessageData(newLine);
             switch (message.Text)

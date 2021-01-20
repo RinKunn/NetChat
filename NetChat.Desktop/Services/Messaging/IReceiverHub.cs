@@ -3,7 +3,7 @@ using NetChat.Desktop.ViewModel.Messenger;
 
 namespace NetChat.Desktop.Services.Messaging
 {
-    public interface IReceiverHub
+    public interface IReceiverHub : IDisposable
     {
         void SubscribeMessageReceived(object sender, Action<MessageObservable> callback);
         void UnsubscribeMessageReceived(object sender);
@@ -13,5 +13,7 @@ namespace NetChat.Desktop.Services.Messaging
 
         void Connect();
         void Disconnect();
+
+        bool IsConnected { get; }
     }
 }

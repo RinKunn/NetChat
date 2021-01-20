@@ -1,8 +1,12 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
+using Autofac;
 using GalaSoft.MvvmLight.Threading;
+using NetChat.Desktop.Services.Messaging;
+using NetChat.Desktop.View.Messenger;
 using NetChat.Desktop.ViewModel;
 using NetChat.FileMessaging.Services.Users;
-using Locator = CommonServiceLocator.ServiceLocator;
+using NLog;
 
 namespace NetChat.Desktop
 {
@@ -11,27 +15,57 @@ namespace NetChat.Desktop
     /// </summary>
     public partial class App : Application
     {
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private IUserService _userService;
-
-        public App() : base()
-        {
-            new ViewModelLocator();
-            _userService = Locator.Current.GetService<IUserService>();
-        }
-
+        private IContainer _container;
+        private string _username;
+        
         protected override void OnStartup(StartupEventArgs e)
         {
+            _logger.Info(new string('-', 20));
+            _container = AppContainerBuilder.CreateServicesContainer();
+            
+            _userService = _container.Resolve<IUserService>();
+            _username = _container.Resolve<NetChatContext>().CurrentUserName;
+
+            Task.WaitAll(new Task[] { _userService.Logon(_username) }, 1000);
+            ConnecToAllHub();
+
             base.OnStartup(e);
             DispatcherHelper.Initialize();
-            _userService.Logon(Locator.Current.GetService<NetChatContext>().CurrentUserName);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            ViewModelLocator.Cleanup();
-            _userService.Logout(Locator.Current.GetService<NetChatContext>().CurrentUserName);
+            DisconectFromAllHubs();
+            Task.WaitAll(new Task[] { _userService.Logout(_username) }, 1000);
+
             DispatcherHelper.Reset();
             base.OnExit(e);
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            _logger.Debug("Application_Startup");
+            this.MainWindow = new MainWindow();
+            this.MainWindow.DataContext = _container.ResolveViewModel<MainViewModel>();
+            this.MainWindow.Show();
+        }
+
+        private void ConnecToAllHub()
+        {
+            var hub = _container.Resolve<IReceiverHub>();
+            hub.Connect();
+            _logger.Debug("ConnecToAllHub: Logeer {0} : {1}", hub.IsConnected, hub.GetHashCode());
+
+        }
+
+
+        private void DisconectFromAllHubs()
+        {
+            var hub = _container.Resolve<IReceiverHub>();
+            hub.Disconnect();
+            _logger.Debug("DisconectFromAllHubs: Logeer {0} : {1}", hub.IsConnected, hub.GetHashCode());
         }
     }
 }

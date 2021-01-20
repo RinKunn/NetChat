@@ -123,6 +123,7 @@
     <Compile Include="Services\Messaging\Messages\MessageSender.cs" />
     <Compile Include="Services\Messaging\ReceiverHub.cs" />
     <Compile Include="Services\Messaging\Users\UserLoader.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
     <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
@@ -150,7 +151,6 @@
     <Compile Include="ViewModel\Messenger\Observable\MessageObservable.cs" />
     <Compile Include="ViewModel\Messenger\Observable\ParticipantObservable.cs" />
     <Compile Include="ViewModel\Messenger\ParticipantsViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Messenger\ChatAreaView.xaml.cs">
       <DependentUpon>ChatAreaView.xaml</DependentUpon>
     </Compile>

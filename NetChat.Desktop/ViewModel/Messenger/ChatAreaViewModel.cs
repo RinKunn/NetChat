@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.ViewModel.Commands;
+using NLog;
 
 namespace NetChat.Desktop.ViewModel.Messenger
 {
@@ -13,6 +15,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
     {
         private IMessageLoader _messageLoader;
         private IReceiverHub _receiverHub;
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         private ObservableCollection<MessageObservable> _messages;
         public ObservableCollection<MessageObservable> Messages
@@ -58,6 +61,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         private async Task LoadMessages()
         {
+            _logger.Info("Hub: {0}, {1}", _receiverHub.IsConnected, _receiverHub.GetHashCode());
             var loadedMessages = await _messageLoader.LoadMessagesAsync();
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 Messages = new ObservableCollection<MessageObservable>(loadedMessages));
