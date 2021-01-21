@@ -12,6 +12,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./View/Styles/WindowStyle.xaml"/>
                 <ResourceDictionary Source="./View/Styles/DefaultStyle.xaml"/>
+                <ResourceDictionary Source="./View/Styles/ScrollBarStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
   </Application.Resources>

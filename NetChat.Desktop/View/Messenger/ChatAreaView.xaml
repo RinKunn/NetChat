@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:conv="clr-namespace:NetChat.Desktop.View.Converters"
+             xmlns:behaviors="clr-namespace:NetChat.Desktop.View.Behaviors"
              xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:ChatAreaViewModel, IsDesignTimeCreatable=True}"
@@ -57,7 +58,7 @@
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding IsOriginNative}" Value="True">
                     <Setter TargetName="MessageBorder" Property="HorizontalAlignment" Value="Right"/>
-                    <Setter TargetName="MessageBorder" Property="Margin" Value="60,5,10,5"/>
+                    <Setter TargetName="MessageBorder" Property="Margin" Value="60,5,5,5"/>
                     <Setter TargetName="MessageBorder" Property="Background" Value="{StaticResource MessageOriginNative_Background}"/>
                     <Setter TargetName="MessageBorder" Property="BorderBrush" Value="{StaticResource MessageOriginNative_BorderBrush}"/>
                     <Setter TargetName="MessageUser" Property="Visibility" Value="Collapsed"/>
@@ -68,6 +69,31 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
+
+        <Style x:Key="NewMessagesCountStyle" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Ellipse Fill="{TemplateBinding Background}" Width="40" Height="40"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Text="{Binding NewMessagesCount}"/>
+                            <!--<Polygon Fill="{TemplateBinding Background}" Points="0 0 34 0 18 20" 
+                                     HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                     Margin="0 0 0 -10"/>-->
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding NewMessagesCount}" Value="0">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
         <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled">
@@ -87,7 +113,17 @@
                       ItemTemplate="{DynamicResource MessagesDataTemplate}"
                       Template="{DynamicResource ChatAreaTemplate}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <i:Interaction.Behaviors>
+                <behaviors:GoToMessageBehavior 
+                    LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=TwoWay}"/>
+            </i:Interaction.Behaviors>
         </ItemsControl>
+
+        <Button Style="{StaticResource NewMessagesCountStyle}"
+                    VerticalAlignment="Bottom" 
+                    HorizontalAlignment="Right"
+                    Background="Orange"
+                Command="{Binding ReadAllMessagesCommand}"/>
 
         <Grid Visibility="{Binding LoadMessagesCommand, Converter={StaticResource NullToVisibilityConverter}}"
               VerticalAlignment="Center" HorizontalAlignment="Center">

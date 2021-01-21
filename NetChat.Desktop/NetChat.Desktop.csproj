@@ -129,6 +129,7 @@
     <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\NotifyTaskCompletion.cs" />
     <Compile Include="ViewModel\InnerMessages\ExceptionIMessage.cs" />
+    <Compile Include="View\Behaviors\GoToMessageBehavior.cs" />
     <Compile Include="View\Controls\WatermarkAdorner.cs" />
     <Compile Include="View\Controls\WatermarkService.cs" />
     <Compile Include="Services\Messaging\Messages\IMessageLoader.cs" />
@@ -173,6 +174,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Styles\DefaultStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Styles\ScrollBarStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
