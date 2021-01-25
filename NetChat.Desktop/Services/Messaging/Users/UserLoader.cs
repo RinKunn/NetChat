@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using NetChat.Desktop.ViewModel.Messenger;
@@ -12,7 +14,11 @@ namespace NetChat.Desktop.Services.Messaging.Users
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private readonly IUserService _userService;
-        
+
+#if DEBUG
+        private static string _userName;
+#endif
+
         public UserLoader(IUserService userService)
         {
             _userService = userService;
@@ -20,7 +26,19 @@ namespace NetChat.Desktop.Services.Messaging.Users
 
         public bool IsMe(string userId)
         {
+#if DEBUG
+            if(string.IsNullOrEmpty(_userName))
+            {
+                _userName = Environment.UserName.ToUpper();
+                string currentProcess = Process.GetCurrentProcess().ProcessName;
+                int runnedProc = Process.GetProcessesByName(currentProcess).Length;
+                if (runnedProc > 1)
+                    _userName += runnedProc.ToString();
+            }
+            return _userName == userId;
+#else
             return _userService.IsMe(userId);
+#endif
         }
 
         public async Task<ParticipantObservable> GetUserById(string userId)

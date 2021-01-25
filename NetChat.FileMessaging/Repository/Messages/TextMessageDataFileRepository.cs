@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NetChat.FileMessaging.Common;
 
 namespace NetChat.FileMessaging.Repository.Messages
 {
@@ -28,21 +27,22 @@ namespace NetChat.FileMessaging.Repository.Messages
 
         public async Task<IList<TextMessageData>> GetAllAsync(CancellationToken token = default)
         {
-            var lines = await FileHelper.GetStringMessagesAsync(_filename, _encoding, 0, token);
-            return lines
-                .Select(l => new TextMessageData(l))
-                .Where(m => m.Text != "Logon" && m.Text != "Logout")
-                .ToArray();
+            return await GetAsync(0, token);
         }
 
         public async Task<IList<TextMessageData>> GetAsync(int limit, CancellationToken token = default)
         {
             if (limit < 0) throw new ArgumentNullException(nameof(limit));
-            var lines = await FileHelper.GetStringMessagesAsync(_filename, _encoding, limit, token);
-            return lines
-                .Select(l => new TextMessageData(l))
-                .Where(m => m.Text != "Logon" && m.Text != "Logout")
-                .ToArray();
+            var res = await Task<IList<TextMessageData>>.Run(() =>
+            {
+                var lines = File.ReadAllLines(_filename, _encoding);
+                return lines
+                    .Skip(lines.Length <= limit || limit == 0 ? 0 : lines.Length - limit)
+                    .Select(l => new TextMessageData(l))
+                    .Where(m => m.Text != "Logon" && m.Text != "Logout")
+                    .ToArray();
+            }, token);
+            return res;
         }
     }
 }
