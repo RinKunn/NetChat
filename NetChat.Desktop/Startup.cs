@@ -9,8 +9,8 @@ using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel;
 using NetChat.Desktop.ViewModel.Messenger;
-using NetChat.FileMessaging;
-using NetChat.FileMessaging.Repository;
+using NetChat.FileMessaging.DependencyInjection;
+using System.Configuration;
 
 namespace NetChat.Desktop
 {
@@ -18,11 +18,12 @@ namespace NetChat.Desktop
     {
         private static ContainerBuilder ConfigureServices(ContainerBuilder builder)
         {
-            var configs = new RepositoriesConfig(Path.Combine(Directory.GetCurrentDirectory(), "chat.dat"), Encoding.UTF8);
-            builder.RegisterInstance<RepositoriesConfig>(configs);
-
+            string filename = ConfigurationManager.AppSettings.Get("SourcePath");
+            if (filename == null)
+                throw new ArgumentNullException();
+             
             builder.RegisterAppContext();
-            builder.AddFileMessaging(configs);
+            builder.AddFileMessaging(filename, Encoding.UTF8);
             builder.RegisterAppServices();
             builder.RegisterViewModels();
 
@@ -75,7 +76,7 @@ namespace NetChat.Desktop
             if (runnedProc > 1)
                 username += runnedProc.ToString();
 #endif
-            builder.RegisterInstance<NetChatContext>(new NetChatContext(username));
+            builder.RegisterInstance<UserContext>(new UserContext(username));
             return builder;
         }
     }

@@ -28,7 +28,7 @@ namespace NetChat.Desktop
             _logger.Info("IOC is builded");
 
             _userService = _container.Resolve<IUserService>();
-            _username = _container.Resolve<NetChatContext>().CurrentUserName;
+            _username = _container.Resolve<UserContext>().CurrentUserName;
 
             Task.WaitAll(new Task[] { _userService.Logon(_username) }, 1000);
             _logger.Info("Current user '{0}' logged in", _username);

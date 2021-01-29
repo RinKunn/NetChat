@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace NetChat.Desktop
 {
-    public class NetChatContext
+    public class UserContext
     {
         public string CurrentUserName { get; }
-
-        public NetChatContext(string name)
+        
+        public UserContext(string name)
         {
             CurrentUserName = name;
         }

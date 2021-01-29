@@ -115,7 +115,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="NetChatContext.cs" />
+    <Compile Include="UserContext.cs" />
     <Compile Include="Services\Messaging\IReceiverHub.cs" />
     <Compile Include="Services\Messaging\Messages\MessageLoader.cs" />
     <Compile Include="Services\Messaging\Messages\SendingMessage.cs" />
@@ -223,6 +223,9 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="sources.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

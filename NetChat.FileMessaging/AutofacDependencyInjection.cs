@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Text;
+using Autofac;
 using NetChat.FileMessaging.Repository;
 using NetChat.FileMessaging.Repository.Messages;
 using NetChat.FileMessaging.Repository.UserStatuses;
@@ -6,12 +7,13 @@ using NetChat.FileMessaging.Services;
 using NetChat.FileMessaging.Services.Messages;
 using NetChat.FileMessaging.Services.Users;
 
-namespace NetChat.FileMessaging
+namespace NetChat.FileMessaging.DependencyInjection
 {
     public static class AutofacDependencyInjection
     {
-        public static ContainerBuilder AddFileMessaging(this ContainerBuilder container, RepositoriesConfig config)
+        public static ContainerBuilder AddFileMessaging(this ContainerBuilder container, string sourcePath, Encoding encoding)
         {
+            var config = new RepositoriesConfig(sourcePath, encoding);
             container.RegisterInstance(config);
             container.RegisterType<TextMessageDataFileRepository>().As<ITextMessageDataRepository>();
             container.RegisterType<UserStatusFileRepository>().As<IUserStatusRepository>();

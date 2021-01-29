@@ -57,7 +57,7 @@ namespace NetChat.Desktop.ViewModel
 
 
 
-        public MainViewModel(IUserLoader userLoader, IMessageLoader messageLoader, IMessageSender messageSender, IReceiverHub receiverHub, NetChatContext context)
+        public MainViewModel(IUserLoader userLoader, IMessageLoader messageLoader, IMessageSender messageSender, IReceiverHub receiverHub, UserContext context)
         {
             if(IsInDesignModeStatic)
             {
