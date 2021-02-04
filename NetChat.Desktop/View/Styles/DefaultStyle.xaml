@@ -10,7 +10,9 @@
     <SolidColorBrush x:Key="HeaderBackground" Color="Orange" Opacity="0.6"/>
     <SolidColorBrush x:Key="HeaderForegroundColor" Color="Black"/>
     <Color A="255" R="128" G="128" B="128" x:Key="ChatBackground"/>
-
+    
     <SolidColorBrush x:Key="ChatSenderBackground" Color="#FF5D5C5C"/>
     <SolidColorBrush x:Key="ChatSenderTextBoxBackground" Color="#FF666666"/>
+
+    <SolidColorBrush x:Key="NewMessageCountBackgroundColor" Color="#04819E"/>
 </ResourceDictionary>

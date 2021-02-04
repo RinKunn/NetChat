@@ -22,6 +22,7 @@ namespace NetChat.Desktop.Services.Messaging.Messages
 
         public async Task<IList<MessageObservable>> LoadMessagesAsync(int limit = 0)
         {
+            _logger.Debug("Loading messages...");
             var messages = await _messageService.LoadMessagesAsync(limit);
             _logger.Debug("Loaded {0} messages", messages.Count);
             return

@@ -11,7 +11,7 @@ namespace NetChat.FileMessaging.Tests.Repostitory.Messages
         public void Parse_CleanLine()
         {
             string line = "24.08 17:00:47|5cc62> Hello! My name is '5cc62'";
-            TextMessageData mes = new TextMessageData(line);
+            TextMessageData mes = TextMessageData.Parse(line);
 
             Assert.AreEqual(new DateTime(DateTime.Today.Year, 08, 24, 17, 0, 47), mes.DateTime);
             Assert.AreEqual("5cc62", mes.UserName);
@@ -22,7 +22,7 @@ namespace NetChat.FileMessaging.Tests.Repostitory.Messages
         public void Parse_NameWithWhiteSpaces()
         {
             string line = "24.08 17:00:47|FGHFF GH dfdf> Hello! My name is '5cc62'";
-            TextMessageData mes = new TextMessageData(line);
+            TextMessageData mes = TextMessageData.Parse(line);
 
             Assert.AreEqual(new DateTime(DateTime.Today.Year, 08, 24, 17, 0, 47), mes.DateTime);
             Assert.AreEqual("FGHFF GH dfdf", mes.UserName);
@@ -33,7 +33,7 @@ namespace NetChat.FileMessaging.Tests.Repostitory.Messages
         public void Parse_MessageWithGreaterThanSymbol()
         {
             string line = "24.08 17:00:47|FGHFF GH dfdf> Hello! My name > is '5cc > 62'";
-            TextMessageData mes = new TextMessageData(line);
+            TextMessageData mes = TextMessageData.Parse(line);
 
             Assert.AreEqual(new DateTime(DateTime.Today.Year, 08, 24, 17, 0, 47), mes.DateTime);
             Assert.AreEqual("FGHFF GH dfdf", mes.UserName);

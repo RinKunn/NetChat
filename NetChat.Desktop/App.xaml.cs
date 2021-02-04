@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using GalaSoft.MvvmLight.Threading;
@@ -19,18 +20,20 @@ namespace NetChat.Desktop
         private IUserService _userService;
         private IContainer _container;
         private string _username;
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
             _logger.Info(new string('-', 20));
             _logger.Info("App initing...");
             _container = AppContainerBuilder.CreateServicesContainer();
+
             _logger.Info("IOC is builded");
 
             _userService = _container.Resolve<IUserService>();
             _username = _container.Resolve<UserContext>().CurrentUserName;
 
-            Task.WaitAll(new Task[] { _userService.Logon(_username) }, 1000);
+            _userService.Logon(_username).Wait(1000);
+
             _logger.Info("Current user '{0}' logged in", _username);
 
             ConnectToAllHub();
@@ -45,7 +48,7 @@ namespace NetChat.Desktop
         protected override void OnExit(ExitEventArgs e)
         {
             DisconectFromAllHubs();
-            Task.WaitAll(new Task[] { _userService.Logout(_username) }, 1000);
+            _userService.Logout(_username).Wait(1000);
             _logger.Info("Current user '{0}' logged out", _username);
 
             DispatcherHelper.Reset();

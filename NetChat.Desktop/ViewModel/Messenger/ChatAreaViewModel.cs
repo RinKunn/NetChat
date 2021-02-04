@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
@@ -101,8 +102,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
         private async Task LoadMessages()
         {
             var loadedMessages = await _messageLoader.LoadMessagesAsync();
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                Messages = new ObservableCollection<MessageObservable>(loadedMessages));
+            Messages = new ObservableCollection<MessageObservable>(loadedMessages);
         }
 
         private ICommand _readAllMessagesCommand;

@@ -11,6 +11,7 @@ namespace NetChat.FileMessaging.Common
 {
     public static class FileHelper
     {
+
         public static async Task<string[]> GetStringMessagesAsync(string filePath, Encoding encoding, int lastLines = 0, CancellationToken token = default)
         {
             int DefaultBufferSize = 4096;

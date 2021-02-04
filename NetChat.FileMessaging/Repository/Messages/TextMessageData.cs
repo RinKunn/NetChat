@@ -29,15 +29,25 @@ namespace NetChat.FileMessaging.Repository.Messages
             Id = GetId();
         }
 
-        public TextMessageData(string line)
+        public static TextMessageData Parse(string line)
         {
             if (string.IsNullOrEmpty(line))
                 throw new ArgumentNullException(line);
-            DateTime = DateTime.ParseExact(line.Substring(0, DATE_FORMAT.Length), DATE_FORMAT, null);
-            UserName = line.Substring(DATE_FORMAT.Length + 1, line.IndexOf('>') - DATE_FORMAT.Length - 1).Trim();
-            Text = line.Substring(line.IndexOf('>') + 2);
-            Id = GetId();
+            var dateTime = DateTime.ParseExact(line.Substring(0, DATE_FORMAT.Length), DATE_FORMAT, null);
+            var userName = line.Substring(DATE_FORMAT.Length + 1, line.IndexOf('>') - DATE_FORMAT.Length - 1).Trim();
+            var text = line.Substring(line.IndexOf('>') + 2);
+            return new TextMessageData(userName, text, dateTime);
         }
+
+        //public TextMessageData(string line)
+        //{
+        //    if (string.IsNullOrEmpty(line))
+        //        throw new ArgumentNullException(line);
+        //    DateTime = DateTime.ParseExact(line.Substring(0, DATE_FORMAT.Length), DATE_FORMAT, null);
+        //    UserName = line.Substring(DATE_FORMAT.Length + 1, line.IndexOf('>') - DATE_FORMAT.Length - 1).Trim();
+        //    Text = line.Substring(line.IndexOf('>') + 2);
+        //    Id = GetId();
+        //}
 
         public override string ToString()
         {

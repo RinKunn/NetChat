@@ -139,9 +139,9 @@ namespace NetChat.Desktop.View.Behaviors
         {
             GoToMessageBehavior behavior = (GoToMessageBehavior)d;
             int newValue = (int)e.NewValue;
-            if(newValue > 0 && newValue != (int)e.OldValue)
+            if (newValue > 0 && newValue != (int)e.OldValue)
             {
-                FrameworkElement item = (FrameworkElement)behavior.AssociatedObject.ItemContainerGenerator.ContainerFromIndex(newValue);
+                FrameworkElement item = (FrameworkElement)behavior.AssociatedObject?.ItemContainerGenerator?.ContainerFromIndex(newValue);
                 item?.BringIntoView();
             }
         }

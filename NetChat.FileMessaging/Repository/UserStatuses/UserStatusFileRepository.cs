@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NetChat.FileMessaging.Common;
 using NetChat.FileMessaging.Repository.Messages;
 
 namespace NetChat.FileMessaging.Repository.UserStatuses
@@ -21,11 +22,11 @@ namespace NetChat.FileMessaging.Repository.UserStatuses
 
         public async Task<IList<UserStatus>> GetUsersStatuses(CancellationToken token = default)
         {
-            var res = await Task.Run(() => 
+            var res = await Task.Run(() =>
             {
                 var lines = File.ReadAllLines(_filename, _encoding);
                 return lines
-                    .Select(l => new TextMessageData(l))
+                    .Select(l => TextMessageData.Parse(l))
                     .GroupBy(m => m.UserName)
                     .Select(g =>
                     {
@@ -42,6 +43,26 @@ namespace NetChat.FileMessaging.Repository.UserStatuses
             }, token);
             return res;
         }
+
+        //public async Task<IList<UserStatus>> GetUsersStatuses(CancellationToken token = default)
+        //{
+        //    var lines = await FileHelper.GetStringMessagesAsync(_filename, _encoding, 0, token);
+        //    return lines
+        //            .Select(l => TextMessageData.Parse(l))
+        //            .GroupBy(m => m.UserName)
+        //            .Select(g =>
+        //            {
+        //                var mes = g.Last();
+        //                return new UserStatus()
+        //                {
+        //                    UserId = mes.UserName,
+        //                    IsOnline = mes.Text != "Logout",
+        //                    UpdateDateTime = mes.DateTime
+        //                };
+        //            })
+        //            .OrderBy(u => u.UserId)
+        //            .ToArray();
+        //}
 
         public async Task SetUserStatus(UserStatus userStatus)
         {

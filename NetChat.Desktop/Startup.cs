@@ -20,7 +20,7 @@ namespace NetChat.Desktop
         {
             string filename = ConfigurationManager.AppSettings.Get("SourcePath");
             if (filename == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(filename));
              
             builder.RegisterAppContext();
             builder.AddFileMessaging(filename, Encoding.UTF8);

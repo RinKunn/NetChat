@@ -73,7 +73,7 @@ namespace NetChat.FileMessaging.Services
         {
             if (e.Name != _filename) return;
             string newLine = FileHelper.ReadLastLine(_path, _encoding);
-            var message = new TextMessageData(newLine);
+            var message = TextMessageData.Parse(newLine);
             switch (message.Text)
             {
                 case "Logon":
