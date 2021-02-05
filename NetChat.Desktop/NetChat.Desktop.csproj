@@ -77,6 +77,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
@@ -94,6 +95,7 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -129,6 +131,10 @@
     <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\NotifyTaskCompletion.cs" />
     <Compile Include="ViewModel\InnerMessages\ExceptionIMessage.cs" />
+    <Compile Include="ViewModel\Notifications\MessageNotification.cs" />
+    <Compile Include="ViewModel\Notifications\NotificationBase.cs" />
+    <Compile Include="ViewModel\Notifications\NotificationViewModel.cs" />
+    <Compile Include="ViewModel\Notifications\ParticipantNotification.cs" />
     <Compile Include="View\Behaviors\GoToMessageBehavior.cs" />
     <Compile Include="View\Controls\WatermarkAdorner.cs" />
     <Compile Include="View\Controls\WatermarkService.cs" />
@@ -137,6 +143,9 @@
     <Compile Include="Services\Messaging\Users\IUserLoader.cs" />
     <Compile Include="View\Converters\BoolVisibilityConverter.cs" />
     <Compile Include="View\Converters\NullVisibilityConverter.cs" />
+    <Compile Include="View\Notifications\MessageNotificationView.xaml.cs">
+      <DependentUpon>MessageNotificationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Styles\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>
     </Compile>
@@ -173,6 +182,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Notifications\MessageNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Notifications\NotificationViewBase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Styles\DefaultStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
