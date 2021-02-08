@@ -5,7 +5,9 @@ using Autofac;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.View.Messenger;
+using NetChat.Desktop.View.Notifications;
 using NetChat.Desktop.ViewModel;
+using NetChat.Desktop.ViewModel.Notifications;
 using NetChat.FileMessaging.Services.Users;
 using NLog;
 
@@ -62,6 +64,11 @@ namespace NetChat.Desktop
             this.MainWindow = new MainWindow();
             this.MainWindow.DataContext = _container.ResolveViewModel<MainViewModel>();
             this.MainWindow.Show();
+
+            var notifier = new NotificationsArea();
+            notifier.DataContext = _container.ResolveViewModel<NotificationsViewModel>();
+            notifier.Show();
+            this.MainWindow.Closing += (o, ee) => notifier.Close();
         }
 
         private void ConnectToAllHub()

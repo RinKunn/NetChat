@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace NetChat.Desktop.ViewModel.Notifications
 {
-    public class MessageNotification : NotificationBase
+    public class MessageNotificationItem : NotificationItem
     {
-        public MessageNotification(string sender, string message) : base("Новое сообщение", sender, message)
+        public MessageNotificationItem(string sender, string message) 
+            : base("Новое сообщение", sender, message)
         {
 
         }

@@ -9,6 +9,7 @@ using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel;
 using NetChat.Desktop.ViewModel.Messenger;
+using NetChat.Desktop.ViewModel.Notifications;
 using NetChat.FileMessaging.DependencyInjection;
 using System.Configuration;
 
@@ -55,6 +56,7 @@ namespace NetChat.Desktop
             builder.RegisterType<HeaderViewModel>().Named<ViewModelBase>(typeof(HeaderViewModel).ToString());
             builder.RegisterType<ChatAreaViewModel>().Named<ViewModelBase>(typeof(ChatAreaViewModel).ToString());
             builder.RegisterType<ChatSenderViewModel>().Named<ViewModelBase>(typeof(ChatSenderViewModel).ToString());
+            builder.RegisterType<NotificationsViewModel>().Named<ViewModelBase>(typeof(NotificationsViewModel).ToString());
             return builder;
         }
 

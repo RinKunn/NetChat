@@ -131,11 +131,12 @@
     <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\NotifyTaskCompletion.cs" />
     <Compile Include="ViewModel\InnerMessages\ExceptionIMessage.cs" />
-    <Compile Include="ViewModel\Notifications\MessageNotification.cs" />
-    <Compile Include="ViewModel\Notifications\NotificationBase.cs" />
-    <Compile Include="ViewModel\Notifications\NotificationViewModel.cs" />
-    <Compile Include="ViewModel\Notifications\ParticipantNotification.cs" />
+    <Compile Include="ViewModel\Notifications\Messages\MessageNotificationItem.cs" />
+    <Compile Include="ViewModel\Notifications\Messages\NotificationItem.cs" />
+    <Compile Include="ViewModel\Notifications\NotificationsViewModel.cs" />
+    <Compile Include="ViewModel\Notifications\Messages\ParticipantNotificationItem.cs" />
     <Compile Include="View\Behaviors\GoToMessageBehavior.cs" />
+    <Compile Include="View\Behaviors\SlideBehavior.cs" />
     <Compile Include="View\Controls\WatermarkAdorner.cs" />
     <Compile Include="View\Controls\WatermarkService.cs" />
     <Compile Include="Services\Messaging\Messages\IMessageLoader.cs" />
@@ -143,8 +144,14 @@
     <Compile Include="Services\Messaging\Users\IUserLoader.cs" />
     <Compile Include="View\Converters\BoolVisibilityConverter.cs" />
     <Compile Include="View\Converters\NullVisibilityConverter.cs" />
+    <Compile Include="View\Notifications\ParticipantNotificationView.xaml.cs">
+      <DependentUpon>ParticipantNotificationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Notifications\MessageNotificationView.xaml.cs">
       <DependentUpon>MessageNotificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Notifications\NotificationsArea.xaml.cs">
+      <DependentUpon>NotificationsArea.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Styles\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>
@@ -182,11 +189,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Notifications\ParticipantNotificationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Notifications\MessageNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Notifications\NotificationViewBase.xaml">
+    <Page Include="View\Notifications\NotificationsArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Notifications\NotificationItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

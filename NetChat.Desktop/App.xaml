@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:local="clr-namespace:NetChat.Desktop" 
              xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel" 
+             xmlns:vmn="clr-namespace:NetChat.Desktop.ViewModel.Notifications" 
+             xmlns:vn="clr-namespace:NetChat.Desktop.View.Notifications" 
              Startup="Application_Startup"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
@@ -13,8 +15,9 @@
                 <ResourceDictionary Source="./View/Styles/WindowStyle.xaml"/>
                 <ResourceDictionary Source="./View/Styles/DefaultStyle.xaml"/>
                 <ResourceDictionary Source="./View/Styles/ScrollBarStyle.xaml"/>
-                <ResourceDictionary Source="./View/Notifications/NotificationViewBase.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            
         </ResourceDictionary>
   </Application.Resources>
 </Application>

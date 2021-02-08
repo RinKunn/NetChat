@@ -15,4 +15,6 @@
     <SolidColorBrush x:Key="ChatSenderTextBoxBackground" Color="#FF666666"/>
 
     <SolidColorBrush x:Key="NewMessageCountBackgroundColor" Color="#04819E"/>
+    <SolidColorBrush x:Key="NotificationMessageForeground" Color="#FFBFBFBF"/>
+    <SolidColorBrush x:Key="NotificationBackground" Color="#FF3C3C3C"/>
 </ResourceDictionary>
