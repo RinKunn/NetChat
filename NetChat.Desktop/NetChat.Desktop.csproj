@@ -136,6 +136,7 @@
     <Compile Include="ViewModel\Notifications\Messages\NotificationItem.cs" />
     <Compile Include="ViewModel\Notifications\NotificationsViewModel.cs" />
     <Compile Include="ViewModel\Notifications\Messages\ParticipantNotificationItem.cs" />
+    <Compile Include="View\Behaviors\ActivateBehavior.cs" />
     <Compile Include="View\Behaviors\GoToMessageBehavior.cs" />
     <Compile Include="View\Behaviors\SlideBehavior.cs" />
     <Compile Include="View\Controls\WatermarkAdorner.cs" />

@@ -7,11 +7,15 @@ using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.ViewModel.InnerMessages;
 using NetChat.Desktop.ViewModel.Messenger;
+using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Forms;
+using NetChat.Desktop.ViewModel.Commands;
 
 namespace NetChat.Desktop.ViewModel.Notifications
 {
     public class NotificationsViewModel : ViewModelBase
     {
+        private readonly Timer _timer;
         private bool _isHiding = false;
         private const int MAX_QUEUE_COUNT = 3;
         private readonly TimeSpan TIMER_DELAY = TimeSpan.FromSeconds(5);
@@ -33,6 +37,9 @@ namespace NetChat.Desktop.ViewModel.Notifications
 
         public NotificationsViewModel(IReceiverHub receiverHub)
         {
+            _timer = new Timer();
+            _timer.Interval = (int)TIMER_DELAY.TotalMilliseconds;
+            _timer.Tick += _timer_Tick;
             _receiverHub = receiverHub ?? throw new ArgumentNullException(nameof(receiverHub));
             Notifications = new ObservableCollection<NotificationItem>();
             Notifications.CollectionChanged += (o, e) => RaisePropertyChanged(nameof(IsHideButtonVisible));
@@ -40,6 +47,8 @@ namespace NetChat.Desktop.ViewModel.Notifications
             if(_notifyOnParticipantStatusChanged)
                 _receiverHub.SubscribeUserStatusChanged(this, OnUserStatusChanged);
         }
+
+        
 
         private void OnMessageReceived(MessageObservable message)
         {
@@ -94,14 +103,26 @@ namespace NetChat.Desktop.ViewModel.Notifications
         private RelayCommand _startClosingTimerCommand;
         public RelayCommand StartClosingTimerCommand => _startClosingTimerCommand ??
             (_startClosingTimerCommand = new RelayCommand(StartClosingTimer));
-        private async void StartClosingTimer()
+        private void StartClosingTimer()
         {
-            if (_isHiding) return;
-            _isHiding = true;
-            Console.WriteLine("Start closing after {0} sec.", TIMER_DELAY.TotalSeconds);
-            await Task.Delay(TIMER_DELAY);
+            if (_timer.Enabled) return;
+            _timer.Start();
+        }
+        private void _timer_Tick(object sender, EventArgs e)
+        {
             HideAll();
-            _isHiding = false;
+            _timer.Stop();
+        }
+
+        private RelayCommand _stopClosingTimerCommand;
+        public RelayCommand StopClosingTimerCommand => _stopClosingTimerCommand ??
+            (_stopClosingTimerCommand = new RelayCommand(StopClosingTimer));
+        private void StopClosingTimer()
+        {
+            if (_timer.Enabled)
+            {
+                _timer.Stop();
+            }
         }
 
         private RelayCommand<NotificationItem> _gotoMessageCommand;
@@ -111,6 +132,7 @@ namespace NetChat.Desktop.ViewModel.Notifications
         private void ShowMessage(NotificationItem notification)
         {
             Console.WriteLine("Showing message {0}", notification.Message);
+            Console.WriteLine("Messenger is null {0}", MessengerInstance == null);
             MessengerInstance.Send<GoToMessageIMessage>(new GoToMessageIMessage(notification.MessageId));
         }
     }

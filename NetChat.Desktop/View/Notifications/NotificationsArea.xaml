@@ -37,8 +37,11 @@
     </Window.Resources>
 
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseEnter">
+        <i:EventTrigger EventName="MouseLeave">
             <i:InvokeCommandAction Command="{Binding StartClosingTimerCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseEnter">
+            <i:InvokeCommandAction Command="{Binding StopClosingTimerCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
@@ -48,8 +51,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button 
-            Content="Hide" 
+        <Button
+            Content="Hide"
             Style="{StaticResource HideButtonStyle}"
             Command="{Binding HideAllCommand}"
             Visibility="{Binding IsHideButtonVisible, Converter={StaticResource BoolVisibilityConverter}}"/>
@@ -69,12 +72,10 @@
                 <Style TargetType="{x:Type FrameworkElement}">
                     <Setter Property="LayoutTransform">
                         <Setter.Value>
-                            <TransformGroup>
-                                <TranslateTransform/>
-                                <RotateTransform Angle="180"/>
-                            </TransformGroup>
+                            <RotateTransform Angle="180"/>
                         </Setter.Value>
                     </Setter>
+                    
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>

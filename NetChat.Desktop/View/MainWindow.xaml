@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel"
         xmlns:views="clr-namespace:NetChat.Desktop.View.Messenger"
+        xmlns:behaviors="clr-namespace:NetChat.Desktop.View.Behaviors"
         xmlns:mvm="clr-namespace:NetChat.Desktop.ViewModel.Messenger"
         xmlns:local="clr-namespace:NetChat.Desktop"
         mc:Ignorable="d"
@@ -15,6 +16,16 @@
         d:DesignHeight="350" d:DesignWidth="350"
         Height="450" Width="400"
         MinWidth="380" MinHeight="350">
+    
+    <i:Interaction.Behaviors>
+        <behaviors:ActivateBehavior Activated="{Binding IsVisible, Mode=TwoWay}"/>
+    </i:Interaction.Behaviors>
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Deactivated">
+            <i:InvokeCommandAction Command="{Binding DeactivatedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type mvm:HeaderViewModel}">
