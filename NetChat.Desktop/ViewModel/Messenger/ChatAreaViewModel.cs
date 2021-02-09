@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.ViewModel.Commands;
+using NetChat.Desktop.ViewModel.InnerMessages;
 using NLog;
 
 namespace NetChat.Desktop.ViewModel.Messenger
@@ -61,8 +63,6 @@ namespace NetChat.Desktop.ViewModel.Messenger
                 else if (LastVisibleMessageIndex < Messages.Count - 1)
                     NewMessagesCount += e.NewItems.Count;
             }
-            
-            
         }
 
         public ChatAreaViewModel()
@@ -82,6 +82,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
             _messageLoader = messageLoader ?? throw new ArgumentNullException(nameof(messageLoader));
             _receiverHub = receiverHub ?? throw new ArgumentNullException(nameof(receiverHub));
             _receiverHub.SubscribeMessageReceived(this, HandleMessage);
+            MessengerInstance.Register<GoToMessageIMessage>(this, (m) => FindMessage(m.Id));
         }
 
         public override void Cleanup()
@@ -114,6 +115,12 @@ namespace NetChat.Desktop.ViewModel.Messenger
             LastVisibleMessageIndex = _messages.Count - 1;
         }
 
-            
+
+        private void FindMessage(string id)
+        {
+            var message = Messages.First(m => m.Id == id);
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                LastVisibleMessageIndex = Messages.IndexOf(message));
+        }
     }
 }

@@ -131,6 +131,7 @@
     <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
     <Compile Include="ViewModel\Commands\NotifyTaskCompletion.cs" />
     <Compile Include="ViewModel\InnerMessages\ExceptionIMessage.cs" />
+    <Compile Include="ViewModel\InnerMessages\GoToMessageIMessage.cs" />
     <Compile Include="ViewModel\Notifications\Messages\MessageNotificationItem.cs" />
     <Compile Include="ViewModel\Notifications\Messages\NotificationItem.cs" />
     <Compile Include="ViewModel\Notifications\NotificationsViewModel.cs" />

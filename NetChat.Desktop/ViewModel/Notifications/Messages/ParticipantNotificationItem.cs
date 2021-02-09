@@ -18,7 +18,7 @@ namespace NetChat.Desktop.ViewModel.Notifications
 #endif
 
         public ParticipantNotificationItem(string participantName, bool isOnline)
-            : base(null, participantName, isOnline ? "В сети" : "Ушел из сети")
+            : base(null, null, participantName, isOnline ? "В сети" : "Ушел из сети")
         {
             IsOnline = isOnline;
         }

@@ -23,13 +23,15 @@ namespace NetChat.Desktop.ViewModel.Notifications
         }
 #endif
 
-        public NotificationItem(string title, string sender, string message)
+        public NotificationItem(string id, string title, string sender, string message)
         {
+            MessageId = id;
             Title = title;
             Sender = sender;
             Message = message;
         }
 
+        public string MessageId { get; }
         public string Title { get; }
         public string Sender { get; }
         public string Message { get; }

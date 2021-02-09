@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging;
+using NetChat.Desktop.ViewModel.InnerMessages;
 using NetChat.Desktop.ViewModel.Messenger;
 
 namespace NetChat.Desktop.ViewModel.Notifications
@@ -24,9 +25,9 @@ namespace NetChat.Desktop.ViewModel.Notifications
         public NotificationsViewModel()
         {
             Notifications = new ObservableCollection<NotificationItem>();
-            Notifications.Add(new NotificationItem("Title1", "Sender1", "Message1"));
-            Notifications.Add(new NotificationItem("Title2", "Sender2", "Message2"));
-            Notifications.Add(new NotificationItem("Title3", "Sender3", "Message3"));
+            Notifications.Add(new NotificationItem("str1", "Title1", "Sender1", "Message1"));
+            Notifications.Add(new NotificationItem("str2", "Title2", "Sender2", "Message2"));
+            Notifications.Add(new NotificationItem("str3", "Title3", "Sender3", "Message3"));
         }
 #endif
 
@@ -44,8 +45,15 @@ namespace NetChat.Desktop.ViewModel.Notifications
         {
             if(message is TextMessageObservable textMessage /*&& !textMessage.IsOriginNative*/)
             {
-                AppendNotification(new MessageNotificationItem(textMessage.Sender.UserId, textMessage.Text));
+                AppendNotification(
+                    new MessageNotificationItem(message.Id, textMessage.Sender.UserId, textMessage.Text));
             }
+        }
+
+        private void OnUserStatusChanged(ParticipantObservable participant)
+        {
+            AppendNotification(
+                new ParticipantNotificationItem(participant.UserId, participant.IsOnline));
         }
 
         private void AppendNotification(NotificationItem notification)
@@ -59,13 +67,6 @@ namespace NetChat.Desktop.ViewModel.Notifications
                 Notifications.Add(notification);
             });
         }
-
-        private void OnUserStatusChanged(ParticipantObservable participant)
-        {
-            AppendNotification(
-                new ParticipantNotificationItem(participant.UserId, participant.IsOnline));
-        }
-
 
         private RelayCommand _hideAllCommand;
         public RelayCommand HideAllCommand => _hideAllCommand ??
@@ -110,6 +111,7 @@ namespace NetChat.Desktop.ViewModel.Notifications
         private void ShowMessage(NotificationItem notification)
         {
             Console.WriteLine("Showing message {0}", notification.Message);
+            MessengerInstance.Send<GoToMessageIMessage>(new GoToMessageIMessage(notification.MessageId));
         }
     }
 }
