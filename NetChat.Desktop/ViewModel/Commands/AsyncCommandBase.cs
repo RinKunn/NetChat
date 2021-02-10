@@ -21,7 +21,7 @@ namespace NetChat.Desktop.ViewModel.Commands
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-        protected void RaiseCanExecuteChanged()
+        protected static void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();
         }

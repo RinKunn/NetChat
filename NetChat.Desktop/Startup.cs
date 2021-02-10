@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Autofac;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.Services.Messaging.Users;
@@ -57,6 +58,7 @@ namespace NetChat.Desktop
             builder.RegisterType<ChatAreaViewModel>().Named<ViewModelBase>(typeof(ChatAreaViewModel).ToString());
             builder.RegisterType<ChatSenderViewModel>().Named<ViewModelBase>(typeof(ChatSenderViewModel).ToString());
             builder.RegisterType<NotificationsViewModel>().Named<ViewModelBase>(typeof(NotificationsViewModel).ToString());
+            builder.RegisterType<MessengerViewModel>().Named<ViewModelBase>(typeof(MessengerViewModel).ToString());
             return builder;
         }
 
@@ -66,6 +68,8 @@ namespace NetChat.Desktop
             builder.RegisterType<MessageSender>().As<IMessageSender>();
             builder.RegisterType<MessageLoader>().As<IMessageLoader>();
             builder.RegisterType<ReceiverHub>().As<IReceiverHub>().InstancePerLifetimeScope();
+            builder.RegisterInstance(Messenger.Default).As<IMessenger>();
+            builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().InstancePerLifetimeScope();
             return builder;
         }
 
@@ -78,7 +82,17 @@ namespace NetChat.Desktop
             if (runnedProc > 1)
                 username += runnedProc.ToString();
 #endif
-            builder.RegisterInstance<UserContext>(new UserContext(username));
+            UserContext context = new UserContext(username);
+            var notifyConfig = new NotificationConfiguration()
+            {
+                EnableParticipantNotifications = false,
+                EnableMessageNotifications = true,
+                HideTimeout = TimeSpan.FromSeconds(5),
+                ShowingMaxCount = 3
+            };
+
+            builder.RegisterInstance<UserContext>(context);
+            builder.RegisterInstance<NotificationConfiguration>(notifyConfig);
             return builder;
         }
     }

@@ -1,91 +1,56 @@
 using System;
 using GalaSoft.MvvmLight;
-using NetChat.Desktop.Services.Messaging;
-using NetChat.Desktop.Services.Messaging.Messages;
-using NetChat.Desktop.Services.Messaging.Users;
-using NetChat.Desktop.ViewModel.InnerMessages;
 using NetChat.Desktop.ViewModel.Messenger;
+using NetChat.Desktop.ViewModel.Notifications;
 
 namespace NetChat.Desktop.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private bool _isVisible;
-        private ViewModelBase _header;
-        private ViewModelBase _chatArea;
-        private ViewModelBase _chatSender;
-        private ViewModelBase _sideArea;
+        private readonly IViewModelFactory _viewModelFactory;
+        private ViewModelBase _messenger;
+        private ViewModelBase _notificator;
 
 
-        public bool IsVisible
+        public ViewModelBase Messenger
         {
-            get => _isVisible;
-            set => Set(ref _isVisible, value);
-        }
-
-        public ViewModelBase Header
-        {
-            get => _header;
+            get => _messenger;
             set
             {
-                if (_header != null) _header.Cleanup();
-                Set(ref _header, value);
+                if (_messenger != null) _messenger.Cleanup();
+                Set(ref _messenger, value);
             }
         }
 
-        public ViewModelBase ChatArea
+        public ViewModelBase Notificator
         {
-            get => _chatArea;
+            get => _notificator;
             set
             {
-                if (_chatArea != null) _chatArea.Cleanup();
-                Set(ref _chatArea, value);
+                if (_notificator != null) _notificator.Cleanup();
+                Set(ref _notificator, value);
             }
         }
 
-        public ViewModelBase ChatSender
+#if DEBUG
+        internal MainViewModel()
         {
-            get => _chatSender;
-            set
+            if(IsInDesignMode)
             {
-                if (_chatSender != null) _chatSender.Cleanup();
-                Set(ref _chatSender, value);
+                Messenger = new MessengerViewModel();
+                Notificator = new NotificationsViewModel();
             }
+            else throw new NotImplementedException("MainViewModel without services is not implemeted");
         }
+#endif
 
-        public ViewModelBase SideArea
+        public MainViewModel(IViewModelFactory viewModelFactory)
         {
-            get => _sideArea;
-            set
-            {
-                if (_sideArea != null) _sideArea.Cleanup();
-                Set(ref _sideArea, value);
-            }
-        }
-
-
-
-        public MainViewModel(IUserLoader userLoader, IMessageLoader messageLoader, IMessageSender messageSender, IReceiverHub receiverHub, UserContext context)
-        {
-            if(IsInDesignModeStatic)
-            {
-                Header = new HeaderViewModel();
-                ChatArea = new ChatAreaViewModel();
-                ChatSender = new ChatSenderViewModel();
-                SideArea = null;
-            }
-            else
-            {
-                Header = new HeaderViewModel(userLoader, receiverHub);
-                ChatArea = new ChatAreaViewModel(messageLoader, receiverHub);
-                ChatSender = new ChatSenderViewModel(context.CurrentUserName, messageSender);
-                SideArea = null;
-            }
-            MessengerInstance.Register<ExceptionIMessage>(this, (ex) => Console.WriteLine("Error occured: " + ex.ErrorMessage));
-            MessengerInstance.Register<GoToMessageIMessage>(this, (m) =>
-            {
-                if (!IsVisible) IsVisible = true;
-            });
+            _viewModelFactory = viewModelFactory ?? throw new ArgumentNullException(nameof(viewModelFactory));
+            Messenger = _viewModelFactory.CreateViewModel<MessengerViewModel>() 
+                ?? throw new ArgumentNullException($"Cannot create 'MessengerViewModel'");
+            Notificator = _viewModelFactory.CreateViewModel<NotificationsViewModel>() 
+                ?? throw new ArgumentNullException($"Cannot create 'NotificationsViewModel'");
         }
     }
 }

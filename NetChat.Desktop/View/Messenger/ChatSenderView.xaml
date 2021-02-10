@@ -11,7 +11,8 @@
              Height="Auto"
              d:DataContext="{d:DesignInstance Type=vm:ChatSenderViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="40" d:DesignWidth="400"
-             MinHeight="40">
+             MinHeight="40"
+             FocusManager.FocusedElement="{Binding ElementName=MessageTxtBox}">
 
     <UserControl.Resources>
 
@@ -62,6 +63,12 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="CaretBrush" Value="#7F000000"/>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="Background" 
+                            Value="{StaticResource ChatSenderTypingTextBoxBackground}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="WatermarkTextBlock" TargetType="{x:Type TextBlock}">
@@ -90,17 +97,21 @@
                         BorderBrush="{DynamicResource MaterialDesignDivider}">
 
                     <StackPanel Orientation="Vertical">
-                        <TextBox x:Name="MessageTxtBox"
-                             MinHeight="30" Height="Auto"
-                             Text="{Binding TextMessage, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource TypingTextBox}">
+                        <TextBox 
+                            x:Name="MessageTxtBox"
+                            MinHeight="30" Height="Auto"
+                            Text="{Binding TextMessage, UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource TypingTextBox}">
+                            
                             <TextBox.InputBindings>
                                 <KeyBinding Key="Enter" Command="{Binding SendMessageCommand}"/>
                             </TextBox.InputBindings>
+                            
                             <controls:WatermarkService.Watermark>
                                 <TextBlock Text="Write a message..."
                                        Style="{StaticResource WatermarkTextBlock}"/>
                             </controls:WatermarkService.Watermark>
+                            
                         </TextBox>
                         
                         
@@ -115,7 +126,8 @@
                 <!--Send-->
                 <Button x:Name="SendButton" Style="{DynamicResource SendButtonStyle}"
                         Command="{Binding SendMessageCommand}"
-                        Grid.Column="1" Margin="10"/>
+                        Grid.Column="1" Margin="10"
+                        Focusable="False"/>
             </Grid>
         </Border>
     </Grid>

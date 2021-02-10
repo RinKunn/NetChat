@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace NetChat.Desktop.ViewModel.InnerMessages
 {
-    public class MessageUnreadChangedIMessage
+    public class GoToMessageInnerMessage : NoticeInnerMessage
     {
-        public int Count;
+        public string MessageId { get; }
 
-        public MessageUnreadChangedIMessage(int count)
+        public GoToMessageInnerMessage(string messageId)
         {
-            Count = count;
+            MessageId = messageId;
         }
     }
 }

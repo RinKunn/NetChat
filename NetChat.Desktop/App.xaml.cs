@@ -1,13 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using Autofac;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging;
 using NetChat.Desktop.View.Messenger;
-using NetChat.Desktop.View.Notifications;
+using NetChat.Desktop.View.Notificator;
 using NetChat.Desktop.ViewModel;
-using NetChat.Desktop.ViewModel.Notifications;
 using NetChat.FileMessaging.Services.Users;
 using NLog;
 
@@ -61,14 +58,16 @@ namespace NetChat.Desktop
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.MainWindow = new MainWindow();
-            this.MainWindow.DataContext = _container.ResolveViewModel<MainViewModel>();
-            this.MainWindow.Show();
-
+            this.MainWindow = new MessengerView();
             var notifier = new NotificationsArea();
-            notifier.DataContext = _container.ResolveViewModel<NotificationsViewModel>();
-            notifier.Show();
             this.MainWindow.Closing += (o, ee) => notifier.Close();
+
+            var viewModel = _container.ResolveViewModel<MainViewModel>();
+            this.MainWindow.DataContext = viewModel.Messenger;
+            notifier.DataContext = viewModel.Notificator;
+            this.MainWindow.Show();
+            notifier.Show();
+            
         }
 
         private void ConnectToAllHub()

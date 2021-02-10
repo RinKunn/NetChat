@@ -12,9 +12,12 @@
     <Color A="255" R="128" G="128" B="128" x:Key="ChatBackground"/>
     
     <SolidColorBrush x:Key="ChatSenderBackground" Color="#FF5D5C5C"/>
-    <SolidColorBrush x:Key="ChatSenderTextBoxBackground" Color="#FF666666"/>
+    <SolidColorBrush x:Key="ChatSenderTextBoxBackground" Color="#FF7A7A7A"/>
+    <SolidColorBrush x:Key="ChatSenderTypingTextBoxBackground" Color="#FFA8A8A8"/>
 
-    <SolidColorBrush x:Key="NewMessageCountBackgroundColor" Color="#04819E"/>
+    <!--<SolidColorBrush x:Key="NewMessageCountBackgroundColor" Color="#04819E"/>-->
+    <SolidColorBrush x:Key="NewMessageCountBackgroundColor" Color="#1ba1e2"/>
+    <Color R="27" G="161" B="226" x:Key="BrightColor"/>
     <SolidColorBrush x:Key="NotificationMessageForeground" Color="#FFBFBFBF"/>
     <SolidColorBrush x:Key="NotificationBackground" Color="#FF3C3C3C"/>
 </ResourceDictionary>

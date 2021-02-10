@@ -24,16 +24,17 @@ namespace NetChat.Desktop.ViewModel.Messenger
             get => _participantOnlineCount;
             set => Set(ref _participantOnlineCount, value);
         }
-
-        public HeaderViewModel()
+#if DEBUG
+        internal HeaderViewModel()
         {
-            if (IsInDesignModeStatic)
+            if (IsInDesignMode)
             {
                 Title = "Hello world";
                 ParticipantOnlineCount = 189;
             }
-            else throw new NotImplementedException();
+            else throw new NotImplementedException("Header without services is not implemented");
         }
+#endif
 
         public HeaderViewModel(IUserLoader userLoader, IReceiverHub receiverHub, string title = "NetChat")
         {
@@ -42,7 +43,6 @@ namespace NetChat.Desktop.ViewModel.Messenger
             _userLoader = userLoader ?? throw new ArgumentNullException(nameof(userLoader));
             _participantOnlineCount = 0;
             _receiverHub.SubscribeUserStatusChanged(this, (u) => DispatcherHelper.CheckBeginInvokeOnUI(() => ParticipantOnlineCount += u.IsOnline ? 1 : -1));
-            
         }
 
         public override void Cleanup()
@@ -54,13 +54,10 @@ namespace NetChat.Desktop.ViewModel.Messenger
         private IAsyncCommand _loadCommand;
         public IAsyncCommand LoadCommand => _loadCommand ??
             (_loadCommand = new AsyncCommand(LoadUsers));
-
         public async Task LoadUsers()
         {
             var res = await _userLoader.OnlineUsersCount();
             DispatcherHelper.CheckBeginInvokeOnUI(() => ParticipantOnlineCount = res);
         }
     }
-
-    
 }

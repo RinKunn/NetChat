@@ -50,7 +50,7 @@
                                                 <Setter TargetName="ButtonBackground" Property="Background" Value="Gray" />
                                             </Trigger>
                                             <Trigger Property="Button.IsPressed" Value="True">
-                                                <Setter TargetName="ButtonBackground" Property="Background" Value="Purple" />
+                                                <Setter TargetName="ButtonBackground" Property="Background" Value="#1ba1e2" />
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.Services.Messaging.Messages;
 using NetChat.Desktop.ViewModel.Commands;
@@ -10,8 +11,9 @@ namespace NetChat.Desktop.ViewModel.Messenger
 {
     public class ChatSenderViewModel :ViewModelBase
     {
-        private string _userId;
-        private IMessageSender _messageSender;
+        private readonly string _currentUserId;
+        private readonly IMessageSender _messageSender;
+        private readonly IMessenger _innerCommunication;
 
         private string _textMessage;
         public string TextMessage
@@ -24,20 +26,22 @@ namespace NetChat.Desktop.ViewModel.Messenger
                     SendMessageCommand.Refresh();
             }
         }
-
+#if DEBUG
         public ChatSenderViewModel()
         {
-            if(IsInDesignModeStatic)
+            if(IsInDesignMode)
             {
                 TextMessage = "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello";
             }
-            else throw new NotImplementedException();
+            else throw new NotImplementedException("ChatSender without services is not implemented");
         }
+#endif
 
-        public ChatSenderViewModel(string userId, IMessageSender messageSender)
+        public ChatSenderViewModel(string userId, IMessageSender messageSender, IMessenger innerCommunication)
         {
             _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
-            _userId = userId ?? throw new ArgumentNullException(nameof(userId));
+            _currentUserId = userId ?? throw new ArgumentNullException(nameof(userId));
+            _innerCommunication = innerCommunication ?? throw new ArgumentNullException(nameof(innerCommunication));
         }
 
 
@@ -47,17 +51,18 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         private async Task SendMessage()
         {
+            if (string.IsNullOrEmpty(TextMessage)) return;
             try
             {
-                await _messageSender.SendMessage(new SendingTextMessage(_userId, TextMessage));
+                await _messageSender.SendMessage(new SendingTextMessage(_currentUserId, TextMessage));
                 DispatcherHelper.CheckBeginInvokeOnUI(() => TextMessage = string.Empty);
             }
             catch(Exception e)
             {
-                MessengerInstance.Send<ExceptionIMessage>(new ExceptionIMessage(e.Message));
+                _innerCommunication.Send(new ExceptionInnerMessage(e.Message));
                 throw e;
             }
         }
-        private bool CanSendMessage(object obj) => !string.IsNullOrWhiteSpace(TextMessage);
+        private bool CanSendMessage(object obj) => !string.IsNullOrEmpty(TextMessage);
     }
 }

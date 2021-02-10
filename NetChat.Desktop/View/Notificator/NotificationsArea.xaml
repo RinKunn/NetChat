@@ -1,12 +1,12 @@
-﻿<Window x:Class="NetChat.Desktop.View.Notifications.NotificationsArea"
+﻿<Window x:Class="NetChat.Desktop.View.Notificator.NotificationsArea"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Notifications"
-        xmlns:conv="clr-namespace:NetChat.Desktop.View.Converters"
-        xmlns:v="clr-namespace:NetChat.Desktop.View.Notifications"
+        xmlns:converters="clr-namespace:NetChat.Desktop.View.Converters"
+        xmlns:v="clr-namespace:NetChat.Desktop.View.Notificator"
         mc:Ignorable="d"
         WindowStartupLocation="Manual"
         SizeToContent="WidthAndHeight"
@@ -17,7 +17,8 @@
         Loaded="Window_Loaded">
 
     <Window.Resources>
-        <conv:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
+        <converters:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
+        <converters:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
         
         <DataTemplate DataType="{x:Type vm:MessageNotificationItem}">
             <v:MessageNotificationView/>
@@ -27,10 +28,9 @@
             <v:ParticipantNotificationView/>
         </DataTemplate>
 
-        <Style x:Key="HideButtonStyle" TargetType="{x:Type Button}">
+        <Style x:Key="HideButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Background" Value="{StaticResource NotificationBackground}"/>
             <Setter Property="Foreground" Value="{StaticResource NotificationMessageForeground}"/>
-            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Height" Value="35"/>
             <Setter Property="Margin" Value="0,2"/>
         </Style>
@@ -55,7 +55,7 @@
             Content="Hide"
             Style="{StaticResource HideButtonStyle}"
             Command="{Binding HideAllCommand}"
-            Visibility="{Binding IsHideButtonVisible, Converter={StaticResource BoolVisibilityConverter}}"/>
+            Visibility="{Binding Notifications.Count, Converter={StaticResource IntVisibilityConverter}, ConverterParameter=1}"/>
 
         <ItemsControl ItemsSource="{Binding Notifications}" Grid.Row="1">
             <ItemsControl.ItemsPanel>

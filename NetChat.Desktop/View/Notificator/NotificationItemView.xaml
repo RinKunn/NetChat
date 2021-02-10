@@ -2,55 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
-    <Style x:Key="NotificationButtonBaseStyle" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="1"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Name="Chrome"
-                            Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            SnapsToDevicePixels="true">
-                        <ContentPresenter Margin="{TemplateBinding Padding}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        RecognizesAccessKey="True"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="NotificationButtonStyle"
-           TargetType="{x:Type Button}"
-           BasedOn="{StaticResource NotificationButtonBaseStyle}">
-        <Setter Property="Width" Value="32" />
-        <Setter Property="Height" Value="24" />
-        <Setter Property="Foreground" Value="#d1d1d1"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#3e3e42" />
-                <Setter Property="Foreground" Value="#d1d1d1"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#1ba1e2" />
-                <Setter Property="Foreground" Value="#d1d1d1" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="#515151" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <Style x:Key="NotificationButtonCloseStyle" 
            TargetType="{x:Type Button}"
-           BasedOn="{StaticResource NotificationButtonStyle}">
+           BasedOn="{StaticResource ButtonStyle}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#3e3e42" />

@@ -30,23 +30,23 @@ namespace NetChat.Desktop.ViewModel.Commands
 
             var propertyChanged = PropertyChanged;
             if (propertyChanged == null) return;
-            propertyChanged(this, new PropertyChangedEventArgs("Status"));
-            propertyChanged(this, new PropertyChangedEventArgs("IsCompleted"));
-            propertyChanged(this, new PropertyChangedEventArgs("IsNotCompleted"));
+            propertyChanged(this, new PropertyChangedEventArgs(nameof(Status)));
+            propertyChanged(this, new PropertyChangedEventArgs(nameof(IsCompleted)));
+            propertyChanged(this, new PropertyChangedEventArgs(nameof(IsNotCompleted)));
             if (task.IsCanceled)
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsCanceled"));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsCanceled)));
             }
             else if (task.IsFaulted)
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsFaulted"));
-                propertyChanged(this, new PropertyChangedEventArgs("Exception"));
-                propertyChanged(this, new PropertyChangedEventArgs("InnerException"));
-                propertyChanged(this, new PropertyChangedEventArgs("ErrorMessage"));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsFaulted)));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(Exception)));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(InnerException)));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(ErrorMessage)));
             }
             else
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsSuccessfullyCompleted"));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsSuccessfullyCompleted)));
                 propertyChanged(this, new PropertyChangedEventArgs("Result"));
             }
         }
@@ -59,10 +59,8 @@ namespace NetChat.Desktop.ViewModel.Commands
         public bool IsCanceled => Task.IsCanceled;
         public bool IsFaulted => Task.IsFaulted;
         public AggregateException Exception => Task.Exception;
-        public Exception InnerException =>
-            (Exception == null) ? null : Exception.InnerException;
-        public string ErrorMessage
-            => (InnerException == null) ? null : InnerException.Message;
+        public Exception InnerException => Exception?.InnerException;
+        public string ErrorMessage => InnerException?.Message;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
@@ -76,7 +74,7 @@ namespace NetChat.Desktop.ViewModel.Commands
         {
             get
             {
-                return (Task.Status == TaskStatus.RanToCompletion) ? ((Task<TResult>)Task).Result : default(TResult);
+                return (Task.Status == TaskStatus.RanToCompletion) ? ((Task<TResult>)Task).Result : default;
             }
         }
     }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace NetChat.Desktop.ViewModel.InnerMessages
 {
-    public class ExceptionIMessage : IInnerMessage
+    public class ExceptionInnerMessage : IInnerMessage
     {
         public string ErrorMessage { get; private set; }
 
-        public ExceptionIMessage(string errorMessage)
+        public ExceptionInnerMessage(string errorMessage)
         {
             ErrorMessage = errorMessage;
         }

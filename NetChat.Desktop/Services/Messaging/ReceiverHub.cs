@@ -9,7 +9,7 @@ using NLog;
 
 namespace NetChat.Desktop.Services.Messaging
 {
-    public class ReceiverHub : IReceiverHub
+    public sealed class ReceiverHub : IReceiverHub
     {
         private readonly ConcurrentDictionary<string, Action<MessageObservable>> _mcallbacks
             = new ConcurrentDictionary<string, Action<MessageObservable>>();
@@ -25,12 +25,12 @@ namespace NetChat.Desktop.Services.Messaging
         {
             _hub = hub;
             _userLoader = userLoader;
-            _hub.OnMessageReceived += _hub_OnMessageReceived;
-            _hub.OnUserStatusChanged += _hub_OnUserStatusChanged;
+            _hub.OnMessageReceived += Hub_OnMessageReceived;
+            _hub.OnUserStatusChanged += Hub_OnUserStatusChanged;
             _logger.Debug("ReceiverHub inited");
         }
 
-        private Task _hub_OnUserStatusChanged(OnUserStatusChangedArgs args)
+        private Task Hub_OnUserStatusChanged(OnUserStatusChangedArgs args)
         {
             var u = args;
             _logger.Debug("OnUserStatusChanged(l={0}): UserId='{1}', Online={2}", 
@@ -44,7 +44,7 @@ namespace NetChat.Desktop.Services.Messaging
             return Task.CompletedTask;
         }
 
-        private async Task _hub_OnMessageReceived(OnMessageReceivedArgs args)
+        private async Task Hub_OnMessageReceived(OnMessageReceivedArgs args)
         {
             var m = args.Message;
             var user = await _userLoader.GetUserById(m.SenderId);
@@ -54,8 +54,8 @@ namespace NetChat.Desktop.Services.Messaging
                 _logger.Warn("Created new default 'ParticipantObservable' for UsedId='{0}'", m.SenderId);
             }
             bool isMe = _userLoader.IsMe(m.SenderId);
-            _logger.Debug("OnMessageReceived(l={0}): id={1}, UserId='{2}', Text={3}, Date={4}",
-                _mcallbacks.Skip(0).Count(), m.Id, m.SenderId, m.Text, m.DateTime.ToString("d t"));
+            _logger.Debug("OnMessageReceived(l={0}): id='{1}', UserId='{2}', Text={3}, Date={4:yyyy-MM-dd HH:mm:ss}",
+                _mcallbacks.Skip(0).Count(), m.Id, m.SenderId, m.Text, m.DateTime);
             var message = new TextMessageObservable(m.Text, m.Id, m.DateTime, user, isMe);
 
             foreach (var act in _mcallbacks)
@@ -79,7 +79,6 @@ namespace NetChat.Desktop.Services.Messaging
 
         public void SubscribeUserStatusChanged(object sender, Action<ParticipantObservable> callback)
         {
-            
             if(_ucallbacks.TryAdd(SenderObjToString(sender), callback))
             {
                 _logger.Debug("'{0}' subscribed to user status receiving", sender.GetType().Name);
@@ -92,7 +91,10 @@ namespace NetChat.Desktop.Services.Messaging
 
         public void UnsubscribeMessageReceived(object sender)
         {
-            if(_mcallbacks.TryRemove(SenderObjToString(sender), out var act))
+            string senderKey = SenderObjToString(sender);
+            if (!_mcallbacks.ContainsKey(senderKey))
+                return;
+            if(_mcallbacks.TryRemove(senderKey, out var act))
             {
                 _logger.Debug("'{0}' unsubscribed from message receiving", sender.GetType().Name);
             }
@@ -104,7 +106,10 @@ namespace NetChat.Desktop.Services.Messaging
 
         public void UnsubscribeUserStatusChanged(object sender)
         {
-            if (_ucallbacks.TryRemove(SenderObjToString(sender), out var act))
+            string senderKey = SenderObjToString(sender);
+            if (!_ucallbacks.ContainsKey(senderKey))
+                return;
+            if (_ucallbacks.TryRemove(senderKey, out var act))
             {
                 _logger.Debug("'{0}' unsubscribed from message receiving", sender.GetType().Name);
             }
