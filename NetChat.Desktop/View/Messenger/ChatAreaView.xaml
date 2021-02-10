@@ -142,6 +142,27 @@
                 <ItemsPresenter/>
             </ScrollViewer>
         </ControlTemplate>
+
+        <CollectionViewSource x:Key="GrouppedMessagesSource" Source="{Binding Messages}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="DateTime.Date" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <DataTemplate x:Key="GroupHeaderTemplate">
+            <Border 
+                CornerRadius="4"
+                Height="Auto"
+                Width="Auto"
+                Background="LightBlue"
+                HorizontalAlignment="Center">
+
+                <TextBlock
+                    Text="{Binding Path=Name, StringFormat={}dd-MM-yyyy}"
+                    Margin="3"/>
+            </Border>
+        </DataTemplate>
+        
     </UserControl.Resources>
 
 
@@ -155,7 +176,7 @@
         </Grid.Background>
 
         <ItemsControl x:Name="MessagesItemsCtrl" Margin="0,5,0,0" 
-                      ItemsSource="{Binding Messages}" 
+                      ItemsSource="{Binding Source={StaticResource ResourceKey=GrouppedMessagesSource}}" 
                       ItemTemplate="{DynamicResource MessagesDataTemplate}"
                       Template="{DynamicResource ChatAreaTemplate}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -163,6 +184,9 @@
                 <behaviors:GoToMessageBehavior 
                     LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=TwoWay}"/>
             </i:Interaction.Behaviors>
+            <ItemsControl.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
+            </ItemsControl.GroupStyle>
         </ItemsControl>
 
         <Button 

@@ -53,7 +53,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
         }
 
 #if DEBUG
-        internal ChatAreaViewModel()
+        public ChatAreaViewModel()
         {
             if(IsInDesignMode)
             {
@@ -111,6 +111,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             var loadedMessages = await _messageLoader.LoadMessagesAsync();
             Messages = new ObservableCollection<MessageObservable>(loadedMessages);
+            LastVisibleMessageIndex = Messages.Count - 1;
         }
 
         private ICommand _readAllMessagesCommand;
