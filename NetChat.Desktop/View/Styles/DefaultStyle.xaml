@@ -1,13 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:NetChat.Desktop.Styles">
-    <SolidColorBrush x:Key="MessageOriginNative_Background" Color="Orange" Opacity="0.4"/>
-    <SolidColorBrush x:Key="MessageOriginNative_BorderBrush" Color="DarkOrange" Opacity="0.7"/>
-    <SolidColorBrush x:Key="MessageNotOriginNative_Background" Color="LightGray" Opacity="0.4"/>
-    <SolidColorBrush x:Key="MessageNotOriginNative_BorderBrush" Color="DarkGray" Opacity="0.7"/>
+    <SolidColorBrush x:Key="MessageOriginNative_Background" Color="Orange" Opacity="0.7"/>
+    <SolidColorBrush x:Key="MessageOriginNative_BorderBrush" Color="DarkOrange" Opacity="1"/>
+    <SolidColorBrush x:Key="MessageNotOriginNative_Background" Color="LightGray" Opacity="0.7"/>
+    <SolidColorBrush x:Key="MessageNotOriginNative_BorderBrush" Color="DarkGray" Opacity="1"/>
     <SolidColorBrush x:Key="MessageForeground" Color="Black"/>
 
-    <SolidColorBrush x:Key="HeaderBackground" Color="Orange" Opacity="0.6"/>
+    <SolidColorBrush x:Key="HeaderBackground" Color="Orange" Opacity="1"/>
     <SolidColorBrush x:Key="HeaderForegroundColor" Color="Black"/>
     <Color A="255" R="128" G="128" B="128" x:Key="ChatBackground"/>
     

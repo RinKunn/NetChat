@@ -21,7 +21,69 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
-        
+
+        <Style x:Key="GroupHeaderTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="LightBlue"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border 
+                                x:Name="PART_Border"
+                                CornerRadius="6"
+                                Height="Auto"
+                                Width="Auto"
+                                Background="{TemplateBinding Background}"
+                                HorizontalAlignment="Center"
+                                Margin="0,5,0,0"
+                                IsHitTestVisible="{TemplateBinding IsHitTestVisible}">
+                            <TextBlock
+                                    x:Name="PART_Text"
+                                    Text="{TemplateBinding Text}"
+                                    Margin="3"
+                                    IsHitTestVisible="{TemplateBinding IsHitTestVisible}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HidingGroupHeaderTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource GroupHeaderTextBox}">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="TextChanged">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation 
+                                Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                To="0"
+                                Duration="0:0:0.1"/>
+                            <DoubleAnimation 
+                                Storyboard.TargetProperty="Opacity"
+                                To="1"
+                                Duration="0:0:0.1"/>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                To="-50"
+                                BeginTime="0:0:3"
+                                Duration="0:0:1"/>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Opacity"
+                                To="0"
+                                BeginTime="0:0:3"
+                                Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
         <DataTemplate x:Key="MessagesDataTemplate" 
                       DataType="{x:Type vm:TextMessageObservable}">
             <Grid x:Name="MessageBackGroundGrid">
@@ -68,6 +130,7 @@
                     <Setter TargetName="MessageBorder" Property="MaxWidth" Value="320"/>
                 </DataTrigger>
             </DataTemplate.Triggers>
+            
         </DataTemplate>
 
         <Style x:Key="NewMessagesCountStyleBase" TargetType="{x:Type Button}">
@@ -138,9 +201,20 @@
         </Style>
 
         <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                <ItemsPresenter/>
-            </ScrollViewer>
+            <Grid>
+                <TextBox 
+                    Style="{StaticResource HidingGroupHeaderTextBox}"
+                    x:Name="PART_FrozenGroupHeader"
+                    VerticalAlignment="Top"
+                    IsHitTestVisible="False"
+                    Panel.ZIndex="1"
+                    Margin="-16,0,0,0"/>
+                <ScrollViewer 
+                        HorizontalScrollBarVisibility="Disabled" 
+                        VerticalScrollBarVisibility="Visible">
+                    <ItemsPresenter/>
+                </ScrollViewer>
+            </Grid>
         </ControlTemplate>
 
         <CollectionViewSource x:Key="GrouppedMessagesSource" Source="{Binding Messages}">
@@ -150,17 +224,9 @@
         </CollectionViewSource>
 
         <DataTemplate x:Key="GroupHeaderTemplate">
-            <Border 
-                CornerRadius="4"
-                Height="Auto"
-                Width="Auto"
-                Background="LightBlue"
-                HorizontalAlignment="Center">
-
-                <TextBlock
-                    Text="{Binding Path=Name, StringFormat={}dd-MM-yyyy}"
-                    Margin="3"/>
-            </Border>
+            <TextBox
+                Style="{StaticResource GroupHeaderTextBox}"
+                Text="{Binding Path=Name, StringFormat={}dd-MM-yyyy, Mode=OneWay}"/>
         </DataTemplate>
         
     </UserControl.Resources>
@@ -181,8 +247,9 @@
                       Template="{DynamicResource ChatAreaTemplate}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
             <i:Interaction.Behaviors>
-                <behaviors:GoToMessageBehavior 
+                <behaviors:LastIndexBehavior 
                     LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=TwoWay}"/>
+                <behaviors:StickyHeaderBehavior/>
             </i:Interaction.Behaviors>
             <ItemsControl.GroupStyle>
                 <GroupStyle HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>

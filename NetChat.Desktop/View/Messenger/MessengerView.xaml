@@ -45,8 +45,8 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <ContentControl Content="{Binding Header}" Grid.Row="0" Panel.ZIndex="1"/>
-        <ContentControl Content="{Binding ChatArea}" Grid.Row="1"/>
+        <ContentControl Content="{Binding Header}" Grid.Row="0" Panel.ZIndex="1" Focusable="False"/>
+        <ContentControl Content="{Binding ChatArea}" Grid.Row="1" Focusable="False"/>
         <ContentControl Content="{Binding ChatSender}" Grid.Row="2" Height="Auto" x:Name="Sender"/>
         <ContentControl Content="{Binding SideArea}" Grid.Column="1"/>
     </Grid>
