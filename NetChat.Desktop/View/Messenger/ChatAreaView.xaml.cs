@@ -24,5 +24,6 @@ namespace NetChat.Desktop.View.Messenger
         {
             InitializeComponent();
         }
+
     }
 }

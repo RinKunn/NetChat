@@ -88,25 +88,12 @@ namespace NetChat.Desktop.View.Behaviors
         public static DependencyProperty LastVisibleIndexProperty =
             DependencyProperty.Register("LastVisibleIndex",
                 typeof(int),
-                typeof(LastIndexBehavior),
-                new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLastVisibleIndexChanged)));
+                typeof(LastIndexBehavior));
 
         public int LastVisibleIndex
         {
             get { return (int)GetValue(LastVisibleIndexProperty); }
             set { SetValue(LastVisibleIndexProperty, value); }
-        }
-
-        private static void OnLastVisibleIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            LastIndexBehavior behavior = (LastIndexBehavior)d;
-            int targetIndex = (int)e.NewValue;
-            if (targetIndex > 0 && targetIndex != (int)e.OldValue)
-            {
-                FrameworkElement item = (FrameworkElement)behavior.AssociatedObject?
-                    .ItemContainerGenerator?.ContainerFromIndex(targetIndex);
-                item?.BringIntoView();
-            }
         }
     }
 }

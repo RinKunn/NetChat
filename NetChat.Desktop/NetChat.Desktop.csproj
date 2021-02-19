@@ -143,6 +143,7 @@
     <Compile Include="ViewModel\Notifications\NotificationItems\ParticipantNotificationItem.cs" />
     <Compile Include="ViewModel\ViewModelFactory.cs" />
     <Compile Include="View\Behaviors\ActivateBehavior.cs" />
+    <Compile Include="View\Behaviors\DisplayItemBehavior.cs" />
     <Compile Include="View\Behaviors\LastIndexBehavior.cs" />
     <Compile Include="View\Behaviors\SlideBehavior.cs" />
     <Compile Include="View\Behaviors\StickyHeaderBehavior.cs" />
@@ -197,6 +198,18 @@
       <DependentUpon>MessengerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Messenger\Templates\HeaderGroupTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\Templates\MessageTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\Templates\NewMessagesButtonTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Notificator\ParticipantNotificationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

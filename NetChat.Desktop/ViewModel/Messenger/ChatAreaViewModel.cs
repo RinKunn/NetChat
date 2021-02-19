@@ -22,7 +22,12 @@ namespace NetChat.Desktop.ViewModel.Messenger
         private readonly IReceiverHub _receiverHub;
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
+        private ObservableCollection<MessageObservable> _messages = new ObservableCollection<MessageObservable>();
         private int _lastVisibleMessageIndex;
+        private int _selectedMessageIndex;
+        private int _newMessagesCount;
+
+
         public int LastVisibleMessageIndex
         {
             get => _lastVisibleMessageIndex;
@@ -32,15 +37,22 @@ namespace NetChat.Desktop.ViewModel.Messenger
                 NewMessagesCount = Math.Min(NewMessagesCount, _messages.Count - 1 - _lastVisibleMessageIndex);
             }
         }
-
-        private int _newMessagesCount;
+        public int SelectedMessageIndex
+        {
+            get => _selectedMessageIndex;
+            set
+            {
+                Set(ref _selectedMessageIndex, value);
+                Set(ref _selectedMessageIndex, -1);
+            }
+        }
         public int NewMessagesCount
         {
             get => _newMessagesCount;
             set => Set(ref _newMessagesCount, value);
         }
 
-        private ObservableCollection<MessageObservable> _messages;
+        
         public ObservableCollection<MessageObservable> Messages
         {
             get => _messages;
@@ -74,7 +86,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
             _receiverHub = receiverHub ?? throw new ArgumentNullException(nameof(receiverHub));
             _innerCommunication = innerCommunication ?? throw new ArgumentNullException(nameof(innerCommunication));
             _receiverHub.SubscribeMessageReceived(this, HandleMessage);
-            _innerCommunication.Register<GoToMessageInnerMessage>(this, (m) => FindMessage(m.MessageId));
+            _innerCommunication.Register<GoToMessageInnerMessage>(this, (m) => GoToMessageByIndex(MessageIndexById(m.MessageId)));
         }
 
         public override void Cleanup()
@@ -91,10 +103,12 @@ namespace NetChat.Desktop.ViewModel.Messenger
             {
                 if (((MessageObservable)e.NewItems[e.NewItems.Count - 1]).IsOriginNative)
                 {
-                    ReadAllMessages();
+                    GoToMessageByIndex(Messages.Count - 1);
                 }
                 else if (LastVisibleMessageIndex < Messages.Count - 1)
+                {
                     NewMessagesCount += e.NewItems.Count;
+                }
             }
         }
 
@@ -103,34 +117,50 @@ namespace NetChat.Desktop.ViewModel.Messenger
             DispatcherHelper.CheckBeginInvokeOnUI(() => Messages.Add(message));
         }
 
+        private int MessageIndexById(string id)
+        {
+            _logger.Debug("Searching message with id='{0}'", id);
+            var message = Messages.FirstOrDefault(m => m.Id == id);
+            if (message == null)
+                throw new ArgumentNullException($"Cannot find message by id: '{id}'");
+            return Messages.IndexOf(message);
+        }
+
+        private void GoToMessageByIndex(int index)
+        {
+            if (index < 0 || index >= Messages.Count)
+                throw new ArgumentOutOfRangeException($"Index '{index}' out of range [0; {Messages.Count}]");
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    int lastUnreadMessageIndex = Messages.Count - NewMessagesCount;
+                    if (NewMessagesCount > 0 && index > lastUnreadMessageIndex)
+                    {
+                        for (int i = lastUnreadMessageIndex; i < index; i++)
+                            SelectedMessageIndex = i;
+                    }
+                    SelectedMessageIndex = index;
+                });
+        }
+
+
         private IAsyncCommand _loadMessagesCommand;
         public IAsyncCommand LoadMessagesCommand => _loadMessagesCommand ??
             (_loadMessagesCommand = new AsyncCommand(LoadMessages));
-
         private async Task LoadMessages()
         {
+            _logger.Debug("Loading all messages");
             var loadedMessages = await _messageLoader.LoadMessagesAsync();
             Messages = new ObservableCollection<MessageObservable>(loadedMessages);
-            LastVisibleMessageIndex = Messages.Count - 1;
         }
 
         private ICommand _readAllMessagesCommand;
         public ICommand ReadAllMessagesCommand => _readAllMessagesCommand ??
             (_readAllMessagesCommand = new RelayCommand(ReadAllMessages));
-
         private void ReadAllMessages()
         {
-            LastVisibleMessageIndex = _messages.Count - 1;
-        }
-
-
-        private void FindMessage(string id)
-        {
-            _logger.Debug("Searching message with id='{0}'", id);
-            var message = Messages.First(m => m.Id == id);
-            if(message != null) _logger.Debug("Message found");
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                LastVisibleMessageIndex = Messages.IndexOf(message));
+            _logger.Debug("Reading all new messages: {0}", NewMessagesCount);
+            if (NewMessagesCount == 0) return;
+            GoToMessageByIndex(Messages.Count - 1);
         }
     }
 }

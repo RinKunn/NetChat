@@ -19,216 +19,40 @@
     </i:Interaction.Triggers>
     
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
-
-        <Style x:Key="GroupHeaderTextBox" TargetType="{x:Type TextBox}">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Background" Value="LightBlue"/>
-            <Setter Property="IsEnabled" Value="False"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border 
-                                x:Name="PART_Border"
-                                CornerRadius="6"
-                                Height="Auto"
-                                Width="Auto"
-                                Background="{TemplateBinding Background}"
-                                HorizontalAlignment="Center"
-                                Margin="0,5,0,0"
-                                IsHitTestVisible="{TemplateBinding IsHitTestVisible}">
-                            <TextBlock
-                                    x:Name="PART_Text"
-                                    Text="{TemplateBinding Text}"
-                                    Margin="3"
-                                    IsHitTestVisible="{TemplateBinding IsHitTestVisible}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="HidingGroupHeaderTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource GroupHeaderTextBox}">
-            <Setter Property="RenderTransform">
-                <Setter.Value>
-                    <TranslateTransform/>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <EventTrigger RoutedEvent="TextChanged">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation 
-                                Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
-                                To="0"
-                                Duration="0:0:0.1"/>
-                            <DoubleAnimation 
-                                Storyboard.TargetProperty="Opacity"
-                                To="1"
-                                Duration="0:0:0.1"/>
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
-                                To="-50"
-                                BeginTime="0:0:3"
-                                Duration="0:0:1"/>
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="Opacity"
-                                To="0"
-                                BeginTime="0:0:3"
-                                Duration="0:0:0.3"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <DataTemplate x:Key="MessagesDataTemplate" 
-                      DataType="{x:Type vm:TextMessageObservable}">
-            <Grid x:Name="MessageBackGroundGrid">
-                <Border Name="MessageBorder"
-                        MinHeight="40" MinWidth="280" BorderThickness="1" 
-                        Background="{StaticResource MessageNotOriginNative_Background}"
-                        BorderBrush="{StaticResource MessageNotOriginNative_BorderBrush}"
-                        Margin="10 5 60 5" CornerRadius="4" SnapsToDevicePixels="True"
-                        HorizontalAlignment="Left">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="15"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock x:Name="MessageUser" Grid.Row="0" Margin="7,5,7,0"
-                                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                                   Text="{Binding Sender.UserId}"
-                                   Foreground="{StaticResource MessageForeground}"/>
-
-                        <TextBlock x:Name="MessageTxtBlock" Grid.Row="1" Margin="7,5,7,0"
-                                   TextWrapping="Wrap" 
-                                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                                   Text="{Binding Text}"
-                                   Foreground="{StaticResource MessageForeground}"/>
-
-                        <TextBlock Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Stretch"
-                                   Margin="0,0,5,0" FontSize="10" Opacity="0.8"
-                                   Text="{Binding DateTime, StringFormat=HH:mm}"
-                                   Foreground="{StaticResource MessageForeground}"/>
-                    </Grid>
-                </Border>
-            </Grid>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding IsOriginNative}" Value="True">
-                    <Setter TargetName="MessageBorder" Property="HorizontalAlignment" Value="Right"/>
-                    <Setter TargetName="MessageBorder" Property="Margin" Value="60,5,5,5"/>
-                    <Setter TargetName="MessageBorder" Property="Background" Value="{StaticResource MessageOriginNative_Background}"/>
-                    <Setter TargetName="MessageBorder" Property="BorderBrush" Value="{StaticResource MessageOriginNative_BorderBrush}"/>
-                    <Setter TargetName="MessageUser" Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                    <Setter TargetName="MessageTxtBlock" Property="Visibility" Value="Collapsed"/>
-                    <Setter TargetName="MessageBorder" Property="MaxWidth" Value="320"/>
-                </DataTrigger>
-            </DataTemplate.Triggers>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Templates/HeaderGroupTemplate.xaml"/>
+                <ResourceDictionary Source="./Templates/MessageTemplates.xaml"/>
+                <ResourceDictionary Source="./Templates/NewMessagesButtonTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
             
-        </DataTemplate>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
 
-        <Style x:Key="NewMessagesCountStyleBase" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="{StaticResource NewMessageCountBackgroundColor}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding NewMessagesCount}" Value="0">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="NewMessagesCountBarStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource NewMessagesCountStyleBase}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Height" Value="Auto"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid 
-                            Background="{TemplateBinding Background}">
-                            <TextBlock 
-                                Text="{Binding NewMessagesCount, StringFormat={} Новых сообщений: {0}}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"/>
-                            <TextBlock 
-                                Text="»‎"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right" FontSize="25">
-                                <TextBlock.LayoutTransform>
-                                    <RotateTransform Angle="90"/>
-                                </TextBlock.LayoutTransform>
-                            </TextBlock>
-                            <TextBlock 
-                                Text="»‎"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left" FontSize="25">
-                                <TextBlock.LayoutTransform>
-                                    <RotateTransform Angle="90" />
-                                </TextBlock.LayoutTransform>
-                            </TextBlock>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="NewMessagesCountEllipseStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource NewMessagesCountStyleBase}">
-            <Setter Property="Margin" Value="15"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <Ellipse Fill="{TemplateBinding Background}" Width="40" Height="40"/>
-                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       Text="{Binding NewMessagesCount}"/>
-                            <!--<Polygon Fill="{TemplateBinding Background}" Points="0 0 34 0 18 20" 
-                                     HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                                     Margin="0 0 0 -10"/>-->
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
-            <Grid>
-                <TextBox 
+            <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
+                <Grid>
+                    <TextBox 
                     Style="{StaticResource HidingGroupHeaderTextBox}"
                     x:Name="PART_FrozenGroupHeader"
                     VerticalAlignment="Top"
                     IsHitTestVisible="False"
                     Panel.ZIndex="1"
-                    Margin="-16,0,0,0"/>
-                <ScrollViewer 
+                    Margin="-17,0,0,0"/>
+                    <ScrollViewer 
                         HorizontalScrollBarVisibility="Disabled" 
                         VerticalScrollBarVisibility="Visible">
-                    <ItemsPresenter/>
-                </ScrollViewer>
-            </Grid>
-        </ControlTemplate>
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </Grid>
+            </ControlTemplate>
 
-        <CollectionViewSource x:Key="GrouppedMessagesSource" Source="{Binding Messages}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="DateTime.Date" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-
-        <DataTemplate x:Key="GroupHeaderTemplate">
-            <TextBox
-                Style="{StaticResource GroupHeaderTextBox}"
-                Text="{Binding Path=Name, StringFormat={}dd-MM-yyyy, Mode=OneWay}"/>
-        </DataTemplate>
-        
+            <CollectionViewSource x:Key="GrouppedMessagesSource" Source="{Binding Messages}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="DateTime.Date" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            
+        </ResourceDictionary>
     </UserControl.Resources>
 
 
@@ -243,12 +67,10 @@
 
         <ItemsControl x:Name="MessagesItemsCtrl" Margin="0,5,0,0" 
                       ItemsSource="{Binding Source={StaticResource ResourceKey=GrouppedMessagesSource}}" 
-                      ItemTemplate="{DynamicResource MessagesDataTemplate}"
-                      Template="{DynamicResource ChatAreaTemplate}"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                      Template="{DynamicResource ChatAreaTemplate}">
             <i:Interaction.Behaviors>
-                <behaviors:LastIndexBehavior 
-                    LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=TwoWay}"/>
+                <behaviors:LastIndexBehavior LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=OneWayToSource}"/>
+                <behaviors:DisplayItemBehavior SelectedIndex="{Binding SelectedMessageIndex, Mode=TwoWay}"/>
                 <behaviors:StickyHeaderBehavior/>
             </i:Interaction.Behaviors>
             <ItemsControl.GroupStyle>

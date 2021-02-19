@@ -13,6 +13,7 @@
         Style="{StaticResource CustomWindowStyle}"
         d:DataContext="{d:DesignInstance Type=vm:MessengerViewModel, IsDesignTimeCreatable=True}"
         Title="MainWindow" 
+        Left="2000"
         d:DesignHeight="350" d:DesignWidth="350"
         Height="450" Width="400"
         MinWidth="380" MinHeight="350"
