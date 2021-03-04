@@ -79,6 +79,8 @@
   <ItemGroup>
     <Compile Include="Moqs\ReceiverHubMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\Messenger\ChatAreaViewModelTests.cs" />
+    <Compile Include="ViewModel\Messenger\ChatSenderViewModelTests.cs" />
     <Compile Include="ViewModel\Messenger\HeaderViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,13 +88,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\NetChat.Desktop\NetChat.Desktop.csproj">
       <Project>{c1951209-6884-43bd-9780-a588a65ddbac}</Project>
       <Name>NetChat.Desktop</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -54,7 +54,11 @@ namespace NetChat.Desktop.ViewModel.Messenger
             if (string.IsNullOrEmpty(TextMessage)) return;
             try
             {
-                await _messageSender.SendMessage(new SendingTextMessage(_currentUserId, TextMessage));
+                await _messageSender.SendMessage(
+                    new SendingMessage(
+                        _currentUserId,
+                        new InputMessageTextContent(TextMessage),
+                        null));
                 DispatcherHelper.CheckBeginInvokeOnUI(() => TextMessage = string.Empty);
             }
             catch(Exception e)

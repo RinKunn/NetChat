@@ -26,7 +26,7 @@ namespace NetChat.FileMessaging.Repository.UserStatuses
             {
                 var lines = File.ReadAllLines(_filename, _encoding);
                 return lines
-                    .Select(l => TextMessageData.Parse(l))
+                    .Select(l => MessageDataEntity.Parse(l))
                     .GroupBy(m => m.UserName)
                     .Select(g =>
                     {
@@ -68,7 +68,7 @@ namespace NetChat.FileMessaging.Repository.UserStatuses
         {
             await Task.Run(() => 
                 File.AppendAllText(_filename,
-                    new TextMessageData(userStatus.UserId,
+                    new MessageDataEntity(userStatus.UserId,
                         userStatus.IsOnline ? "Logon" : "Logout",
                         userStatus.UpdateDateTime)
                     .ToString() + '\n',

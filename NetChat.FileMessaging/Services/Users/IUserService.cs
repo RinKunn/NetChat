@@ -6,8 +6,8 @@ namespace NetChat.FileMessaging.Services.Users
 {
     public interface IUserService
     {
-        Task<IList<User>> GetUsers();
-        Task<User> GetUserById(string userId);
+        Task<IList<UserData>> GetUsers();
+        Task<UserData> GetUserById(string userId);
         bool IsMe(string userId);
         Task<int> OnlineUsersCount();
         Task Logon(string userId);

@@ -69,7 +69,7 @@ namespace NetChat.Desktop.Services.Messaging.Users
         }
 
         
-        private ParticipantObservable ToObservable(User user)
+        private ParticipantObservable ToObservable(UserData user)
         {
             return new ParticipantObservable(user.Id, user.IsOnline, user.LastChanged);
         }

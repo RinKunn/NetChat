@@ -43,7 +43,7 @@ namespace NetChat.FileMessaging.Tests.Repostitory.UserStatuses
 
             var lines = File.ReadAllLines(_filename);
 
-            var m = TextMessageData.Parse(lines[0]);
+            var m = MessageDataEntity.Parse(lines[0]);
             Assert.AreEqual(1, lines.Length);
             Assert.AreEqual("Logon", m.Text);
             Assert.AreEqual("USER1", m.UserName);
@@ -61,7 +61,7 @@ namespace NetChat.FileMessaging.Tests.Repostitory.UserStatuses
 
             var lines = File.ReadAllLines(_filename);
 
-            var m = TextMessageData.Parse(lines[0]);
+            var m = MessageDataEntity.Parse(lines[0]);
             Assert.AreEqual(1, lines.Length);
             Assert.AreEqual("Logout", m.Text);
             Assert.AreEqual("USER1", m.UserName);

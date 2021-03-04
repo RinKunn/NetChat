@@ -73,7 +73,7 @@ namespace NetChat.FileMessaging.Services
         {
             if (e.Name != _filename) return;
             string newLine = FileHelper.ReadLastLine(_path, _encoding);
-            var message = TextMessageData.Parse(newLine);
+            var message = MessageDataEntity.Parse(newLine);
             switch (message.Text)
             {
                 case "Logon":
@@ -83,13 +83,12 @@ namespace NetChat.FileMessaging.Services
                     OnUserStatusChanged?.Invoke(new OnUserStatusChangedArgs(message.UserName, false, message.DateTime));
                     break;
                 default:
-                    OnMessageReceived?.Invoke(new OnMessageReceivedArgs(new TextMessage()
-                    {
-                        Id = message.Id,
-                        DateTime = message.DateTime,
-                        SenderId = message.UserName,
-                        Text = message.Text
-                    }));
+                    OnMessageReceived?.Invoke(new OnMessageReceivedArgs(new MessageData(
+                        message.Id, 
+                        message.DateTime,
+                        message.UserName,
+                        message.Text,
+                        message.ReplyToMessageId)));
                     break;
             }
         }

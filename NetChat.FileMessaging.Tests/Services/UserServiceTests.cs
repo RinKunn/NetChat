@@ -38,10 +38,10 @@ namespace NetChat.FileMessaging.Tests.Services
             File.AppendAllLines(_fname,
                 new string[]
                 {
-                    (new TextMessageData("user2", "Logout", DateTime.Now.AddSeconds(-4))).ToString(),
-                    (new TextMessageData("user1", "Bi", DateTime.Now.AddSeconds(-3))).ToString(),
-                    (new TextMessageData("user2", "Bi", DateTime.Now.AddSeconds(-2))).ToString(),
-                    (new TextMessageData("user1", "Logout", DateTime.Now.AddSeconds(-1))).ToString(),
+                    (new MessageDataEntity("user2", "Logout", DateTime.Now.AddSeconds(-4))).ToString(),
+                    (new MessageDataEntity("user1", "Bi", DateTime.Now.AddSeconds(-3))).ToString(),
+                    (new MessageDataEntity("user2", "Bi", DateTime.Now.AddSeconds(-2))).ToString(),
+                    (new MessageDataEntity("user1", "Logout", DateTime.Now.AddSeconds(-1))).ToString(),
                 });
 
             var res = await _userService.GetUsers();

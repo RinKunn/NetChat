@@ -18,12 +18,11 @@ namespace NetChat.Desktop.Services.Messaging.Messages
 
         public async Task SendMessage(SendingMessage message)
         {
-            if (message is SendingTextMessage mt)
+            if (message.Content is InputMessageTextContent mt)
             {
-
                 try
                 {
-                    await _messageService.SendMessage(new InputTextMessage(mt.UserId, mt.Text));
+                    await _messageService.SendMessage(new InputMessageData(message.SenderId, mt.Text, message.ReplyToMessageId));
                 }
                 catch(Exception e)
                 {

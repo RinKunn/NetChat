@@ -24,6 +24,11 @@ namespace NetChat.Desktop.Services.Messaging.Messages
         {
             _logger.Debug("Loading messages...");
             var messages = await _messageService.LoadMessagesAsync(limit);
+            if(messages == null)
+            {
+                _logger.Warn("Loaded message list is empty");
+                return null;
+            }
             _logger.Debug("Loaded {0} messages", messages.Count);
             return
                 await Task.WhenAll(

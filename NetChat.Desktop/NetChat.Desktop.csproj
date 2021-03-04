@@ -117,11 +117,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\Messaging\Messages\SendingMessage.cs" />
+    <Compile Include="Services\Messaging\Messages\InputMessageContent.cs" />
     <Compile Include="UserContext.cs" />
     <Compile Include="Services\Messaging\IReceiverHub.cs" />
     <Compile Include="Services\Messaging\Messages\MessageLoader.cs" />
-    <Compile Include="Services\Messaging\Messages\SendingMessage.cs" />
-    <Compile Include="Services\Messaging\Messages\SendingTextMessage.cs" />
     <Compile Include="Services\Messaging\Messages\MessageSender.cs" />
     <Compile Include="Services\Messaging\ReceiverHub.cs" />
     <Compile Include="Services\Messaging\Users\UserLoader.cs" />

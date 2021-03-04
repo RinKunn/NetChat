@@ -17,12 +17,12 @@ namespace NetChat.FileMessaging.Services.Users
             _userStatusRepository = userStatusRepository;
         }
 
-        public async Task<User> GetUserById(string userId)
+        public async Task<UserData> GetUserById(string userId)
         {
             var res = await _userStatusRepository.GetUsersStatuses();
             var userStatus = res.FirstOrDefault(u => u.UserId == userId);
             if (userStatus == null) return null;
-            return new User()
+            return new UserData()
             {
                 Id = userStatus.UserId,
                 IsOnline = userStatus.IsOnline,
@@ -35,12 +35,12 @@ namespace NetChat.FileMessaging.Services.Users
             return Environment.UserName.ToUpper() == userId;
         }
 
-        public async Task<IList<User>> GetUsers()
+        public async Task<IList<UserData>> GetUsers()
         {
             var res = await _userStatusRepository.GetUsersStatuses();
             if (res == null || res.Count == 0) return null;
             return res
-                .Select(us => new User()
+                .Select(us => new UserData()
                 {
                     Id = us.UserId,
                     IsOnline = us.IsOnline,

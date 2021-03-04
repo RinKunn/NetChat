@@ -2,7 +2,7 @@
 
 namespace NetChat.FileMessaging.Models
 {
-    public class User
+    public class UserData
     {
         public string Id { get; set; }
         public bool IsOnline { get; set; }

@@ -10,9 +10,9 @@ namespace NetChat.FileMessaging.Services
 
     public class OnMessageReceivedArgs
     {
-        public TextMessage Message { get; }
+        public MessageData Message { get; }
 
-        public OnMessageReceivedArgs(TextMessage message)
+        public OnMessageReceivedArgs(MessageData message)
         {
             Message = message ?? throw new ArgumentNullException(nameof(message));
         }

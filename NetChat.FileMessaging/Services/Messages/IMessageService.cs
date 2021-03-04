@@ -7,7 +7,8 @@ namespace NetChat.FileMessaging.Services.Messages
 {
     public interface IMessageService
     {
-        Task<IList<TextMessage>> LoadMessagesAsync(int limit = 0, CancellationToken token = default);
-        Task SendMessage(InputTextMessage message);
+        Task<IList<MessageData>> LoadMessagesAsync(int limit = 0, CancellationToken token = default);
+        Task<MessageData> SendMessage(InputMessageData inputMessageData);
+        //TODO: implement data virtualisation: nextpage, prevpage
     }
 }

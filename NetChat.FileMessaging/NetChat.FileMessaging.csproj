@@ -106,13 +106,14 @@
   <ItemGroup>
     <Compile Include="AutofacDependencyInjection.cs" />
     <Compile Include="Common\FileHelper.cs" />
-    <Compile Include="Models\InputTextMessage.cs" />
-    <Compile Include="Models\TextMessage.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\InputMessageData.cs" />
+    <Compile Include="Models\MessageData.cs" />
+    <Compile Include="Models\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\Messages\ITextMessageDataRepository.cs" />
-    <Compile Include="Repository\Messages\TextMessageData.cs" />
-    <Compile Include="Repository\Messages\TextMessageDataFileRepository.cs" />
+    <Compile Include="Repository\Messages\IMessageDataEntityRepository.cs" />
+    <Compile Include="Repository\Messages\MessageDataEntity.cs" />
+    <Compile Include="Repository\Messages\MessageDataParseException.cs" />
+    <Compile Include="Repository\Messages\MessageDataEntityFileRepository.cs" />
     <Compile Include="Repository\RepositoriesConfig.cs" />
     <Compile Include="Repository\UserStatuses\IUserStatusRepository.cs" />
     <Compile Include="Repository\UserStatuses\UserStatus.cs" />

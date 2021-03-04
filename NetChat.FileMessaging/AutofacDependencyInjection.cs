@@ -15,7 +15,7 @@ namespace NetChat.FileMessaging.DependencyInjection
         {
             var config = new RepositoriesConfig(sourcePath, encoding);
             container.RegisterInstance(config);
-            container.RegisterType<TextMessageDataFileRepository>().As<ITextMessageDataRepository>();
+            container.RegisterType<MessageDataEntityFileRepository>().As<IMessageDataEntityRepository>();
             container.RegisterType<UserStatusFileRepository>().As<IUserStatusRepository>();
 
             

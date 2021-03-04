@@ -51,7 +51,7 @@ namespace NetChat.FileMessaging.Tests.Services
             _hub.OnMessageReceived += _hub_OnMessageReceived;
             _hub.Connect();
 
-            File.AppendAllText(_filename, (new TextMessageData(user, text)).ToString() + "\n");
+            File.AppendAllText(_filename, (new MessageDataEntity(user, text)).ToString() + "\n");
             statsUpdatedEvent.WaitOne(500, false);
 
             Assert.NotNull(raisedEventArgs);
@@ -75,7 +75,7 @@ namespace NetChat.FileMessaging.Tests.Services
             _hub.OnMessageReceived += _hub_OnMessageReceived;
             _hub.Connect();
 
-            File.AppendAllText(_filename, (new TextMessageData(user, text)).ToString() + "\n");
+            File.AppendAllText(_filename, (new MessageDataEntity(user, text)).ToString() + "\n");
             statsUpdatedEvent.WaitOne(500, false);
 
             Assert.NotNull(raisedEventArgs);
@@ -100,7 +100,7 @@ namespace NetChat.FileMessaging.Tests.Services
             _hub.Connect();
             _hub.Disconnect();
 
-            File.AppendAllText(_filename, (new TextMessageData(user, text)).ToString() + "\n");
+            File.AppendAllText(_filename, (new MessageDataEntity(user, text)).ToString() + "\n");
             statsUpdatedEvent.WaitOne(500, false);
 
             Assert.Null(raisedEventArgs);

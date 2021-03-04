@@ -42,6 +42,7 @@ namespace NetChat.Desktop
             DispatcherHelper.Initialize();
             _logger.Info("DispatcherHelper initialized");
             _logger.Info("App inited");
+            _logger.Info(new string('-', 20));
         }
 
         protected override void OnExit(ExitEventArgs e)

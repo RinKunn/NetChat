@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -128,6 +129,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
 
         private void GoToMessageByIndex(int index)
         {
+            _logger.Debug("Go to message index: {0} from {1}", index, Messages.Count - 1);
             if (index < 0 || index >= Messages.Count)
                 throw new ArgumentOutOfRangeException($"Index '{index}' out of range [0; {Messages.Count}]");
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -150,7 +152,7 @@ namespace NetChat.Desktop.ViewModel.Messenger
         {
             _logger.Debug("Loading all messages");
             var loadedMessages = await _messageLoader.LoadMessagesAsync();
-            Messages = new ObservableCollection<MessageObservable>(loadedMessages);
+            Messages = new ObservableCollection<MessageObservable>(loadedMessages ?? new List<MessageObservable>());
         }
 
         private ICommand _readAllMessagesCommand;
