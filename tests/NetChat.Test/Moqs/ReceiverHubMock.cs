@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NetChat.Desktop.Services.Messaging;
+using NetChat.Services.Messaging;
 using NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages;
 
 namespace NetChat.Test.Moqs

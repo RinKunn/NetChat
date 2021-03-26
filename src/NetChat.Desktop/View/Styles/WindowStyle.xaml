@@ -14,7 +14,7 @@
                               UseAeroCaptionButtons="False" />
             </Setter.Value>
         </Setter>
-        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderBrush" Value="{DynamicResource GrayDarkDarkerBrush}" />
         <Setter Property="Background" Value="Gray" />
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="Template">

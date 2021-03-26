@@ -8,8 +8,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
-using NetChat.Desktop.Commands;
 using NetChat.Desktop.InnerMessages;
+using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Desktop.ViewModel.Messenger.ChatArea.Factories;
 using NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages;
 using NetChat.Services.Messaging.Chats;
@@ -74,12 +74,13 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                 _messages = new ObservableCollection<MessageObservable>
                 {
                     new TextMessageObservable("1", DateTime.Now.AddMinutes(-3), 
-                    "User 1", false, "Hello, cols"),
+                    "User 1", false, "Hello, cols", new ReplyObservable("12", "User2", "Hello reply message")),
                     new TextMessageObservable("2", DateTime.Now.AddMinutes(-2), 
                     "User Me", true, "Hello, User 1"),
                     new TextMessageObservable("3", DateTime.Now.AddMinutes(-1), 
                     "User 1", false, "Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd")
                 };
+                UnreadMessagesCount = 3;
             }
             else throw new NotImplementedException("ChatArea without services is not implemented");
         }

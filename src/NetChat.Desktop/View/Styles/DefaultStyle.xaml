@@ -11,13 +11,44 @@
     <SolidColorBrush x:Key="HeaderForegroundColor" Color="Black"/>
     <Color A="255" R="128" G="128" B="128" x:Key="ChatBackground"/>
     
-    <SolidColorBrush x:Key="ChatSenderBackground" Color="#FF5D5C5C"/>
+    <SolidColorBrush x:Key="ChatSenderBackground" Color="#FF5C5C5C"/>
     <SolidColorBrush x:Key="ChatSenderTextBoxBackground" Color="#FF666666"/>
     <SolidColorBrush x:Key="ChatSenderTypingTextBoxBackground" Color="#FFA8A8A8"/>
 
     <!--<SolidColorBrush x:Key="NewMessageCountBackgroundColor" Color="#04819E"/>-->
     <SolidColorBrush x:Key="NewMessageCountBackgroundColor" Color="#1ba1e2"/>
     <Color R="27" G="161" B="226" x:Key="BrightColor"/>
+    
     <SolidColorBrush x:Key="NotificationMessageForeground" Color="#FFBFBFBF"/>
     <SolidColorBrush x:Key="NotificationBackground" Color="#FF3C3C3C"/>
+
+
+    <!--<SolidColorBrush x:Key="MainColor" Color="#FFFFD300"/>
+    <SolidColorBrush x:Key="ComplementColor" Color="#FF00C3FF"/>
+    <SolidColorBrush x:Key="ComplementColorDark" Color="#FF0088B3"/>
+    <SolidColorBrush x:Key="GrayColorUltraLight" Color="#FFE8E8E8"/>
+    <SolidColorBrush x:Key="GrayColorLight" Color="#FFA8A8A8"/>
+    <SolidColorBrush x:Key="GrayColor" Color="#FF5C5C5C"/>
+    <SolidColorBrush x:Key="GrayColorDark" Color="#FF696969"/>
+    <SolidColorBrush x:Key="GrayColorUltraDark" Color="#FF303030"/>-->
+
+
+    <Color x:Key="MajorColor" R="255" G="211" B="0"/>
+    <Color x:Key="MinorColor" R="0" G="136" B="179"/>
+    <Color x:Key="BlackColor" R="0" G="0" B="0"/>
+    <Color x:Key="WhiteColor" R="255" G="255" B="255"/>
+    <Color x:Key="GrayLightColor" R="241" G="242" B="238"/>
+    <Color x:Key="GrayColor" R="157" G="163" B="162"/>
+    <Color x:Key="GrayDarkColor" R="103" G="110" B="111"/>
+
+    <SolidColorBrush x:Key="MajorBrush" Color="#FFFFD300"/>
+    <SolidColorBrush x:Key="MinorBrush" Color="#FF0088B3"/>
+    <SolidColorBrush x:Key="BlackBrush" Color="#FF000000"/>
+    <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="GrayLightBrush" Color="#FFF1F2EE"/>
+    <SolidColorBrush x:Key="GrayBrush" Color="#FF9DA3A2"/>
+    <SolidColorBrush x:Key="GrayDarkBrush" Color="#FF404040"/>
+    <SolidColorBrush x:Key="GrayDarkDarkerBrush" Color="#FF303030"/>
+    <SolidColorBrush x:Key="GrayDarkLigherBrush" Color="#FF757575"/>
+
 </ResourceDictionary>

@@ -8,7 +8,7 @@
              xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatSender"
              xmlns:messagesVM="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages"
              xmlns:conv="clr-namespace:NetChat.Desktop.View.Converters"
-             xmlns:controls="clr-namespace:NetChat.Desktop.Controls"
+             xmlns:controls="clr-namespace:NetChat.Desktop.View.Controls"
              mc:Ignorable="d" 
              Height="Auto"
              d:DataContext="{d:DesignInstance Type=vm:ChatSenderViewModel, IsDesignTimeCreatable=True}"
@@ -20,69 +20,12 @@
 
         <conv:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
-        <Style x:Key="SendButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkBrush}"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid Background="#00000000">
-                            <materialDesign:PackIcon Name="SendIcon" Kind="Send" SnapsToDevicePixels="True"
-                                                     Foreground="{TemplateBinding Foreground}"
-                                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                     Margin="{TemplateBinding Padding}" Width="Auto" Height="Auto"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" TargetName="SendIcon" Value="{DynamicResource PrimaryHueMidBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter Property="Foreground" TargetName="SendIcon" Value="{DynamicResource PrimaryHueMidBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.23"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="TypingTextBox" TargetType="{x:Type TextBox}">
-            <Setter Property="Background" Value="{StaticResource ChatSenderTextBoxBackground}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="CaretBrush" Value="#7F000000"/>
-            <Style.Triggers>
-                <Trigger Property="IsKeyboardFocused" Value="True">
-                    <Setter Property="Background" 
-                            Value="{StaticResource ChatSenderTypingTextBoxBackground}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="WatermarkTextBlock" TargetType="{x:Type TextBlock}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="5 0 0 0"/>
-        </Style>
 
         <DataTemplate DataType="{x:Type messagesVM:ReplyObservable}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -90,57 +33,71 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Rectangle Width="2" Height="27"
-                           Fill="Yellow"           
+                <Rectangle Width="2" Height="25"
+                           Fill="{StaticResource MajorBrush}"           
                            Margin="0,0,5,0" Grid.RowSpan="2"/>
-                
                 
                 <TextBlock
                     Grid.Column="1"
                     Text="{Binding AuthorName}"
-                    FontWeight="Bold"/>
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource MajorBrush}"/>
                 
                 <TextBlock 
                     Grid.Column="1"
                     Text="{Binding Text}"
                     TextWrapping="NoWrap"
                     TextTrimming="CharacterEllipsis"
-                    Grid.Row="1"/>
-                
-                <Button Style="{StaticResource CloseButtonStyle}"
-                        Grid.Column="2" Grid.RowSpan="2" Panel.ZIndex="20"
-                        FontSize="14"
-                        Margin="5,0">
-                </Button>
+                    Grid.Row="1"
+                    Foreground="{DynamicResource GrayLightBrush}"/>
             </Grid>
+            
         </DataTemplate>
     </UserControl.Resources>
     
     <Grid>
         <Border Grid.Row="1" 
-                Background="{StaticResource ChatSenderBackground}"
-                SnapsToDevicePixels="True"
-                BorderBrush="{DynamicResource MaterialDesignDivider}" 
-                Grid.ColumnSpan="2">
+                Background="{StaticResource GrayDarkBrush}"
+                SnapsToDevicePixels="True">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
 
-                <ContentControl 
-                    Margin="10,0,0,0"
-                    Content="{Binding Reply}"
-                    Grid.Row="0" Grid.ColumnSpan="2"/>
+                <Grid
+                    Margin="15,0,10,0"
+                    Grid.ColumnSpan="2"
+                    Visibility="{Binding HasReply, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ContentControl 
+                        Content="{Binding Reply}"
+                        Cursor="Hand">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDownEvent">
+                                <i:InvokeCommandAction Command="{Binding GoToMessageCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ContentControl>
+                    
+                    <Button 
+                        Style="{StaticResource CloseButtonStyle}"
+                        Grid.Column="1"
+                        Command="{Binding CloseRelayMessageCommand}">
+                    </Button>
+                </Grid>
                 
                 <!--Message-->
                 <Border Margin="10,5,0,5"
                         BorderThickness="1"
-                        BorderBrush="{DynamicResource MaterialDesignDivider}"
                         Grid.Row="1" Grid.Column="0">
 
                     <StackPanel Orientation="Vertical">
@@ -148,17 +105,10 @@
                             x:Name="MessageTxtBox"
                             MinHeight="30" Height="Auto"
                             Text="{Binding TextMessage, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource TypingTextBox}">
-                            
+                            Style="{StaticResource SendingTextBlockStyle}">
                             <TextBox.InputBindings>
                                 <KeyBinding Key="Enter" Command="{Binding SendMessageCommand}"/>
                             </TextBox.InputBindings>
-                            
-                            <controls:WatermarkService.Watermark>
-                                <TextBlock Text="Write a message..."
-                                       Style="{StaticResource WatermarkTextBlock}"/>
-                            </controls:WatermarkService.Watermark>
-                            
                         </TextBox>
                         
                         
@@ -171,7 +121,7 @@
                 </Border>
 
                 <!--Send-->
-                <Button x:Name="SendButton" Style="{DynamicResource SendButtonStyle}"
+                <Button Style="{DynamicResource SendButtonStyle}"
                         Command="{Binding SendMessageCommand}"
                         Margin="10"
                         Focusable="False"

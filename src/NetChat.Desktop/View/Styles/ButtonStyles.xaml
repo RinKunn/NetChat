@@ -1,57 +1,173 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:NetChat.Desktop.View.Styles">
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    <Style x:Key="ButtonBaseStyle" TargetType="{x:Type Button}">
+    <Style x:Key="ButtonBaseStyle" 
+           TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Padding" Value="1"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Width" Value="Auto"/>
+    </Style>
+
+    <Style x:Key="ButtonDefaultStyle" 
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource ButtonBaseStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Name="Chrome"
-                            Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            SnapsToDevicePixels="true">
-                        <ContentPresenter Margin="{TemplateBinding Padding}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        RecognizesAccessKey="True"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    <Border
+                        Name="Chrome"
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        SnapsToDevicePixels="true">
+
+                        <ContentPresenter 
+                            Margin="{TemplateBinding Padding}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <Style x:Key="ButtonStyle"
-           TargetType="{x:Type Button}"
-           BasedOn="{StaticResource ButtonBaseStyle}">
-        <Setter Property="Foreground" Value="#d1d1d1"/>
+        <Setter Property="Foreground" Value="{DynamicResource GrayBrush}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#3e3e42" />
-                <Setter Property="Foreground" Value="#d1d1d1"/>
+                <Setter Property="Foreground" Value="{DynamicResource GrayLightBrush}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource NewMessageCountBackgroundColor}" />
-                <Setter Property="Foreground" Value="#d1d1d1" />
+                <Setter Property="Background" Value="{DynamicResource MinorBrush}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="#515151" />
+                <Setter Property="Foreground" Value="{DynamicResource GrayDarkBrush}" />
+                <Setter Property="Cursor" Value="No" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="CloseButtonStyle"
            TargetType="{x:Type Button}"
-           BasedOn="{StaticResource ButtonStyle}">
+           BasedOn="{StaticResource ButtonDefaultStyle}">
+        <Setter Property="Width" Value="24"/>
+        <Setter Property="Height" Value="24"/>
         <Setter Property="Content">
             <Setter.Value>
-                <TextBlock Text="X" FontFamily="Segoe Script"/>
+                <TextBlock 
+                    Text="X" 
+                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}"
+                    FontFamily="Segoe Script" 
+                    FontSize="14"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SendButtonStyle"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource ButtonBaseStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource MajorBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <materialDesign:PackIcon
+                        Kind="Send" 
+                        SnapsToDevicePixels="True"
+                        Foreground="{TemplateBinding Foreground}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Margin="{TemplateBinding Padding}" 
+                        Width="Auto" 
+                        Height="Auto"/>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.23"/>
+                            <Setter Property="Cursor" Value="No" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="SettingsButtonStyle" TargetType="Button"
+               BasedOn="{StaticResource ButtonDefaultStyle}">
+        <Setter Property="FontSize" Value="4"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel 
+                        Orientation="Vertical"
+                        HorizontalAlignment="Center">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Ellipse}">
+                                <Setter Property="DataContext" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}"/>
+                                <Setter Property="Fill" Value="{Binding Foreground}"/>
+                                <Setter Property="Height" Value="{Binding FontSize}"/>
+                                <Setter Property="Width" Value="{Binding FontSize}"/>
+                                <Setter Property="Margin" Value="0,2"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Ellipse/>
+                        <Ellipse/>
+                        <Ellipse/>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NewMessagesCountButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource MinorBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource MajorBrush}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        CornerRadius="5"
+                        Background="{TemplateBinding Background}">
+                        <!--<Border.BitmapEffect>
+                            <DropShadowBitmapEffect 
+                                Color="{DynamicResource MinorColor}"
+                                 Softness="1"/>
+                        </Border.BitmapEffect>-->
+                        <Grid>
+                            <ContentPresenter 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"/>
+                            <TextBlock 
+                                Text="»‎"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right" FontSize="25"
+                                Foreground="{DynamicResource WhiteBrush}">
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="90"/>
+                                </TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock 
+                                Text="»‎"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left" FontSize="25"
+                                Foreground="{DynamicResource WhiteBrush}">
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="90" />
+                                </TextBlock.LayoutTransform>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

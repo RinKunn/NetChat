@@ -4,7 +4,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace NetChat.Desktop.Controls
+namespace NetChat.Desktop.View.Controls
 {
     /// <summary>
     /// Adorner for the watermark

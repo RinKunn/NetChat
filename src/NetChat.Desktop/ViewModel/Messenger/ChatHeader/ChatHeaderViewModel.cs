@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Threading;
-using NetChat.Desktop.Commands;
+using NetChat.Desktop.ViewModel.Commands;
 using NetChat.Services.Messaging.Users;
 using NLog;
 

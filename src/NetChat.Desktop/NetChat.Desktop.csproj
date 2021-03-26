@@ -118,20 +118,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Startup.cs" />
-    <Compile Include="Commands\AsyncCommand.cs" />
-    <Compile Include="Commands\AsyncCommandBase.cs" />
-    <Compile Include="Commands\IAsyncCommand.cs" />
-    <Compile Include="Commands\NotifyTaskCompletion.cs" />
-    <Compile Include="InnerMessages\ExceptionIM.cs" />
-    <Compile Include="InnerMessages\GoToMessageIM.cs" />
-    <Compile Include="InnerMessages\NotificationEnablingIM.cs" />
+    <Compile Include="ViewModel\Commands\AsyncCommand.cs" />
+    <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
+    <Compile Include="ViewModel\Commands\IAsyncCommand.cs" />
+    <Compile Include="ViewModel\Commands\NotifyTaskCompletion.cs" />
+    <Compile Include="ViewModel\InnerMessages\ExceptionIM.cs" />
+    <Compile Include="ViewModel\InnerMessages\GoToMessageIM.cs" />
+    <Compile Include="ViewModel\InnerMessages\NotificationEnablingIM.cs" />
     <Compile Include="ViewModel\Factories\IViewModelFactory.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Factories\IMessageFactory.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Factories\MessageFactory.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Messages\UnsupportedMessageObservable.cs" />
     <Compile Include="ViewModel\Messenger\MessengerViewModel.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Messages\ReplyObservable.cs" />
-    <Compile Include="InnerMessages\ReplyToMessageIM.cs" />
+    <Compile Include="ViewModel\InnerMessages\ReplyToMessageIM.cs" />
     <Compile Include="ViewModel\Notifications\NotificationItems\MessageNotification.cs" />
     <Compile Include="ViewModel\Notifications\NotificationItems\NotificationBase.cs" />
     <Compile Include="ViewModel\Notifications\NotificationConfiguration.cs" />
@@ -161,7 +161,7 @@
     <Compile Include="View\Styles\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InnerMessages\IInnerMessage.cs" />
+    <Compile Include="ViewModel\InnerMessages\IInnerMessage.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\ChatAreaViewModel.cs" />
     <Compile Include="ViewModel\Messenger\ChatSender\ChatSenderViewModel.cs" />
@@ -197,10 +197,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Messenger\Templates\NewMessagesButtonTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Notificator\ParticipantNotificationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -226,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Styles\ScrollBarStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Styles\TextStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

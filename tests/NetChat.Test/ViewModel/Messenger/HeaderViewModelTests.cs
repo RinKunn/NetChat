@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Threading;
 using Moq;
 using NetChat.Desktop.Commands;
-using NetChat.Desktop.Services.Messaging.Users;
+using NetChat.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel.Messenger;
 using NetChat.Test.Moqs;
 using NUnit.Framework;

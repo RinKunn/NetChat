@@ -14,7 +14,7 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages
             AuthorName = authorName;
             IsOutgoing = isOutgoing;
             Reply = reply;
-            HasReply = reply == null;
+            HasReply = reply != null;
         }
 
         public string MessageId { get; }

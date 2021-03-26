@@ -23,21 +23,21 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Templates/HeaderGroupTemplate.xaml"/>
                 <ResourceDictionary Source="./Templates/MessageTemplates.xaml"/>
-                <ResourceDictionary Source="./Templates/NewMessagesButtonTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <conv:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
 
             <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
                 <Grid>
                     <TextBox 
-                    Style="{StaticResource HidingGroupHeaderTextBox}"
-                    x:Name="PART_FrozenGroupHeader"
-                    VerticalAlignment="Top"
-                    IsHitTestVisible="False"
-                    Panel.ZIndex="1"
-                    Margin="-17,0,0,0"/>
+                        Style="{StaticResource HidingGroupHeaderTextBox}"
+                        x:Name="PART_FrozenGroupHeader"
+                        VerticalAlignment="Top"
+                        IsHitTestVisible="False"
+                        Panel.ZIndex="1"
+                        Margin="-17,0,0,0"/>
                     <ScrollViewer 
                         HorizontalScrollBarVisibility="Disabled" 
                         VerticalScrollBarVisibility="Visible">
@@ -56,16 +56,14 @@
     </UserControl.Resources>
 
 
-    <Grid>
+    <Grid Background="{DynamicResource GrayDarkLigherBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.Background>
-            <SolidColorBrush Color="{StaticResource ChatBackground}"/>
-        </Grid.Background>
 
-        <ItemsControl x:Name="MessagesItemsCtrl" Margin="0,5,0,0" 
+        <ItemsControl x:Name="MessagesItemsCtrl" 
+                      Margin="0,5,0,0" 
                       ItemsSource="{Binding Source={StaticResource ResourceKey=GrouppedMessagesSource}}" 
                       Template="{DynamicResource ChatAreaTemplate}">
             <i:Interaction.Behaviors>
@@ -80,13 +78,37 @@
 
         <Button 
             Grid.Row="1"
-            Style="{StaticResource NewMessagesCountBarStyle}"
-            Command="{Binding GoToLastMessageCommand}"/>
+            Style="{StaticResource NewMessagesCountButtonStyle}"
+            Command="{Binding GoToLastMessageCommand}"
+            Visibility="{Binding UnreadMessagesCount, Converter={StaticResource IntVisibilityConverter}}"
+            Margin="0,0,0,2">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock 
+                        Text="Новых сообщений:"
+                        Foreground="{DynamicResource WhiteBrush}"
+                        FontStyle="Italic"/>
+                    <TextBlock Text="{Binding UnreadMessagesCount}" Margin="5,0"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
 
-        <Grid Visibility="{Binding LoadMessagesCommand, Converter={StaticResource NullToVisibilityConverter}}"
-              VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Visibility="{Binding LoadMessagesCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" Text="Loading..." />
-            <TextBlock Text="{Binding LoadMessagesCommand.Execution.ErrorMessage}" Foreground="Red" />
+        <Grid 
+            Visibility="{Binding LoadMessagesCommand, Converter={StaticResource NullToVisibilityConverter}}"
+            VerticalAlignment="Center" HorizontalAlignment="Center">
+            
+            <!--Loading message-->
+
+            <TextBlock 
+                Visibility="{Binding LoadMessagesCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                Text="Loading..."
+                FontSize="20"
+                Foreground="{DynamicResource WhiteBrush}"/>
+            
+            <!--Error message-->
+            <TextBlock 
+                Text="{Binding LoadMessagesCommand.Execution.ErrorMessage}" 
+                Foreground="Red" />
         </Grid>
 
     </Grid>

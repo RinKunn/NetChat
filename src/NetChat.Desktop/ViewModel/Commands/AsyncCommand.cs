@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace NetChat.Desktop.Commands
+namespace NetChat.Desktop.ViewModel.Commands
 {
     public class AsyncCommand : AsyncCommandBase, INotifyPropertyChanged
     {

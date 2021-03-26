@@ -8,7 +8,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              d:DataContext="{d:DesignInstance Type=vm:ChatHeaderViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
-             d:DesignHeight="80" d:DesignWidth="400">
+             d:DesignHeight="50" d:DesignWidth="400">
 
     <i:Interaction.Triggers>
         <i:EventTrigger>
@@ -25,55 +25,14 @@
         <Style x:Key="HeaderTextBlockStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="17"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="{StaticResource HeaderForegroundColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource MajorBrush}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Height" Value="Auto"/>
         </Style>
         <Style x:Key="ParticipantCountStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="{StaticResource HeaderForegroundColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Opacity" Value="0.6"/>
-        </Style>
-
-        <Style x:Key="SettingsButtonStyle" TargetType="Button"
-               BasedOn="{StaticResource ButtonBaseStyle}">
-            <Setter Property="Height" Value="Auto"/>
-            <Setter Property="Width" Value="Auto"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="FontSize" Value="4"/>
-            <Setter Property="ContentTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical"
-                                    HorizontalAlignment="Center">
-                            <StackPanel.Resources>
-                                <Style TargetType="{x:Type Ellipse}">
-                                    <Setter Property="DataContext" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}"/>
-                                    <Setter Property="Fill" Value="{Binding Foreground}"/>
-                                    <Setter Property="Height" Value="{Binding FontSize}"/>
-                                    <Setter Property="Width" Value="{Binding FontSize}"/>
-                                    <Setter Property="Margin" Value="0,2"/>
-                                </Style>
-                            </StackPanel.Resources>
-                            <Ellipse/>
-                            <Ellipse/>
-                            <Ellipse/>
-                        </StackPanel>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="#FF767676"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="FontSize" Value="5"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="false">
-                    <Setter Property="Foreground" Value="#FF767676" />
-                </Trigger>
-            </Style.Triggers>
         </Style>
     </UserControl.Resources>
     
@@ -88,7 +47,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="{DynamicResource HeaderBackground}">
+        <Border Background="{DynamicResource GrayDarkBrush}">
             <Grid
                 Margin="5,0">
                 <Grid.RowDefinitions>
@@ -107,9 +66,13 @@
                 <StackPanel 
                     Orientation="Horizontal"
                     Grid.Row="1"
-                    Margin="0,5,0,10">
+                    Margin="0,5">
 
-                    <TextBlock Text="Онлайн:" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                    <TextBlock 
+                        Text="Онлайн:"
+                        Margin="0,0,5,0" 
+                        VerticalAlignment="Top"
+                        Foreground="{DynamicResource WhiteBrush}"/>
 
                     <!--Results-->
                     <TextBlock 
@@ -132,6 +95,7 @@
                     Grid.Column="2"
                     Grid.RowSpan="2"
                     Style="{StaticResource SettingsButtonStyle}"
+                    Width="30" Height="30"
                     />
             </Grid>
         </Border>
