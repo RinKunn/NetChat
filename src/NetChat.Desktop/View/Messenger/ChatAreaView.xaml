@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="NetChat.Desktop.View.Messenger.ChatAreaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:conv="clr-namespace:NetChat.Desktop.View.Converters"
+             xmlns:behaviors="clr-namespace:NetChat.Desktop.View.Behaviors"
+             xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=vm:ChatAreaViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="450" d:DesignWidth="350"
+             MinWidth="350">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <i:InvokeCommandAction Command="{Binding LoadMessagesCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Templates/HeaderGroupTemplate.xaml"/>
+                <ResourceDictionary Source="./Templates/MessageTemplates.xaml"/>
+                <ResourceDictionary Source="./Templates/NewMessagesButtonTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+
+            <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
+                <Grid>
+                    <TextBox 
+                    Style="{StaticResource HidingGroupHeaderTextBox}"
+                    x:Name="PART_FrozenGroupHeader"
+                    VerticalAlignment="Top"
+                    IsHitTestVisible="False"
+                    Panel.ZIndex="1"
+                    Margin="-17,0,0,0"/>
+                    <ScrollViewer 
+                        HorizontalScrollBarVisibility="Disabled" 
+                        VerticalScrollBarVisibility="Visible">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </Grid>
+            </ControlTemplate>
+
+            <CollectionViewSource x:Key="GrouppedMessagesSource" Source="{Binding Messages}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="DateTime.Date" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <SolidColorBrush Color="{StaticResource ChatBackground}"/>
+        </Grid.Background>
+
+        <ItemsControl x:Name="MessagesItemsCtrl" Margin="0,5,0,0" 
+                      ItemsSource="{Binding Source={StaticResource ResourceKey=GrouppedMessagesSource}}" 
+                      Template="{DynamicResource ChatAreaTemplate}">
+            <i:Interaction.Behaviors>
+                <behaviors:LastIndexBehavior LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=OneWayToSource}"/>
+                <behaviors:DisplayItemBehavior SelectedIndex="{Binding TargetMessageIndex, Mode=TwoWay}"/>
+                <behaviors:StickyHeaderBehavior/>
+            </i:Interaction.Behaviors>
+            <ItemsControl.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
+            </ItemsControl.GroupStyle>
+        </ItemsControl>
+
+        <Button 
+            Grid.Row="1"
+            Style="{StaticResource NewMessagesCountBarStyle}"
+            Command="{Binding GoToLastMessageCommand}"/>
+
+        <Grid Visibility="{Binding LoadMessagesCommand, Converter={StaticResource NullToVisibilityConverter}}"
+              VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Visibility="{Binding LoadMessagesCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" Text="Loading..." />
+            <TextBlock Text="{Binding LoadMessagesCommand.Execution.ErrorMessage}" Foreground="Red" />
+        </Grid>
+
+    </Grid>
+</UserControl>
