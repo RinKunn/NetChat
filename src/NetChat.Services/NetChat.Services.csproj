@@ -105,6 +105,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\Authenticator.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />
     <Compile Include="DependencyInjections.cs" />
     <Compile Include="Messaging\Chats\ChatData.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Messaging\Users\User.cs" />
     <Compile Include="Messaging\Users\UserData.cs" />
     <Compile Include="Messaging\Users\UserStatusData.cs" />
+    <Compile Include="Mock\Mocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

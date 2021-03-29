@@ -28,7 +28,7 @@
             <v:ParticipantNotificationView/>
         </DataTemplate>
 
-        <Style x:Key="HideButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+        <Style x:Key="HideButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefaultStyle}">
             <Setter Property="Background" Value="{StaticResource NotificationBackground}"/>
             <Setter Property="Foreground" Value="{StaticResource NotificationMessageForeground}"/>
             <Setter Property="Height" Value="35"/>

@@ -35,69 +35,56 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Border Background="{DynamicResource GrayDarkBrush}">
+        <Grid Margin="5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <Border Background="{DynamicResource GrayDarkBrush}">
-            <Grid
-                Margin="5,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <TextBlock 
+                Text="{Binding Title}"
+                Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                <TextBlock 
-                    Text="{Binding Title}" 
-                    Style="{StaticResource HeaderTextBlockStyle}"/>
-
-                <StackPanel 
+            <StackPanel 
                     Orientation="Horizontal"
                     Grid.Row="1"
                     Margin="0,5">
 
-                    <TextBlock 
+                <TextBlock 
                         Text="Онлайн:"
                         Margin="0,0,5,0" 
                         VerticalAlignment="Top"
                         Foreground="{DynamicResource WhiteBrush}"/>
 
-                    <!--Results-->
-                    <TextBlock 
+                <!--Results-->
+                <TextBlock 
                             Text="{Binding UsersOnlineCount}" 
                             Visibility="{Binding LoadUsersCountCommand.Execution.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Style="{StaticResource ParticipantCountStyle}"
                             />
 
-                    <!--Busy indicator-->
-                    <TextBlock 
+                <!--Busy indicator-->
+                <TextBlock 
                             Text="Loading..."
                             Visibility="{Binding LoadUsersCountCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" 
                              />
 
-                    <!--Error details-->
-                    <TextBlock Text="{Binding LoadUsersCountCommand.Execution.ErrorMessage}" Foreground="Red" />
-                </StackPanel>
+                <!--Error details-->
+                <TextBlock Text="{Binding LoadUsersCountCommand.Execution.ErrorMessage}" Foreground="Red" />
+            </StackPanel>
 
-                <Button 
+            <Button 
                     Grid.Column="2"
                     Grid.RowSpan="2"
                     Style="{StaticResource SettingsButtonStyle}"
                     Width="30" Height="30"
                     />
-            </Grid>
-        </Border>
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

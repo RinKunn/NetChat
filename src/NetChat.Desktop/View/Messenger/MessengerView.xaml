@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger"
         xmlns:views="clr-namespace:NetChat.Desktop.View.Messenger"
+        xmlns:views2="clr-namespace:NetChat.Desktop.View.Messenger.ChatArea"
         xmlns:behaviors="clr-namespace:NetChat.Desktop.View.Behaviors"
         xmlns:areamodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea"
         xmlns:headermodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatHeader"
@@ -25,15 +26,42 @@
     </i:Interaction.Behaviors>
     
     <Window.Resources>
+        
+        
         <DataTemplate DataType="{x:Type headermodel:ChatHeaderViewModel}">
             <views:HeaderView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type areamodel:ChatAreaViewModel}">
-            <views:ChatAreaView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type sendermodel:ChatSenderViewModel}">
             <views:ChatSenderView/>
         </DataTemplate>
+        
+        <DataTemplate x:Key="ChatArea" DataType="{x:Type areamodel:ChatAreaViewModel}">
+            <views:ChatAreaView/>
+        </DataTemplate>
+        <DataTemplate x:Key="ChatAreaLoading" DataType="{x:Type areamodel:ChatAreaViewModel}">
+            <views2:ChatAreaLoadingView/>
+        </DataTemplate>
+        <DataTemplate x:Key="ChatAreaError" DataType="{x:Type areamodel:ChatAreaViewModel}">
+            <views2:ChatAreaErrorView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type areamodel:ChatAreaViewModel}">
+            <ContentPresenter Content="{Binding}">
+                <ContentPresenter.Style>
+                    <Style TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="ContentTemplate" Value="{StaticResource ChatArea}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoaded}" Value="False">
+                                <Setter Property="ContentTemplate" Value="{StaticResource ChatAreaLoading}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HasLoadingError}" Value="True">
+                                <Setter Property="ContentTemplate" Value="{StaticResource ChatAreaError}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentPresenter.Style>
+            </ContentPresenter>
+        </DataTemplate>
+
     </Window.Resources>
     
     <Grid>

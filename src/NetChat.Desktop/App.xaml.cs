@@ -34,8 +34,9 @@ namespace NetChat.Desktop
             _container.StartServices();
             _logger.Info("Connected to Hub");
 
-            base.OnStartup(e);
             DispatcherHelper.Initialize();
+            base.OnStartup(e);
+            
             _logger.Info("DispatcherHelper initialized");
             _logger.Info("App inited");
             _logger.Info(new string('-', 20));

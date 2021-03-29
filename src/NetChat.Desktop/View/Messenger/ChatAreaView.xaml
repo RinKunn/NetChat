@@ -12,11 +12,11 @@
              d:DesignHeight="450" d:DesignWidth="350"
              MinWidth="350">
 
-    <i:Interaction.Triggers>
+    <!--<i:Interaction.Triggers>
         <i:EventTrigger>
             <i:InvokeCommandAction Command="{Binding LoadMessagesCommand}"/>
         </i:EventTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers>-->
     
     <UserControl.Resources>
         <ResourceDictionary>
@@ -93,11 +93,11 @@
             </Button.Content>
         </Button>
 
-        <Grid 
+        <!--<Grid 
             Visibility="{Binding LoadMessagesCommand, Converter={StaticResource NullToVisibilityConverter}}"
             VerticalAlignment="Center" HorizontalAlignment="Center">
             
-            <!--Loading message-->
+            --><!--Loading message--><!--
 
             <TextBlock 
                 Visibility="{Binding LoadMessagesCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" 
@@ -105,11 +105,11 @@
                 FontSize="20"
                 Foreground="{DynamicResource WhiteBrush}"/>
             
-            <!--Error message-->
+            --><!--Error message--><!--
             <TextBlock 
                 Text="{Binding LoadMessagesCommand.Execution.ErrorMessage}" 
                 Foreground="Red" />
-        </Grid>
+        </Grid>-->
 
     </Grid>
 </UserControl>

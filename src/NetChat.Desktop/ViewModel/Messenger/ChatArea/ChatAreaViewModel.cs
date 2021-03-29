@@ -33,6 +33,20 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
         private int _targetMessageIndex;
         private int _unreadMessagesCount;
 
+        private bool _isLoaded;
+        public bool IsLoaded
+        {
+            get => _isLoaded;
+            set => Set(ref _isLoaded, value);
+        }
+
+        private bool _hasLoadingError;
+        public bool HasLoadingError
+        {
+            get => _hasLoadingError;
+            set => Set(ref _hasLoadingError, value);
+        }
+
         public int LastVisibleMessageIndex
         {
             get => _lastVisibleMessageIndex;
@@ -76,18 +90,22 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                     new TextMessageObservable("1", DateTime.Now.AddMinutes(-3), 
                     "User 1", false, "Hello, cols", new ReplyObservable("12", "User2", "Hello reply message")),
                     new TextMessageObservable("2", DateTime.Now.AddMinutes(-2), 
-                    "User Me", true, "Hello, User 1"),
-                    new TextMessageObservable("3", DateTime.Now.AddMinutes(-1), 
+                    "User Me", true, "Hello, User 1", new ReplyObservable("12", "User2", "Hello reply message")),
+                    new TextMessageObservable("3", DateTime.Now.AddMinutes(-1),
                     "User 1", false, "Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd")
                 };
                 UnreadMessagesCount = 3;
+                HasLoadingError = true;
+                IsLoaded = false;
             }
             else throw new NotImplementedException("ChatArea without services is not implemented");
         }
 #endif
 
-        public ChatAreaViewModel(IChatLoader chatLoader, IMessageLoader messageLoader,
-            IMessageUpdater messageUpdater, IMessenger innerMessageBus, 
+        public ChatAreaViewModel(IChatLoader chatLoader, 
+            IMessageLoader messageLoader,
+            IMessageUpdater messageUpdater, 
+            IMessenger innerMessageBus, 
             IMessageFactory messageFactory)
         {
             _messages = new ObservableCollection<MessageObservable>();
@@ -99,6 +117,9 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
 
             _messageUpdater.Register(this, MessageReceivedHandler);
             _innerMessageBus.Register<GoToMessageIM>(this, (m) => GoToMessageById(m.MessageId));
+
+            HasLoadingError = false;
+            IsLoaded = false;
         }
 
         public override void Cleanup()
@@ -140,12 +161,15 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             GoToMessageByIndex(MessageIndexById(messageId));
         }
 
-        private IAsyncCommand _loadInitMessagesCommand;
-        public IAsyncCommand LoadMessagesCommand => _loadInitMessagesCommand ??
-            (_loadInitMessagesCommand = new AsyncCommand(LoadInitMessagesAsync));
+        private AsyncCommand _loadInitMessagesCommand;
+        public AsyncCommand LoadMessagesCommand => _loadInitMessagesCommand ??
+            (_loadInitMessagesCommand = new AsyncCommand(LoadInitMessagesAsync, (o) => !IsLoaded));
         private async Task LoadInitMessagesAsync()
         {
-            _logger.Debug("Loading chat data...");
+            _logger.Debug("Loading chat data: IsLoaded={0}, HasError={1}", IsLoaded, HasLoadingError);
+            if (IsLoaded) return;
+            if (HasLoadingError) HasLoadingError = false;
+
             IList<Message> loadedMessages = null;
             try
             {
@@ -160,12 +184,13 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             {
                 _logger.Error("On initing: {0}", e.Message);
                 _innerMessageBus.Send(new ExceptionIM(e));
+                HasLoadingError = true;
+                IsLoaded = false;
+                return;
             }
-
             Messages = new ObservableCollection<MessageObservable>(
-                loadedMessages?.Select(m => _messageFactory.ToObservable(m))
-                ?? new List<MessageObservable>());
-
+                loadedMessages?.Select(m => _messageFactory.ToObservable(m)));
+            IsLoaded = true;
             _logger.Debug("Loaded {0} init messages", Messages.Count);
         }
 

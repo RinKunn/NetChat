@@ -19,7 +19,7 @@
             </Grid.ColumnDefinitions>
 
             <Rectangle Width="2" Height="25"
-                           Fill="{StaticResource MajorBrush}"           
+                           Fill="{DynamicResource MajorBrush}"
                            Margin="0,0,5,0" Grid.RowSpan="2"/>
 
             <TextBlock
@@ -37,12 +37,21 @@
                     Foreground="{DynamicResource GrayLightBrush}"/>
         </Grid>
     </DataTemplate>
-    
+
+    <Style x:Key="DefaultReplyStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Background" Value="{DynamicResource MajorBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GrayLightBrush}"/>
+    </Style>
+
     <DataTemplate DataType="{x:Type vm:TextMessageObservable}">
         <Grid x:Name="MessageGrid"
                   Background="Transparent">
 
-            <!--//TODO add context menu-->
+            <Grid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="dsd"/>
+                </ContextMenu>
+            </Grid.ContextMenu>
             <Border x:Name="MessageBorder"
                         MinHeight="40" MinWidth="250" BorderThickness="1" 
                         Background="{DynamicResource GrayDarkBrush}"

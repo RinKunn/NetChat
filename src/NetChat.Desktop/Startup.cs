@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using Autofac;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using NetChat.Services.Messaging;
-using NetChat.Services.Messaging.Messages;
-using NetChat.Services.Messaging.Users;
 using NetChat.Desktop.ViewModel;
+using NetChat.Desktop.ViewModel.Factories;
 using NetChat.Desktop.ViewModel.Messenger;
+using NetChat.Desktop.ViewModel.Messenger.ChatArea;
+using NetChat.Desktop.ViewModel.Messenger.ChatArea.Factories;
+using NetChat.Desktop.ViewModel.Messenger.ChatHeader;
+using NetChat.Desktop.ViewModel.Messenger.ChatSender;
 using NetChat.Desktop.ViewModel.Notifications;
 using NetChat.Services;
-using System.Configuration;
-using NetChat.Desktop.ViewModel.Messenger.ChatArea;
-using NetChat.Desktop.ViewModel.Messenger.ChatSender;
-using NetChat.Desktop.ViewModel.Messenger.ChatHeader;
 
 namespace NetChat.Desktop
 {
@@ -28,7 +23,11 @@ namespace NetChat.Desktop
             //    throw new ArgumentNullException(nameof(filename));
              
             builder.RegisterAppContext();
-            builder.RegisterAppServices();
+            builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>();
+            builder.RegisterType<MessageFactory>().As<IMessageFactory>();
+            builder.RegisterType<Messenger>().As<IMessenger>();
+            //builder.RegisterAppServices();
+            builder.RegisterMockAppServices();
             builder.RegisterViewModels();
 
             return builder;
