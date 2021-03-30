@@ -95,8 +95,8 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                     "User 1", false, "Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd")
                 };
                 UnreadMessagesCount = 3;
-                HasLoadingError = true;
-                IsLoaded = false;
+                HasLoadingError = false;
+                IsLoaded = true;
             }
             else throw new NotImplementedException("ChatArea without services is not implemented");
         }
@@ -216,7 +216,8 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                 text = textMessage.Text;
 
             _innerMessageBus.Send(
-                new ReplyToMessageIM(message.MessageId,
+                new ReplyToMessageIM(
+                    message.MessageId,
                     message.AuthorName,
                     text));
         }

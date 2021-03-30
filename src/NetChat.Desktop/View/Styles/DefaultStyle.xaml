@@ -42,6 +42,7 @@
     <Color x:Key="GrayDarkColor" R="103" G="110" B="111"/>
 
     <SolidColorBrush x:Key="MajorBrush" Color="#FFFFD300"/>
+    <SolidColorBrush x:Key="MajorDarkBrush" Color="#FF4D4000"/>
     <SolidColorBrush x:Key="MinorBrush" Color="#FF0088B3"/>
     <SolidColorBrush x:Key="BlackBrush" Color="#FF000000"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFFFF"/>

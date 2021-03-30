@@ -20,9 +20,9 @@ namespace NetChat.Services
             builder.RegisterType<MockChatLoader>().As<IChatLoader>();
             builder.RegisterType<MockMessageLoader>().As<IMessageLoader>();
             builder.RegisterType<MockMessageSender>().As<IMessageSender>();
-            builder.RegisterType<MockMessageUpdater>().As<IMessageUpdater>();
+            builder.RegisterType<MockMessageUpdater>().As<IMessageUpdater>().SingleInstance();
             builder.RegisterType<MockUserLoader>().As<IUserLoader>();
-            builder.RegisterType<MockUserUpdater>().As<IUserUpdater>();
+            builder.RegisterType<MockUserUpdater>().As<IUserUpdater>().SingleInstance();
             return builder;
         }
     }

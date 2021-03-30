@@ -4,7 +4,7 @@
 
     <Style x:Key="NotificationButtonCloseStyle" 
            TargetType="{x:Type Button}"
-           BasedOn="{StaticResource ButtonStyle}">
+           BasedOn="{StaticResource ButtonDefaultStyle}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#3e3e42" />

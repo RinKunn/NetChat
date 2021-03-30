@@ -87,9 +87,9 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatSender
         private async Task SendMessage()
         {
             if (string.IsNullOrEmpty(TextMessage)) return;
-            _logger.Debug("Send message button clicked: Text={0}, ReplyMessageId={1}",
-                TextMessage != null ? "Not empty" : "Empty",
-                Reply != null ? Reply.MessageId : "Empty");
+            _logger.Debug("Send message button clicked: Text='{0}', ReplyMessageId='{1}'",
+                TextMessage,
+                Reply != null ? Reply.MessageId : "Null");
             try
             {
                 await _messageSender.SendMessage(

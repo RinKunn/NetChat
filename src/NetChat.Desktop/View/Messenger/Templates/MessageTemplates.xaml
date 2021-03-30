@@ -6,7 +6,46 @@
 
     <conv:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     
-    <DataTemplate DataType="{x:Type vm:ReplyObservable}">
+    <DataTemplate  DataType="{x:Type vm:ReplyObservable}">
+        <Grid Cursor="Hand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Rectangle
+                Name="Line"
+                Width="2" Height="25"
+                        Fill="{DynamicResource MajorBrush}"
+                        Margin="0,0,5,0" Grid.RowSpan="2"/>
+
+            <TextBlock
+                    Name="Author"
+                    Grid.Column="1"
+                    Text="{Binding AuthorName}"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource MajorBrush}"/>
+
+            <TextBlock 
+                    Name="Text"
+                    Grid.Column="1"
+                    Text="{Binding Text}"
+                    TextWrapping="NoWrap"
+                    TextTrimming="CharacterEllipsis"
+                    Grid.Row="1"
+                    Foreground="{DynamicResource GrayLightBrush}"/>
+        </Grid>
+        <DataTemplate.Triggers>
+            
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!--<ControlTemplate x:Key="x" TargetType="{x:Type ContentControl}">
         <Grid Cursor="Hand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -18,60 +57,81 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Rectangle Width="2" Height="25"
-                           Fill="{DynamicResource MajorBrush}"
-                           Margin="0,0,5,0" Grid.RowSpan="2"/>
+            <Rectangle
+                Name="Line"
+                Width="2" Height="25"
+                        Fill="{TemplateBinding Background}"
+                        Margin="0,0,5,0" Grid.RowSpan="2"/>
 
             <TextBlock
+                    Name="Author"
                     Grid.Column="1"
                     Text="{Binding AuthorName}"
                     FontWeight="Bold"
-                    Foreground="{DynamicResource MajorBrush}"/>
+                    Foreground="{TemplateBinding Background}"/>
 
             <TextBlock 
+                    Name="Text"
                     Grid.Column="1"
                     Text="{Binding Text}"
                     TextWrapping="NoWrap"
                     TextTrimming="CharacterEllipsis"
                     Grid.Row="1"
-                    Foreground="{DynamicResource GrayLightBrush}"/>
+                    Foreground="{TemplateBinding Foreground}"/>
         </Grid>
-    </DataTemplate>
+    </ControlTemplate>
 
     <Style x:Key="DefaultReplyStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" Value="{DynamicResource x}"/>
         <Setter Property="Background" Value="{DynamicResource MajorBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource GrayLightBrush}"/>
     </Style>
+    
+    <Style x:Key="OutgoingReplyStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" Value="{DynamicResource x}"/>
+        <Setter Property="Background" Value="{DynamicResource BlackBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GrayBrush}"/>
+    </Style>-->
 
     <DataTemplate DataType="{x:Type vm:TextMessageObservable}">
-        <Grid x:Name="MessageGrid"
-                  Background="Transparent">
 
-            <Grid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="dsd"/>
-                </ContextMenu>
-            </Grid.ContextMenu>
+        <Grid x:Name="MessageGrid" Background="Transparent">
             <Border x:Name="MessageBorder"
                         MinHeight="40" MinWidth="250" BorderThickness="1" 
                         Background="{DynamicResource GrayDarkBrush}"
                         BorderBrush="{DynamicResource GrayDarkBrush}"
                         Margin="10 5 60 5" CornerRadius="4" SnapsToDevicePixels="True"
                         HorizontalAlignment="Left">
+
+                
+                
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
+                    
 
                     <ContentControl
                         Margin="10,5,0,0"
                         Content="{Binding Reply}"
                         Visibility="{Binding HasReply, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        
+                        <!--<ContentControl.Style>
+                            <Style TargetType="ContentControl" BasedOn="{StaticResource DefaultReplyStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsOutgoing}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource GrayDarkDarkerBrush}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource GrayDarkBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>-->
+                        
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonDownEvent">
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction 
-                                    Command="{Binding Path=DataContext.ReplyToMessageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                    Command="{Binding Path=DataContext.GoToReplyMessageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
                                     CommandParameter="{Binding ElementName=MessageGrid, Path=DataContext}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -109,11 +169,11 @@
             <DataTrigger Binding="{Binding IsOutgoing}" Value="True">
                 <Setter TargetName="MessageBorder" Property="HorizontalAlignment" Value="Right"/>
                 <Setter TargetName="MessageBorder" Property="Margin" Value="60,5,5,5"/>
-                <Setter TargetName="MessageBorder" Property="Background" Value="{DynamicResource MajorBrush}"/>
-                <Setter TargetName="MessageBorder" Property="BorderBrush" Value="{DynamicResource MajorBrush}"/>
+                <Setter TargetName="MessageBorder" Property="Background" Value="{DynamicResource MajorDarkBrush}"/>
+                <Setter TargetName="MessageBorder" Property="BorderBrush" Value="{DynamicResource MajorDarkBrush}"/>
                 <Setter TargetName="AuthorTextBlock" Property="Visibility" Value="Collapsed"/>
-                <Setter TargetName="MessageTextBlock" Property="Foreground" Value="{DynamicResource BlackBrush}"/>
-                <Setter TargetName="DateTextBlock" Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+                <!--<Setter TargetName="MessageTextBlock" Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+                <Setter TargetName="DateTextBlock" Property="Foreground" Value="{DynamicResource BlackBrush}"/>-->
             </DataTrigger>
             <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
                 <Setter TargetName="MessageTextBlock" Property="Visibility" Value="Collapsed"/>

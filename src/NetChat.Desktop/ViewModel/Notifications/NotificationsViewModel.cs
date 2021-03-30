@@ -122,13 +122,13 @@ namespace NetChat.Desktop.ViewModel.Notifications
         public override void Cleanup()
         {
             _logger.Debug("Notification's model cleaning...");
+            if (_timer.Enabled) _timer.Stop();
+            _timer.Dispose();
             _innerMessageBus.Unregister<NotificationEnablingIM>(this);
             if (_enableMessagesNotification) _messageUpdater.Unregister(this);
             if(_enableParticipantNotification) _userUpdater.Unregister(this);
             base.Cleanup();
         }
-
-
 
         private void OnMessageReceived(Message message)
         {
@@ -173,6 +173,7 @@ namespace NetChat.Desktop.ViewModel.Notifications
             (_hideAllCommand = new RelayCommand(HideAll, HideAllEnable));
         private void HideAll()
         {
+            if (_timer.Enabled) _timer.Stop();
             if (Notifications.Count == 0) return;
             Notifications.Clear();
             _logger.Trace("Notification of {0} are hidden", Notifications.Count);
@@ -203,7 +204,6 @@ namespace NetChat.Desktop.ViewModel.Notifications
         private void Timer_Tick(object sender, EventArgs e)
         {
             HideAll();
-            _timer.Stop();
         }
 
         private RelayCommand _stopClosingTimerCommand;

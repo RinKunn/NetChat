@@ -25,7 +25,7 @@ namespace NetChat.Desktop
             builder.RegisterAppContext();
             builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>();
             builder.RegisterType<MessageFactory>().As<IMessageFactory>();
-            builder.RegisterType<Messenger>().As<IMessenger>();
+            builder.RegisterType<Messenger>().As<IMessenger>().InstancePerLifetimeScope();
             //builder.RegisterAppServices();
             builder.RegisterMockAppServices();
             builder.RegisterViewModels();

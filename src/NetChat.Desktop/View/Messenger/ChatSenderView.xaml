@@ -82,7 +82,7 @@
                         Content="{Binding Reply}"
                         Cursor="Hand">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonDownEvent">
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding GoToMessageCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
