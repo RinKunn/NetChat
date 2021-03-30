@@ -28,10 +28,7 @@ namespace NetChat.Desktop.View.Behaviors
             _frozenGroupHeaderTextBox = AssociatedObject.FindChild<TextBox>("PART_FrozenGroupHeader");
             if (_frozenGroupHeaderTextBox == null)
                 throw new ArgumentNullException(nameof(_frozenGroupHeaderTextBox));
-            _frozenGroupHeaderTextBox.UpdateLayout();
             UpdateFrozenGroupHeader();
-            Console.WriteLine("text text is {0}, color = {1}", _frozenGroupHeaderTextBox.Text, _frozenGroupHeaderTextBox.Background);
-            _frozenGroupHeaderTextBox.TextChanged += (ot, et) => Console.WriteLine("text changed is {0}, {1}", _frozenGroupHeaderTextBox.Text, _frozenGroupHeaderTextBox.Background);
         }
 
         private void ScrollView_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -57,10 +54,13 @@ namespace NetChat.Desktop.View.Behaviors
                 {
                     _frozenGroupHeaderTextBox.Text = prevGroupName;
                 }
-                _frozenGroupHeaderTextBox.Visibility = Visibility.Visible;
+                _frozenGroupHeaderTextBox.Visibility = string.IsNullOrEmpty(prevGroupName) ? Visibility.Collapsed : Visibility.Visible;
             }
             else
+            {
                 _frozenGroupHeaderTextBox.Visibility = Visibility.Collapsed;
+            }
+                
         }
 
         private GroupItem GetFirstVisibleGroupItem(ItemsControl itemsControl)

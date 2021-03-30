@@ -3,7 +3,7 @@
     
     <Style x:Key="GroupHeaderTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Background" Value="{DynamicResource GrayDarkBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource GrayDarkBrushOpacity}"/>
         <Setter Property="IsEnabled" Value="False"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
@@ -18,12 +18,12 @@
                         HorizontalAlignment="Center"
                         Margin="0,5,0,0"
                         IsHitTestVisible="{TemplateBinding IsHitTestVisible}">
-                        
                         <TextBlock
                             x:Name="PART_Text"
+                            Opacity="1"
                             Text="{TemplateBinding Text}"
                             Foreground="{DynamicResource WhiteBrush}"
-                            Margin="3"
+                            Margin="5,3"
                             IsHitTestVisible="{TemplateBinding IsHitTestVisible}"/>
                     </Border>
                 </ControlTemplate>

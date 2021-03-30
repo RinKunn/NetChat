@@ -33,9 +33,9 @@
                         x:Name="PART_FrozenGroupHeader"
                         VerticalAlignment="Top"
                         IsHitTestVisible="False"
-                        Background="Red"
                         Panel.ZIndex="1"
-                        Margin="-17,0,0,0"/>
+                        Margin="-18,0,0,0"/>
+                    
                     <ScrollViewer 
                         HorizontalScrollBarVisibility="Disabled" 
                         VerticalScrollBarVisibility="Visible">
@@ -63,7 +63,7 @@
         <ItemsControl x:Name="MessagesItemsCtrl" 
                       Margin="0,5,0,0" 
                       ItemsSource="{Binding Source={StaticResource ResourceKey=GrouppedMessagesSource}}" 
-                      Template="{DynamicResource ChatAreaTemplate}">
+                      Template="{StaticResource ChatAreaTemplate}">
             <i:Interaction.Behaviors>
                 <behaviors:LastIndexBehavior LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=OneWayToSource}"/>
                 <behaviors:DisplayItemBehavior SelectedIndex="{Binding TargetMessageIndex, Mode=TwoWay}"/>

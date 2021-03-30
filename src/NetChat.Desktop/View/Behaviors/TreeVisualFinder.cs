@@ -41,18 +41,9 @@ namespace NetChat.Desktop.View.Behaviors
             int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childrenCount; i++)
             {
+                
                 var child = VisualTreeHelper.GetChild(parent, i);
-                //if (!(child is T) || ((FrameworkElement)child).Name != name)
-                //{
-                //    foundChild = FindChild<T>(child);
-                //    if (foundChild != null) break;
-                //}
-                //else
-                //{
-                //    foundChild = (T)child;
-                //    break;
-                //}
-
+                
                 if ((child is T) && ((FrameworkElement)child).Name == name)
                 {
                     foundChild = (T)child;
@@ -60,7 +51,7 @@ namespace NetChat.Desktop.View.Behaviors
                 }
                 else
                 {
-                    foundChild = FindChild<T>(child);
+                    foundChild = FindChild<T>(child, name);
                     if (foundChild != null) break;
                 }
             }
