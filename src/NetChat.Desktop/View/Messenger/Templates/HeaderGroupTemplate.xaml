@@ -67,6 +67,7 @@
 
     <DataTemplate x:Key="GroupHeaderTemplate">
         <TextBox
+                IsHitTestVisible="False"
                 Style="{StaticResource GroupHeaderTextBox}"
                 Text="{Binding Path=Name, StringFormat={}dd-MM-yyyy, Mode=OneWay}"/>
     </DataTemplate>

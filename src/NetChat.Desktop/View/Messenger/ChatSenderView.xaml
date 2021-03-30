@@ -34,7 +34,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Rectangle Width="2" Height="25"
-                           Fill="{StaticResource MajorBrush}"           
+                           Fill="{DynamicResource MajorBrush}"           
                            Margin="0,0,5,0" Grid.RowSpan="2"/>
                 
                 <TextBlock
@@ -57,7 +57,7 @@
     
     <Grid>
         <Border Grid.Row="1" 
-                Background="{StaticResource GrayDarkBrush}"
+                Background="{DynamicResource GrayDarkBrush}"
                 SnapsToDevicePixels="True">
             <Grid>
                 <Grid.RowDefinitions>
@@ -80,6 +80,7 @@
 
                     <ContentControl 
                         Content="{Binding Reply}"
+                        Margin="0,5"
                         Cursor="Hand">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -110,8 +111,8 @@
                                 <KeyBinding Key="Enter" Command="{Binding SendMessageCommand}"/>
                             </TextBox.InputBindings>
                         </TextBox>
-                        
-                        
+
+
                         <Grid Visibility="{Binding SendMessageCommand.Execution, Converter={StaticResource NullToVisibilityConverter}}">
                             <TextBlock FontSize="8" Visibility="{Binding SendMessageCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                        Text="Sending..." />

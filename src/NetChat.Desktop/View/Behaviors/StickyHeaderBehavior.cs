@@ -28,8 +28,10 @@ namespace NetChat.Desktop.View.Behaviors
             _frozenGroupHeaderTextBox = AssociatedObject.FindChild<TextBox>("PART_FrozenGroupHeader");
             if (_frozenGroupHeaderTextBox == null)
                 throw new ArgumentNullException(nameof(_frozenGroupHeaderTextBox));
-
+            _frozenGroupHeaderTextBox.UpdateLayout();
             UpdateFrozenGroupHeader();
+            Console.WriteLine("text text is {0}, color = {1}", _frozenGroupHeaderTextBox.Text, _frozenGroupHeaderTextBox.Background);
+            _frozenGroupHeaderTextBox.TextChanged += (ot, et) => Console.WriteLine("text changed is {0}, {1}", _frozenGroupHeaderTextBox.Text, _frozenGroupHeaderTextBox.Background);
         }
 
         private void ScrollView_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -49,7 +51,7 @@ namespace NetChat.Desktop.View.Behaviors
                 {
                     object data = group.Content;
                     DateTime date = (DateTime)data.GetType().GetProperty("Name").GetValue(data, null);
-                    _frozenGroupHeaderTextBox.Text = date.Date.ToString("dd-MM-yyyy");
+                    _frozenGroupHeaderTextBox.Text = date.ToString("dd-MM-yyyy");
                 }
                 else
                 {
@@ -80,7 +82,6 @@ namespace NetChat.Desktop.View.Behaviors
                     return HitTestResultBehavior.Stop;
                 }),
                 new PointHitTestParameters(new Point(itemsControl.ActualWidth / 2, HIT_VERTICAL_OFFSET)));
-
             GroupItem group = hitTest.VisualHit.FindParent<GroupItem>();
             return group;
         }

@@ -10,16 +10,10 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:ChatAreaViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="350"
-             MinWidth="350"
-             Name="sdsad">
-
-    <!--<i:Interaction.Triggers>
-        <i:EventTrigger>
-            <i:InvokeCommandAction Command="{Binding LoadMessagesCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>-->
+             MinWidth="350">
     
-    <UserControl.Resources>
+    
+    <UserControl.Resources>    
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Templates/HeaderGroupTemplate.xaml"/>
@@ -30,13 +24,16 @@
             <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <conv:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
 
+            
+
             <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
                 <Grid>
-                    <TextBox 
+                    <TextBox
                         Style="{StaticResource HidingGroupHeaderTextBox}"
                         x:Name="PART_FrozenGroupHeader"
                         VerticalAlignment="Top"
                         IsHitTestVisible="False"
+                        Background="Red"
                         Panel.ZIndex="1"
                         Margin="-17,0,0,0"/>
                     <ScrollViewer 
@@ -75,20 +72,6 @@
             <ItemsControl.GroupStyle>
                 <GroupStyle HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
             </ItemsControl.GroupStyle>
-            <!--<ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <ContentPresenter Name="coooom" Content="{Binding}" />
-                        <Grid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Reply"
-                                  Command="{Binding Path=DataContext.ReplyToMessageCommand, Source={x:Reference sdsad} }"
-                                          CommandParameter="{Binding Path=DataContext, Source={x:Reference coooom}}"/>
-                            </ContextMenu>
-                        </Grid.ContextMenu>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>-->
         </ItemsControl>
 
         <Button 

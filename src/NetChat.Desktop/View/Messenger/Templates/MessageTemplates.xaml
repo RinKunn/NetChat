@@ -5,8 +5,35 @@
                     xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages">
 
     <conv:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    
-    <DataTemplate  DataType="{x:Type vm:ReplyObservable}">
+
+    <Style x:Key="ItemsContextMenu" TargetType="{x:Type ContextMenu}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Grid.IsSharedSizeScope" Value="true" />
+        <Setter Property="HasDropShadow" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1">
+                        <StackPanel 
+                                IsItemsHost="True"
+                                KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasDropShadow" Value="true">
+                            <Setter TargetName="Border" Property="Padding" Value="0,3,0,3" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate DataType="{x:Type vm:ReplyObservable}">
         <Grid Cursor="Hand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -40,9 +67,6 @@
                     Grid.Row="1"
                     Foreground="{DynamicResource GrayLightBrush}"/>
         </Grid>
-        <DataTemplate.Triggers>
-            
-        </DataTemplate.Triggers>
     </DataTemplate>
 
     <!--<ControlTemplate x:Key="x" TargetType="{x:Type ContentControl}">
@@ -95,16 +119,26 @@
 
     <DataTemplate DataType="{x:Type vm:TextMessageObservable}">
 
-        <Grid x:Name="MessageGrid" Background="Transparent">
+        <Grid x:Name="MessageGrid" Background="Transparent" >
             <Border x:Name="MessageBorder"
                         MinHeight="40" MinWidth="250" BorderThickness="1" 
                         Background="{DynamicResource GrayDarkBrush}"
                         BorderBrush="{DynamicResource GrayDarkBrush}"
                         Margin="10 5 60 5" CornerRadius="4" SnapsToDevicePixels="True"
+                        Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
                         HorizontalAlignment="Left">
 
-                
-                
+                <Border.ContextMenu>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
+                                 Style="{DynamicResource ItemsContextMenu}"
+                             Background="{DynamicResource GrayDarkDarkerBrush}" Foreground="{DynamicResource WhiteBrush}">
+                        <MenuItem 
+                            Header="Reply"
+                            Command="{Binding Parent.DataContext.ReplyToMessageCommand, RelativeSource={RelativeSource Self}}"
+                            CommandParameter="{Binding Parent.PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}"/>
+                    </ContextMenu>
+                </Border.ContextMenu>
+
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

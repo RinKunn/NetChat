@@ -51,9 +51,9 @@ namespace NetChat.Services.Mock
         public void GenerateMessageData()
         {
             CacheItemPolicy policy = new CacheItemPolicy();
-            _cache.Set("m1", new MessageData("m1", "User1", DateTime.Now, false, new MessageTextContent("Hello world"), null), null);
-            _cache.Set("m2", new MessageData("m2", "User2", DateTime.Now, false, new MessageTextContent("Hello world hello User1"), "m1"), null);
-            _cache.Set("m3", new MessageData("m3", "User3", DateTime.Now, true, new MessageTextContent("Hello world hello User1, User2"), "m2"), null);
+            _cache.Set("m1", new MessageData("m1", "User1", DateTime.Now.AddDays(-1), false, new MessageTextContent("Hello world"), null), null);
+            _cache.Set("m2", new MessageData("m2", "User2", DateTime.Now.AddDays(-1), false, new MessageTextContent("Hello world hello User1"), "m1"), null);
+            _cache.Set("m3", new MessageData("m3", "User3", DateTime.Now.AddDays(-1), true, new MessageTextContent("Hello world hello User1, User2"), "m2"), null);
             _cache.Set("m4", new MessageData("m4", "User1", DateTime.Now, false, new MessageTextContent("Hello!!"), null), null);
         }
 
@@ -78,14 +78,12 @@ namespace NetChat.Services.Mock
 
         private Message GetMessage(string messageId, bool withreply = true)
         {
-            Console.WriteLine("getting {0}", messageId);
             var mes = _cache.Get(messageId) as MessageData;
             if (mes == null) return null;
             var us = _cache.Get(mes.SenderId) as UserData;
             Message reply = null;
             if(mes.ReplyToMessageId != null && withreply)
             {
-                Console.WriteLine("\tget reply {0}", mes.ReplyToMessageId);
                 reply = GetMessage(mes.ReplyToMessageId, false);
             }
             return new Message(mes, us, reply);
