@@ -12,7 +12,6 @@
              d:DesignHeight="450" d:DesignWidth="350"
              MinWidth="350">
     
-    
     <UserControl.Resources>    
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,11 +19,9 @@
                 <ResourceDictionary Source="./Templates/MessageTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <conv:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <conv:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <conv:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
-
-            
 
             <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
                 <Grid>
@@ -78,10 +75,11 @@
             Grid.Row="1"
             Style="{StaticResource NewMessagesCountButtonStyle}"
             Command="{Binding GoToLastMessageCommand}"
-            Visibility="{Binding UnreadMessagesCount, Converter={StaticResource IntVisibilityConverter}}"
-            Margin="0,0,0,2">
+            Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Margin="0,0,0,2"
+            MinHeight="20">
             <Button.Content>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding UnreadMessagesCount, Converter={StaticResource IntVisibilityConverter}}">
                     <TextBlock 
                         Text="Новых сообщений:"
                         Foreground="{DynamicResource WhiteBrush}"
@@ -91,4 +89,38 @@
             </Button.Content>
         </Button>
     </Grid>
+
+    <!--<Grid Background="{DynamicResource GrayDarkLigherBrush}">
+        <ItemsControl x:Name="MessagesItemsCtrl" 
+                      Margin="0,5,0,0" 
+                      ItemsSource="{Binding Source={StaticResource ResourceKey=GrouppedMessagesSource}}" 
+                      Template="{StaticResource ChatAreaTemplate}">
+            <i:Interaction.Behaviors>
+                <behaviors:LastIndexBehavior LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=OneWayToSource}"/>
+                <behaviors:DisplayItemBehavior SelectedIndex="{Binding TargetMessageIndex, Mode=TwoWay}"/>
+                <behaviors:StickyHeaderBehavior/>
+            </i:Interaction.Behaviors>
+            <ItemsControl.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
+            </ItemsControl.GroupStyle>
+        </ItemsControl>
+
+        <Button 
+            VerticalAlignment="Bottom" HorizontalAlignment="Right"
+            Height="35"
+            Margin="0,0,5,5"
+            Style="{StaticResource NewMessagesCountButtonEllipseStyle}"
+            Command="{Binding GoToLastMessageCommand}"
+            Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding UnreadMessagesCount, Converter={StaticResource IntVisibilityConverter}}">
+                    <TextBlock 
+                        Text="Новых сообщений:"
+                        Foreground="{DynamicResource WhiteBrush}"
+                        FontStyle="Italic"/>
+                    <TextBlock Text="{Binding UnreadMessagesCount}" Margin="5,0"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+    </Grid>-->
 </UserControl>

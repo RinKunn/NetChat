@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.InnerMessages;
@@ -32,6 +32,7 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
         private int _lastVisibleMessageIndex;
         private int _targetMessageIndex;
         private int _unreadMessagesCount;
+        private int _lastReadedMessageDistance;
 
         private bool _isLoaded;
         public bool IsLoaded
@@ -56,6 +57,9 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                 UnreadMessagesCount = 
                     Math.Min(UnreadMessagesCount,
                     _messages.Count - 1 - _lastVisibleMessageIndex);
+                LastReadedMessageDistance =
+                    _messages.Count - UnreadMessagesCount - 1 - value;
+                GoToLastMessageCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -72,6 +76,12 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
         {
             get => _unreadMessagesCount;
             set => Set(ref _unreadMessagesCount, value);
+        }
+
+        public int LastReadedMessageDistance
+        {
+            get => _lastReadedMessageDistance;
+            set => Set(ref _lastReadedMessageDistance, value);
         }
 
         public ObservableCollection<MessageObservable> Messages
@@ -194,14 +204,27 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             _logger.Debug("Loaded {0} init messages", Messages.Count);
         }
 
-        private ICommand _goToLastMessageCommand;
-        public ICommand GoToLastMessageCommand => _goToLastMessageCommand ?? 
-            (_goToLastMessageCommand = new RelayCommand(ReadAllMessages));
-        private void ReadAllMessages()
+        private RelayCommand _goToLastMessageCommand;
+        public RelayCommand GoToLastMessageCommand => _goToLastMessageCommand ??
+            (_goToLastMessageCommand 
+            = new RelayCommand(GoToLastMessageHandler, CanExecuteGoToLastMessage));
+        private void GoToLastMessageHandler()
         {
-            _logger.Debug("Reading all new messages: {0}", UnreadMessagesCount);
-            if (UnreadMessagesCount == 0) return;
-            GoToMessageByIndex(Messages.Count - 1);
+            _logger.Debug("GoToLast message clicked: Unread={0}, Distance={1}", UnreadMessagesCount, LastReadedMessageDistance);
+            int index = -1;
+            if(LastReadedMessageDistance > 0)
+            {
+                index = Messages.Count - UnreadMessagesCount - 1;
+                _logger.Debug("Brang into view Last readed message");
+                GoToMessageByIndex(index);
+                return;
+            }
+            if (UnreadMessagesCount > 0)
+                GoToMessageByIndex(Messages.Count - 1);
+        }
+        private bool CanExecuteGoToLastMessage()
+        {
+            return LastReadedMessageDistance > 0 || UnreadMessagesCount > 0;
         }
 
         private RelayCommand<MessageObservable> _replyToMessageCommand;
