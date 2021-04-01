@@ -21,9 +21,19 @@ namespace NetChat.Desktop.View.Behaviors
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             _scrollViewer = AssociatedObject.FindChild<ScrollViewer>();
+            var scrollViewer = AssociatedObject.FindChild<ListBox>();
+            
             if (_scrollViewer == null)
                 throw new ArgumentNullException(nameof(_scrollViewer));
             _scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+            Console.WriteLine("--LastVisibleIndex = {0}, count = {1}", LastVisibleIndex, AssociatedObject.Items.Count);
+            if(LastVisibleIndex > 0 && AssociatedObject.Items.Count > LastVisibleIndex)
+            {
+                var targetVisualContainer = (FrameworkElement)AssociatedObject
+                    .ItemContainerGenerator
+                    .ContainerFromIndex(LastVisibleIndex);
+                    targetVisualContainer.BringIntoView();
+            }
         }
 
         private void AssociatedObject_Unloaded(object sender, RoutedEventArgs e)
@@ -82,9 +92,7 @@ namespace NetChat.Desktop.View.Behaviors
             var rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
             return rect.Contains(bounds.BottomRight);
         }
-
-
-
+        
         public static DependencyProperty LastVisibleIndexProperty =
             DependencyProperty.Register("LastVisibleIndex",
                 typeof(int),

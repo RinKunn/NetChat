@@ -1,0 +1,152 @@
+﻿<ContentControl x:Class="NetChat.Desktop.View.Messenger.ChatArea.Messages.MessageView"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                xmlns:viewmodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages"
+                xmlns:views="clr-namespace:NetChat.Desktop.View.Messenger.ChatArea.Messages"
+                xmlns:converters="clr-namespace:NetChat.Desktop.View.Converters"
+                mc:Ignorable="d"
+                d:DataContext="{d:DesignInstance Type=viewmodel:MessageObservable, IsDesignTimeCreatable=False}"
+                d:DesignHeight="70" 
+                d:DesignWidth="320">
+    
+    <ContentControl.Style>
+        <Style TargetType="{x:Type ContentControl}">
+            <Style.Resources>
+                <converters:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+                <Style x:Key="MessageContextMenu" TargetType="{x:Type ContextMenu}">
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Grid.IsSharedSizeScope" Value="true" />
+                    <Setter Property="HasDropShadow" Value="True" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ContextMenu}">
+                                <Border x:Name="Border" 
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1">
+                                    <StackPanel 
+                                        IsItemsHost="True"
+                                        KeyboardNavigation.DirectionalNavigation="Cycle" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="HasDropShadow" Value="true">
+                                        <Setter TargetName="Border" Property="Padding" Value="0,3,0,3" />
+                                        <Setter TargetName="Border" Property="CornerRadius" Value="4" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Style.Resources>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Grid
+                            x:Name="PART_MessageGrid"
+                            Background="Transparent">
+
+                            <Border
+                                x:Name="PART_MessageBorder"
+                                Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                MinHeight="40" 
+                                MinWidth="250" 
+                                BorderThickness="1"
+                                Background="{DynamicResource GrayDarkBrush}"
+                                BorderBrush="{DynamicResource GrayDarkBrush}"
+                                Margin="10,5,60,5"
+                                CornerRadius="4" 
+                                SnapsToDevicePixels="True"
+                                HorizontalAlignment="Left">
+
+                                <!--Message Item Context menu-->
+                                <Border.ContextMenu>
+                                    <ContextMenu 
+                                        DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
+                                        Style="{StaticResource MessageContextMenu}"
+                                        Background="{DynamicResource GrayDarkDarkerBrush}" 
+                                        Foreground="{DynamicResource WhiteBrush}">
+                                        
+                                        <MenuItem 
+                                            Header="Reply"
+                                            Command="{Binding Parent.DataContext.ReplyToMessageCommand, RelativeSource={RelativeSource Self}}"
+                                            CommandParameter="{Binding Parent.PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}"/>
+                                    </ContextMenu>
+                                </Border.ContextMenu>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="15"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Replyed message-->
+                                    <views:ReplyView
+                                        Margin="10,5,0,0"
+                                        DataContext="{Binding Reply}"
+                                        Visibility="{Binding HasReply, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Grid.Row="0">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                <i:InvokeCommandAction 
+                                                    Command="{Binding Path=DataContext.GoToReplyMessageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                                    CommandParameter="{Binding ElementName=PART_MessageGrid, Path=DataContext}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </views:ReplyView>
+                                    
+                                    <!--AuthorName-->
+                                    <TextBlock 
+                                        x:Name="PART_MessageAuthor" 
+                                        Text="{Binding AuthorName}"
+                                        Foreground="{DynamicResource MajorBrush}"
+                                        Grid.Row="1"
+                                        Margin="7,5,7,0"
+                                        VerticalAlignment="Stretch" 
+                                        HorizontalAlignment="Stretch" 
+                                        FontWeight="Bold"/>
+
+                                    <!--Content-->
+                                    <ContentPresenter
+                                        x:Name="PART_ContentPresenter"
+                                        Content="{TemplateBinding Content}"
+                                        Grid.Row="2" 
+                                        Margin="7,5,7,0"
+                                        VerticalAlignment="Stretch" 
+                                        HorizontalAlignment="Stretch" />
+
+                                    <!--DateTime-->
+                                    <TextBlock 
+                                        x:Name="PART_MessageDateTime"
+                                        Text="{Binding DateTime, StringFormat=HH:mm}"
+                                        Foreground="{DynamicResource WhiteBrush}"
+                                        Grid.Row="3" 
+                                        HorizontalAlignment="Right" 
+                                        VerticalAlignment="Stretch"
+                                        Margin="0,0,5,0" 
+                                        FontSize="10" 
+                                        Opacity="0.8"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsOutgoing}" Value="True">
+                                <Setter TargetName="PART_MessageBorder" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter TargetName="PART_MessageBorder" Property="Margin" Value="60,5,5,5"/>
+                                <Setter TargetName="PART_MessageBorder" Property="Background" Value="{DynamicResource MajorDarkBrush}"/>
+                                <Setter TargetName="PART_MessageBorder" Property="BorderBrush" Value="{DynamicResource MajorDarkBrush}"/>
+                                <Setter TargetName="PART_MessageAuthor" Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentControl.Style>
+</ContentControl>

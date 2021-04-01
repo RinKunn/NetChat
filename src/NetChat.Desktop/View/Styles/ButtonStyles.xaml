@@ -195,8 +195,7 @@
                             CornerRadius="12"
                             Background="{DynamicResource MinorBrush}"
                             MinWidth="20"
-                            Margin="0,-8,0,0"
-                            Visibility="{Binding ElementName=PATH_Content2, Path=Visibility}">
+                            Margin="0,-8,0,0">
 
                             <ContentPresenter
                                 HorizontalAlignment="Center"

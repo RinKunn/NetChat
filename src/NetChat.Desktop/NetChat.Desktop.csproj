@@ -156,6 +156,15 @@
     <Compile Include="View\Messenger\ChatArea\ChatAreaLoadingView.xaml.cs">
       <DependentUpon>ChatAreaLoadingView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Messenger\ChatArea\Messages\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Messenger\ChatArea\Messages\ReplyView.xaml.cs">
+      <DependentUpon>ReplyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Messenger\ChatArea\Messages\TextMessageView.xaml.cs">
+      <DependentUpon>TextMessageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Notificator\ParticipantNotificationView.xaml.cs">
       <DependentUpon>ParticipantNotificationView.xaml</DependentUpon>
     </Compile>
@@ -189,6 +198,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Messenger\ChatArea\ChatAreaLoadingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\ChatArea\Messages\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\ChatArea\Messages\ReplyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\ChatArea\Messages\TextMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

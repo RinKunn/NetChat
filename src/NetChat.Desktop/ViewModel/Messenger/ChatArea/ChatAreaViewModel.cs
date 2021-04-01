@@ -174,15 +174,6 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             GoToMessageByIndex(MessageIndexById(messageId));
         }
 
-        private RelayCommand _initUserConfigCommand;
-        public RelayCommand InitUserConfigCommand => _initUserConfigCommand ??
-            (_initUserConfigCommand = new RelayCommand(InitUserConfigCommandHandler));
-        private void InitUserConfigCommandHandler()
-        {
-            if (!IsLoaded) return;
-            GoToMessageByIndex(Messages.Count - 1);
-        }
-
         private AsyncCommand _loadInitMessagesCommand;
         public AsyncCommand LoadMessagesCommand => _loadInitMessagesCommand ??
             (_loadInitMessagesCommand = new AsyncCommand(LoadInitMessagesAsync, (o) => !IsLoaded));
@@ -216,7 +207,6 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             }
             Messages = new ObservableCollection<MessageObservable>(
                 loadedMessages?.Select(m => _messageFactory.ToObservable(m)));
-            
             IsLoaded = true;
             _logger.Debug("Loaded {0} init messages", Messages.Count);
         }
