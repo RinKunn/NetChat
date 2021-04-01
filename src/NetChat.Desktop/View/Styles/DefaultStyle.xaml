@@ -49,6 +49,7 @@
     <SolidColorBrush x:Key="GrayLightBrush" Color="#FFF1F2EE"/>
     <SolidColorBrush x:Key="GrayBrush" Color="#FF9DA3A2"/>
     <SolidColorBrush x:Key="GrayDarkBrush" Color="#FF404040"/>
+    <SolidColorBrush x:Key="GrayDarkLittleLigherBrush" Color="#FF505050"/>
     <SolidColorBrush x:Key="GrayDarkBrushOpacity" Color="#7F404040"/>
     <SolidColorBrush x:Key="GrayDarkDarkerBrush" Color="#FF303030"/>
     <SolidColorBrush x:Key="GrayDarkLigherBrush" Color="#FF757575"/>

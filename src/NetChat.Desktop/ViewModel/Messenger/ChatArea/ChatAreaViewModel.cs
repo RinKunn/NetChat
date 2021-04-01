@@ -104,7 +104,8 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                     new TextMessageObservable("3", DateTime.Now.AddMinutes(-1),
                     "User 1", false, "Hello, User1 and User2, asdsadasdddddd dddddddddddddd ddddddddddddd ddddd")
                 };
-                UnreadMessagesCount = 3;
+                UnreadMessagesCount = 0;
+                LastReadedMessageDistance = 2;
                 HasLoadingError = false;
                 IsLoaded = true;
             }
@@ -151,15 +152,17 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 Messages.Add(_messageFactory.ToObservable(message));
-                _logger.Debug("Added new message (id='{0}', outgoing={1}) to Messages list (on bottom={2})", 
+                _logger.Debug("Added new message (id='{0}', outgoing={1}) to Messages list (on bottom={2}), Unread={3}", 
                     message.MessageData.Id, 
                     message.MessageData.IsOutgoing, 
-                    LastVisibleMessageIndex < Messages.Count - 1);
-                if (message.MessageData.IsOutgoing)
-                {
-                    GoToMessageByIndex(_messages.Count - 1);
-                }
-                else if (LastVisibleMessageIndex < Messages.Count - 1)
+                    LastVisibleMessageIndex < Messages.Count - 1, 
+                    UnreadMessagesCount);
+                //if (message.MessageData.IsOutgoing)
+                //{
+                //    GoToMessageByIndex(_messages.Count - 1);
+                //}
+                //else 
+                if (LastVisibleMessageIndex < Messages.Count - 1)
                 {
                     UnreadMessagesCount++;
                 }
@@ -171,13 +174,26 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             GoToMessageByIndex(MessageIndexById(messageId));
         }
 
+        private RelayCommand _initUserConfigCommand;
+        public RelayCommand InitUserConfigCommand => _initUserConfigCommand ??
+            (_initUserConfigCommand = new RelayCommand(InitUserConfigCommandHandler));
+        private void InitUserConfigCommandHandler()
+        {
+            if (!IsLoaded) return;
+            GoToMessageByIndex(Messages.Count - 1);
+        }
+
         private AsyncCommand _loadInitMessagesCommand;
         public AsyncCommand LoadMessagesCommand => _loadInitMessagesCommand ??
             (_loadInitMessagesCommand = new AsyncCommand(LoadInitMessagesAsync, (o) => !IsLoaded));
         private async Task LoadInitMessagesAsync()
         {
             _logger.Debug("Loading chat data: IsLoaded={0}, HasError={1}", IsLoaded, HasLoadingError);
-            if (IsLoaded) return;
+            if (IsLoaded)
+            {
+                GoToMessageByIndex(Messages.Count - 1);
+                return;
+            }
             if (HasLoadingError) HasLoadingError = false;
 
             IList<Message> loadedMessages = null;
@@ -200,6 +216,7 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
             }
             Messages = new ObservableCollection<MessageObservable>(
                 loadedMessages?.Select(m => _messageFactory.ToObservable(m)));
+            
             IsLoaded = true;
             _logger.Debug("Loaded {0} init messages", Messages.Count);
         }
