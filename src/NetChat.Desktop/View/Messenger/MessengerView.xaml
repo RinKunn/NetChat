@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger"
         xmlns:views="clr-namespace:NetChat.Desktop.View.Messenger"
-        xmlns:views2="clr-namespace:NetChat.Desktop.View.Messenger.ChatArea"
+        xmlns:areaviews="clr-namespace:NetChat.Desktop.View.Messenger.ChatArea"
         xmlns:behaviors="clr-namespace:NetChat.Desktop.View.Behaviors"
         xmlns:areamodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea"
         xmlns:headermodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatHeader"
@@ -36,13 +36,13 @@
         </DataTemplate>
         
         <DataTemplate x:Key="ChatArea" DataType="{x:Type areamodel:ChatAreaViewModel}">
-            <views:ChatAreaView/>
+            <areaviews:ChatAreaView/>
         </DataTemplate>
         <DataTemplate x:Key="ChatAreaLoading" DataType="{x:Type areamodel:ChatAreaViewModel}">
-            <views2:ChatAreaLoadingView/>
+            <areaviews:ChatAreaLoadingView/>
         </DataTemplate>
         <DataTemplate x:Key="ChatAreaError" DataType="{x:Type areamodel:ChatAreaViewModel}">
-            <views2:ChatAreaErrorView/>
+            <areaviews:ChatAreaErrorView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type areamodel:ChatAreaViewModel}">
             <ContentPresenter Content="{Binding}">

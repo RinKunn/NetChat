@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NetChat.Desktop.View.Messenger
+namespace NetChat.Desktop.View.Messenger.ChatArea
 {
     /// <summary>
     /// Логика взаимодействия для ChatAreaView.xaml

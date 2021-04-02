@@ -11,8 +11,7 @@
              d:DesignWidth="320">
     
     <views:MessageView>
-        <TextBlock 
-            x:Name="PATH_MessageText" 
+        <TextBlock
             Text="{Binding Text}"
             Foreground="{DynamicResource WhiteBrush}"
             TextWrapping="Wrap" 

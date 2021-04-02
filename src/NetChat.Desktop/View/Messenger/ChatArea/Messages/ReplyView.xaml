@@ -3,9 +3,9 @@
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:viewmodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages"
+                xmlns:viewmodels="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages"
                 mc:Ignorable="d" 
-                d:DataContext="{d:DesignInstance Type=viewmodel:ReplyObservable, IsDesignTimeCreatable=False}"
+                d:DataContext="{d:DesignInstance Type=viewmodels:ReplyObservable, IsDesignTimeCreatable=False}"
                 d:DesignHeight="70" 
                 d:DesignWidth="320">
 

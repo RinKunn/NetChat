@@ -184,7 +184,7 @@
     <Compile Include="ViewModel\Messenger\ChatHeader\ChatHeaderViewModel.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Messages\TextMessageObservable.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Messages\MessageObservable.cs" />
-    <Compile Include="View\Messenger\ChatAreaView.xaml.cs">
+    <Compile Include="View\Messenger\ChatArea\ChatAreaView.xaml.cs">
       <DependentUpon>ChatAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Messenger\ChatSenderView.xaml.cs">
@@ -225,14 +225,6 @@
       <DependentUpon>MessengerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Messenger\Templates\HeaderGroupTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Messenger\Templates\MessageTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Notificator\ParticipantNotificationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -269,7 +261,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Messenger\ChatAreaView.xaml">
+    <Page Include="View\Messenger\ChatArea\ChatAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
