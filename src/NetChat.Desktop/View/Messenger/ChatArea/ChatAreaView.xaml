@@ -9,14 +9,15 @@
              xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea"
              xmlns:messvm="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages"
              xmlns:messv="clr-namespace:NetChat.Desktop.View.Messenger.ChatArea.Messages"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:ChatAreaViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="350"
              MinWidth="350">
 
     <UserControl.Resources>
-        <conv:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <conv:BoolVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <conv:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
+        <conv:NullVisibilityConverter x:Key="NullVisibilityConverter"/>
 
         <Style x:Key="GroupHeaderTextBox" TargetType="{x:Type TextBox}">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -90,21 +91,11 @@
         </DataTemplate>
         
         <ControlTemplate x:Key="ChatAreaTemplate" TargetType="{x:Type ItemsControl}">
-            <Grid>
-                <TextBox
-                        Style="{StaticResource HidingGroupHeaderTextBox}"
-                        x:Name="PART_FrozenGroupHeader"
-                        VerticalAlignment="Top"
-    
-                        Panel.ZIndex="1"
-                        Margin="-18,0,0,0"/>
-
-                <ScrollViewer 
-                        HorizontalScrollBarVisibility="Disabled" 
-                        VerticalScrollBarVisibility="Visible">
-                    <ItemsPresenter/>
-                </ScrollViewer>
-            </Grid>
+            <ScrollViewer 
+                HorizontalScrollBarVisibility="Disabled" 
+                VerticalScrollBarVisibility="Visible">
+                <ItemsPresenter/>
+            </ScrollViewer>
         </ControlTemplate>
 
         <CollectionViewSource x:Key="GrouppedMessagesSource" Source="{Binding Messages}">
@@ -116,22 +107,25 @@
 
     <Grid Background="{DynamicResource GrayDarkLigherBrush}">
 
-        <!--<TextBox
+        <TextBox
             Style="{StaticResource HidingGroupHeaderTextBox}"
             x:Name="PART_FrozenGroupHeader"
             VerticalAlignment="Top"
             Panel.ZIndex="1"
-            Margin="-18,0,0,0"/>-->
+            Text="{Binding Path=(behaviors:FreezeGroupHeader.GroupHeader).Name, ElementName=MessagesItemsControl, Mode=OneWay, StringFormat={}dd-MM-yyyy}"
+            Visibility="{Binding Path=(behaviors:FreezeGroupHeader.GroupHeader), ElementName=MessagesItemsControl, Mode=OneWay, Converter={StaticResource NullVisibilityConverter }}"
+            Margin="-18,0,0,0"/>
 
         <ItemsControl
+            Name="MessagesItemsControl"
             Margin="0,5,0,0" 
             ItemsSource="{Binding Source={StaticResource ResourceKey=GrouppedMessagesSource}}" 
-            Template="{StaticResource ChatAreaTemplate}">
+            Template="{StaticResource ChatAreaTemplate}"
+            behaviors:FreezeGroupHeader.IsEnable="True">
             
             <i:Interaction.Behaviors>
                 <behaviors:LastIndexBehavior LastVisibleIndex="{Binding LastVisibleMessageIndex, Mode=OneWayToSource}"/>
                 <behaviors:DisplayItemBehavior SelectedIndex="{Binding TargetMessageIndex, Mode=TwoWay}"/>
-                <behaviors:StickyHeaderBehavior/>
             </i:Interaction.Behaviors>
             
             <ItemsControl.GroupStyle>
@@ -143,7 +137,6 @@
                     <messv:TextMessageView/>
                 </DataTemplate>
             </ItemsControl.Resources>
-            
         </ItemsControl>
 
         <Button 
@@ -151,7 +144,7 @@
             Margin="0,0,5,5"
             Style="{StaticResource NewMessagesCountButtonEllipseStyle}"
             Command="{Binding GoToLastMessageCommand}"
-            Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+            Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
             <Button.Content>
                 <TextBlock 
                     Text="{Binding UnreadMessagesCount}"

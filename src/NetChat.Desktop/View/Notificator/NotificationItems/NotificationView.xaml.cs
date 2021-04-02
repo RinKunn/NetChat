@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NetChat.Desktop.View.Messenger
+namespace NetChat.Desktop.View.Notificator.NotificationItems
 {
     /// <summary>
-    /// Логика взаимодействия для HeaderView.xaml
+    /// Логика взаимодействия для NotificationView.xaml
     /// </summary>
-    public partial class HeaderView : UserControl
+    public partial class NotificationView : ContentControl
     {
-        public HeaderView()
+        public NotificationView()
         {
             InitializeComponent();
         }

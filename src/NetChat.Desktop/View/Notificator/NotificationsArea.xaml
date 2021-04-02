@@ -5,27 +5,28 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Notifications"
+        xmlns:vmitems="clr-namespace:NetChat.Desktop.ViewModel.Notifications.NotificationItems"
         xmlns:converters="clr-namespace:NetChat.Desktop.View.Converters"
-        xmlns:v="clr-namespace:NetChat.Desktop.View.Notificator"
+        xmlns:vitems="clr-namespace:NetChat.Desktop.View.Notificator.NotificationItems"
         mc:Ignorable="d"
         WindowStartupLocation="Manual"
         SizeToContent="WidthAndHeight"
         ShowInTaskbar="False"
         Topmost="True" Margin="2,5,10,2"
         Background="Transparent" WindowStyle="None" AllowsTransparency="True" ShowActivated="False"
-        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=vm:NotificationsViewModel}"
+        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=vm:NotificationConfiguration}"
         Loaded="Window_Loaded">
 
     <Window.Resources>
         <converters:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
         <converters:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
-        
-        <DataTemplate DataType="{x:Type vm:MessageNotification}">
-            <v:MessageNotificationView/>
+
+        <DataTemplate DataType="{x:Type vmitems:MessageNotification}">
+            <vitems:MessageNotificationView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type vm:ParticipantNotification}">
-            <v:ParticipantNotificationView/>
+        <DataTemplate DataType="{x:Type vmitems:ParticipantNotification}">
+            <vitems:ParticipantNotificationView/>
         </DataTemplate>
 
         <Style x:Key="HideButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefaultStyle}">

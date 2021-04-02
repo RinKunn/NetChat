@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetChat.Desktop.ViewModel.Notifications
+namespace NetChat.Desktop.ViewModel.Notifications.NotificationItems
 {
     public class ParticipantNotification : NotificationBase
     {
         public bool IsOnline { get; }
 
 #if DEBUG
-        public ParticipantNotification() : base()
+        public ParticipantNotification() : base(null, null, "User name", "В сети")
         {
-            
+
         }
 #endif
 

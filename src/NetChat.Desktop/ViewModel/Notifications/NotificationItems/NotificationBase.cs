@@ -1,7 +1,7 @@
 ﻿using System;
 using GalaSoft.MvvmLight;
 
-namespace NetChat.Desktop.ViewModel.Notifications
+namespace NetChat.Desktop.ViewModel.Notifications.NotificationItems
 {
     public abstract class NotificationBase : ObservableObject
     {

@@ -5,46 +5,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger"
-        xmlns:views="clr-namespace:NetChat.Desktop.View.Messenger"
-        xmlns:areaviews="clr-namespace:NetChat.Desktop.View.Messenger.ChatArea"
         xmlns:behaviors="clr-namespace:NetChat.Desktop.View.Behaviors"
-        xmlns:areamodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea"
-        xmlns:headermodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatHeader"
-        xmlns:sendermodel="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatSender"
-        xmlns:local="clr-namespace:NetChat.Desktop"
+        xmlns:varea="clr-namespace:NetChat.Desktop.View.Messenger.ChatArea"
+        xmlns:vsend="clr-namespace:NetChat.Desktop.View.Messenger.ChatSender"
+        xmlns:vhead="clr-namespace:NetChat.Desktop.View.Messenger.ChatHeader"
+        xmlns:marea="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea"
+        xmlns:mhead="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatHeader"
+        xmlns:msend="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatSender"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
-        d:DataContext="{d:DesignInstance Type=vm:MessengerViewModel, IsDesignTimeCreatable=True}"
-        Title="MainWindow" 
-        d:DesignHeight="350" d:DesignWidth="350"
-        Height="450" Width="400"
-        MinWidth="380" MinHeight="350"
-        FocusManager.FocusedElement="{Binding ElementName=Sender}">
+        Title=""
+        Height="450" 
+        Width="400"
+        MinWidth="380" 
+        MinHeight="350"
+        FocusManager.FocusedElement="{Binding ElementName=Sender}"
+        d:DesignHeight="350" 
+        d:DesignWidth="350"
+        d:DataContext="{d:DesignInstance Type=vm:MessengerViewModel, IsDesignTimeCreatable=True}">
 
     <i:Interaction.Behaviors>
         <behaviors:ActivateBehavior Activated="{Binding IsActivated, Mode=TwoWay}"/>
     </i:Interaction.Behaviors>
     
-    <Window.Resources>
-        
-        
-        <DataTemplate DataType="{x:Type headermodel:ChatHeaderViewModel}">
-            <views:HeaderView/>
+    <Window.Resources>    
+        <DataTemplate DataType="{x:Type mhead:ChatHeaderViewModel}">
+            <vhead:ChatHeaderView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type sendermodel:ChatSenderViewModel}">
-            <views:ChatSenderView/>
+        <DataTemplate DataType="{x:Type msend:ChatSenderViewModel}">
+            <vsend:ChatSenderView/>
         </DataTemplate>
         
-        <DataTemplate x:Key="ChatArea" DataType="{x:Type areamodel:ChatAreaViewModel}">
-            <areaviews:ChatAreaView/>
+        <DataTemplate x:Key="ChatArea" DataType="{x:Type marea:ChatAreaViewModel}">
+            <varea:ChatAreaView/>
         </DataTemplate>
-        <DataTemplate x:Key="ChatAreaLoading" DataType="{x:Type areamodel:ChatAreaViewModel}">
-            <areaviews:ChatAreaLoadingView/>
+        <DataTemplate x:Key="ChatAreaLoading" DataType="{x:Type marea:ChatAreaViewModel}">
+            <varea:ChatAreaLoadingView/>
         </DataTemplate>
-        <DataTemplate x:Key="ChatAreaError" DataType="{x:Type areamodel:ChatAreaViewModel}">
-            <areaviews:ChatAreaErrorView/>
+        <DataTemplate x:Key="ChatAreaError" DataType="{x:Type marea:ChatAreaViewModel}">
+            <varea:ChatAreaErrorView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type areamodel:ChatAreaViewModel}">
+        <DataTemplate DataType="{x:Type marea:ChatAreaViewModel}">
             <ContentPresenter Content="{Binding}">
                 <ContentPresenter.Style>
                     <Style TargetType="{x:Type ContentPresenter}">
@@ -61,7 +62,6 @@
                 </ContentPresenter.Style>
             </ContentPresenter>
         </DataTemplate>
-
     </Window.Resources>
     
     <Grid>

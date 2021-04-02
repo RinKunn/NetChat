@@ -165,10 +165,13 @@
     <Compile Include="View\Messenger\ChatArea\Messages\TextMessageView.xaml.cs">
       <DependentUpon>TextMessageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Notificator\ParticipantNotificationView.xaml.cs">
+    <Compile Include="View\Notificator\NotificationItems\NotificationView.xaml.cs">
+      <DependentUpon>NotificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Notificator\NotificationItems\ParticipantNotificationView.xaml.cs">
       <DependentUpon>ParticipantNotificationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Notificator\MessageNotificationView.xaml.cs">
+    <Compile Include="View\Notificator\NotificationItems\MessageNotificationView.xaml.cs">
       <DependentUpon>MessageNotificationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Notificator\NotificationsArea.xaml.cs">
@@ -187,11 +190,11 @@
     <Compile Include="View\Messenger\ChatArea\ChatAreaView.xaml.cs">
       <DependentUpon>ChatAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Messenger\ChatSenderView.xaml.cs">
+    <Compile Include="View\Messenger\CharSender\ChatSenderView.xaml.cs">
       <DependentUpon>ChatSenderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Messenger\HeaderView.xaml.cs">
-      <DependentUpon>HeaderView.xaml</DependentUpon>
+    <Compile Include="View\Messenger\ChatHeader\ChatHeaderView.xaml.cs">
+      <DependentUpon>ChatHeaderView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\Messenger\ChatArea\ChatAreaErrorView.xaml">
       <SubType>Designer</SubType>
@@ -225,19 +228,19 @@
       <DependentUpon>MessengerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Notificator\ParticipantNotificationView.xaml">
+    <Page Include="View\Notificator\NotificationItems\NotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Notificator\NotificationItems\ParticipantNotificationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Notificator\MessageNotificationView.xaml">
+    <Page Include="View\Notificator\NotificationItems\MessageNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Notificator\NotificationsArea.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Notificator\NotificationItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -265,11 +268,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Messenger\ChatSenderView.xaml">
+    <Page Include="View\Messenger\CharSender\ChatSenderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Messenger\HeaderView.xaml">
+    <Page Include="View\Messenger\ChatHeader\ChatHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using NetChat.Desktop.InnerMessages;
+using NetChat.Desktop.ViewModel.Notifications.NotificationItems;
 using NetChat.Services.Messaging.Messages;
 using NetChat.Services.Messaging.Users;
 using NLog;

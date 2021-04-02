@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:NetChat.Desktop" 
              xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel" 
              xmlns:vmn="clr-namespace:NetChat.Desktop.ViewModel.Notifications" 
+             xmlns:converters="clr-namespace:NetChat.Desktop.View.Converters"
              xmlns:vn="clr-namespace:NetChat.Desktop.View.Notificator" 
              Startup="Application_Startup"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -18,8 +19,12 @@
                 <ResourceDictionary Source="./View/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="./View/Styles/TextStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+        
+            <!--Converters-->
+            <converters:BoolVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <converters:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
 
-            
         </ResourceDictionary>
   </Application.Resources>
 </Application>

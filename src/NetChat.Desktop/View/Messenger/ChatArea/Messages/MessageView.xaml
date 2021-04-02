@@ -15,7 +15,7 @@
     <ContentControl.Style>
         <Style TargetType="{x:Type ContentControl}">
             <Style.Resources>
-                <converters:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+                <converters:BoolVisibilityConverter x:Key="BoolToVisibilityConverter"/>
                 <Style x:Key="MessageContextMenu" TargetType="{x:Type ContextMenu}">
                     <Setter Property="SnapsToDevicePixels" Value="True" />
                     <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -89,14 +89,13 @@
                                     <!--Replyed message-->
                                     <views:ReplyView
                                         Margin="10,5,0,0"
-                                        DataContext="{Binding Reply}"
-                                        Visibility="{Binding DataContext.HasReply, ElementName=PART_MessageGrid, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Grid.Row="0">
+                                        Grid.Row="0"
+                                        Visibility="{Binding HasReply, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                                 <i:InvokeCommandAction 
                                                     Command="{Binding Path=Tag.GoToReplyMessageCommand, ElementName=PART_MessageBorder}"
-                                                    CommandParameter="{Binding ElementName=PART_MessageGrid, Path=DataContext}"/>
+                                                    CommandParameter="{Binding}"/>
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </views:ReplyView>

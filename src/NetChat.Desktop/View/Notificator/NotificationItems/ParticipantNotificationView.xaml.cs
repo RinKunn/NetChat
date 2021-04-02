@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NetChat.Desktop.View.Notificator
+namespace NetChat.Desktop.View.Notificator.NotificationItems
 {
     /// <summary>
     /// Логика взаимодействия для ParticipantNotificationView.xaml
