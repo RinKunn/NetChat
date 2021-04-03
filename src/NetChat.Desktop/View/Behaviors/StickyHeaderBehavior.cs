@@ -172,7 +172,7 @@ namespace NetChat.Desktop.View.Behaviors
                         return HitTestResultBehavior.Stop;
                     }),
                     new PointHitTestParameters(new Point(itemsControl.ActualWidth / 2, 15)));
-                GroupItem group = hitTest.VisualHit.FindParent<GroupItem>();
+                GroupItem group = hitTest?.VisualHit.FindParent<GroupItem>();
                 SetGroupHeader(itemsControl, group?.Content);
             }
         }

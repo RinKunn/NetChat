@@ -19,8 +19,8 @@
         <TextBlock
             Text="{Binding Message}"
             Foreground="{DynamicResource WhiteBrush}"
-            FontSize="14"
-            FontFamily="Arial"
+            FontSize="13"
+            FontFamily="Verdana"
             TextWrapping="Wrap"
             TextTrimming="CharacterEllipsis"/>
     </v:NotificationView>

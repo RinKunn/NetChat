@@ -109,7 +109,6 @@
 
         <TextBox
             Style="{StaticResource HidingGroupHeaderTextBox}"
-            x:Name="PART_FrozenGroupHeader"
             VerticalAlignment="Top"
             Panel.ZIndex="1"
             Text="{Binding Path=(behaviors:FreezeGroupHeader.GroupHeader).Name, ElementName=MessagesItemsControl, Mode=OneWay, StringFormat={}dd-MM-yyyy}"
