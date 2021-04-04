@@ -51,7 +51,8 @@
 
                     <Button
                         Command="{Binding CloseRelayMessageCommand}"
-                        Style="{StaticResource CloseButtonStyle}"
+                        Style="{DynamicResource CloseButtonStyle}"
+                        Panel.ZIndex="5"
                         Grid.Column="1"/>
                 </Grid>
                 

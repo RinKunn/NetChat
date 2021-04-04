@@ -99,7 +99,7 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatSender
             catch (Exception e)
             {
                 _logger.Error("{0} | {1}", e.Message, e.InnerException?.Message);
-                _innerMessageBus.Send(new ExceptionIM(e));
+                _innerMessageBus.Send(new ExceptionIM(e, false));
                 return;
             }
             _logger.Debug("Message sended succusfully!");

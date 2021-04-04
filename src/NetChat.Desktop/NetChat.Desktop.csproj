@@ -130,6 +130,9 @@
     <Compile Include="ViewModel\Messenger\ChatArea\Factories\IMessageFactory.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Factories\MessageFactory.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Messages\UnsupportedMessageObservable.cs" />
+    <Compile Include="ViewModel\Messenger\ChatException\ChatExceptionViewModel.cs" />
+    <Compile Include="ViewModel\Messenger\ChatException\ExceptionItems\DefaultExceptionObservable.cs" />
+    <Compile Include="ViewModel\Messenger\ChatException\ExceptionItems\ExceptionObservableBase.cs" />
     <Compile Include="ViewModel\Messenger\MessengerViewModel.cs" />
     <Compile Include="ViewModel\Messenger\ChatArea\Messages\ReplyObservable.cs" />
     <Compile Include="InnerMessages\ReplyToMessageIM.cs" />
@@ -164,6 +167,15 @@
     </Compile>
     <Compile Include="View\Messenger\ChatArea\Messages\TextMessageView.xaml.cs">
       <DependentUpon>TextMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Messenger\ChatException\ChatExceptionView.xaml.cs">
+      <DependentUpon>ChatExceptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Messenger\ChatException\ExceptionItems\DefaultExceptionView.xaml.cs">
+      <DependentUpon>DefaultExceptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Messenger\ChatException\ExceptionItems\ExceptionViewBase.xaml.cs">
+      <DependentUpon>ExceptionViewBase.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Notificator\NotificationItems\NotificationView.xaml.cs">
       <DependentUpon>NotificationView.xaml</DependentUpon>
@@ -213,6 +225,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Messenger\ChatArea\Messages\TextMessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\ChatException\ChatExceptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\ChatException\ExceptionItems\DefaultExceptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\ChatException\ExceptionItems\ExceptionViewBase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

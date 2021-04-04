@@ -12,6 +12,8 @@
         xmlns:marea="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatArea"
         xmlns:mhead="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatHeader"
         xmlns:msend="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatSender"
+        xmlns:merr="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatException"
+        xmlns:verr="clr-namespace:NetChat.Desktop.View.Messenger.ChatException"
         mc:Ignorable="d"
         Style="{StaticResource CustomWindowStyle}"
         Title=""
@@ -62,6 +64,10 @@
                 </ContentPresenter.Style>
             </ContentPresenter>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type merr:ChatExceptionViewModel}">
+            <verr:ChatExceptionView/>
+        </DataTemplate>
     </Window.Resources>
     
     <Grid>
@@ -79,5 +85,26 @@
         <ContentControl Content="{Binding ChatArea}" Grid.Row="1" Focusable="False"/>
         <ContentControl Content="{Binding ChatSender}" Grid.Row="2" Height="Auto" x:Name="Sender"/>
         <ContentControl Content="{Binding SideArea}" Grid.Column="1"/>
+
+        <AdornerDecorator
+            Panel.ZIndex="2"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Visibility="{Binding ErrorsArea.IsActive, Converter={StaticResource BoolToVisibilityConverter}}"> 
+
+            <Grid>
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="Gray" Opacity="0.8"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ContentPresenter
+                    Content="{Binding ErrorsArea}"
+                    x:Name="ErrorContent"
+                    Margin="50"/>
+            </Grid>
+        </AdornerDecorator>
     </Grid>
 </Window>

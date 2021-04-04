@@ -1,0 +1,90 @@
+﻿<ContentControl x:Class="NetChat.Desktop.View.Messenger.ChatException.ExceptionItems.ExceptionViewBase"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:NetChat.Desktop.ViewModel.Messenger.ChatException.ExceptionItems"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <ContentControl.Style>
+        <Style TargetType="{x:Type ContentControl}">
+            <Style.Resources>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+                </Style>
+                
+            </Style.Resources>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Grid 
+                            d:DataContext="{d:DesignInstance Type={x:Type vm:ExceptionObservableBase}, IsDesignTimeCreatable=False}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel 
+                                Orientation="Vertical"
+                                Margin="0,10"
+                                Grid.Row="0">
+                                <TextBlock 
+                                    Text="Основная ошибка"
+                                    FontSize="14"
+                                    Foreground="{DynamicResource MajorBrush}"/>
+                                <TextBox 
+                                    Text="{Binding ErrorMessage, Mode=OneWay}"
+                                    TextWrapping="WrapWithOverflow"
+                                    Margin="2,0"/>
+                            </StackPanel>
+
+                            <StackPanel 
+                                Orientation="Vertical"
+                                Margin="0,10"
+                                Grid.Row="1"
+                                Visibility="{Binding InnerErrorMessage,Converter={StaticResource NullToVisibilityConverter}}">
+                                <TextBlock 
+                                    Text="Внутренняя ошибка"
+                                    FontSize="14"
+                                    Foreground="{DynamicResource MinorBrush}"/>
+                                <TextBox 
+                                    Text="{Binding InnerErrorMessage, Mode=OneWay}"
+                                    TextWrapping="WrapWithOverflow"
+                                    Margin="2,0"/>
+                            </StackPanel>
+                            
+                            <Expander
+                                Grid.Row="2"
+                                Background="Transparent">
+                                <Expander.Header>
+                                    <TextBox 
+                                        Text="Трассировка событий"/>
+                                </Expander.Header>
+                                <ScrollViewer
+                                    VerticalScrollBarVisibility="Auto"
+                                    HorizontalScrollBarVisibility="Auto">
+                                    <TextBox
+                                        Text="{Binding StackTrace, Mode=OneWay}"
+                                        TextWrapping="Wrap"
+                                        Margin="10,2"
+                                        FontSize="10"/>
+                                </ScrollViewer>
+                            </Expander>
+
+                            <ContentPresenter
+                                Content="{TemplateBinding Content}"
+                                Grid.Row="3"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentControl.Style>
+</ContentControl>

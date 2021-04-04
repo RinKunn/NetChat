@@ -197,10 +197,10 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                 _logger.Debug("Loading init messages from MessageId='{0}'...");
                 loadedMessages = await _messageLoader.LoadMessagesAsync(lastReadMessageId);
             }
-            catch(Exception e)
+            catch(ArgumentNullException e)
             {
                 _logger.Error("On initing: {0}", e.Message);
-                _innerMessageBus.Send(new ExceptionIM(e));
+                _innerMessageBus.Send(new ExceptionIM(e, false));
                 HasLoadingError = true;
                 IsLoaded = false;
                 return;
