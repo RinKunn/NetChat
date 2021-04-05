@@ -11,7 +11,7 @@
              d:DataContext="{d:DesignInstance Type=vm:ChatAreaViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="350"
              MinWidth="350">
-    <Border Background="{DynamicResource GrayDarkBrush}">
+    <Border Background="{DynamicResource GrayDarkLigherBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -19,14 +19,15 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock
-                Text="Error"
+                Text="Произошла ошибка при загрузке сообщений"
                 Margin="10"
-                FontSize="30"
+                FontSize="17"
+                TextWrapping="WrapWithOverflow"
                 FontWeight="Thin"
-                Foreground="Red">
+                Foreground="White">
             </TextBlock>
             
-            <TextBlock 
+            <TextBlock
                 Grid.Row="1"
                 Text="{Binding LoadMessagesCommand.Execution.ErrorMessage}"
                 VerticalAlignment="Center"
@@ -37,9 +38,8 @@
             
             <Button 
                 Grid.Row="2"
-                FontSize="20"
+                FontSize="17"
                 Content="Повторить"
-                Foreground="{DynamicResource MajorBrush}"
                 Style="{DynamicResource ButtonDefaultStyle}"
                 Command="{Binding LoadMessagesCommand}"/>
         </Grid >

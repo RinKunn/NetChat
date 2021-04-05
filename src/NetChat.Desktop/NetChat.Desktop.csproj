@@ -177,6 +177,9 @@
     <Compile Include="View\Messenger\ChatException\ExceptionItems\ExceptionViewBase.xaml.cs">
       <DependentUpon>ExceptionViewBase.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Messenger\ChatException\ExceptionItems\RepeatExceptionView.xaml.cs">
+      <DependentUpon>RepeatExceptionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Notificator\NotificationItems\NotificationView.xaml.cs">
       <DependentUpon>NotificationView.xaml</DependentUpon>
     </Compile>
@@ -237,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Messenger\ChatException\ExceptionItems\ExceptionViewBase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Messenger\ChatException\ExceptionItems\RepeatExceptionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

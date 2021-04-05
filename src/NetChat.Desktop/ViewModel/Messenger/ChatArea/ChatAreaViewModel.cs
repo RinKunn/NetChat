@@ -195,15 +195,15 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                 _logger.Debug("Last read message id='{0}'", lastReadMessageId);
 
                 _logger.Debug("Loading init messages from MessageId='{0}'...");
-                loadedMessages = await _messageLoader.LoadMessagesAsync(lastReadMessageId);
+                loadedMessages = await _messageLoader.LoadMessagesAsync(null);
             }
-            catch(ArgumentNullException e)
+            catch(Exception e)
             {
                 _logger.Error("On initing: {0}", e.Message);
                 _innerMessageBus.Send(new ExceptionIM(e, false));
                 HasLoadingError = true;
                 IsLoaded = false;
-                return;
+                throw e;
             }
             Messages = new ObservableCollection<MessageObservable>(
                 loadedMessages?.Select(m => _messageFactory.ToObservable(m)));

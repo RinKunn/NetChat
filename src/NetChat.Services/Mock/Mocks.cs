@@ -68,6 +68,9 @@ namespace NetChat.Services.Mock
         public async Task<IList<Message>> LoadMessagesAsync(string fromMessId, int limit = 0)
         {
             await Task.Delay(2000);
+            if (string.IsNullOrEmpty(fromMessId))
+                throw new ArgumentNullException(nameof(fromMessId));
+
             IList<Message> res = new List<Message>();
             res.Add(GetMessage("m1"));
             res.Add(GetMessage("m2"));
