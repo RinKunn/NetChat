@@ -109,12 +109,15 @@
     <Compile Include="Authentication\Authenticator.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />
     <Compile Include="Caching\CacheKeys.cs" />
+    <Compile Include="Caching\CachePolicies.cs" />
     <Compile Include="Caching\IDataCache.cs" />
     <Compile Include="Caching\SafeDataCache.cs" />
     <Compile Include="DependencyInjections.cs" />
     <Compile Include="Exceptions\AuthenticatorInitException.cs" />
     <Compile Include="Exceptions\CriticalException.cs" />
     <Compile Include="Exceptions\MdeRepositoryException.cs" />
+    <Compile Include="Mappers\IMessageMapper.cs" />
+    <Compile Include="Mappers\MessageMapper.cs" />
     <Compile Include="Messaging\Chats\ChatData.cs" />
     <Compile Include="Messaging\Chats\IChatLoader.cs" />
     <Compile Include="Messaging\Common\IUpdaterService.cs" />
@@ -128,12 +131,6 @@
     <Compile Include="Messaging\Messages\MessageLoader.cs" />
     <Compile Include="Messaging\Messages\MessageLoaderScope.cs" />
     <Compile Include="Messaging\Messages\MessageSender.cs" />
-    <Compile Include="Messaging\Messages\Storage\FileMdeRepository.cs" />
-    <Compile Include="Messaging\Messages\Storage\IMdeHub.cs" />
-    <Compile Include="Messaging\Messages\Storage\IMdeRepository.cs" />
-    <Compile Include="Messaging\Messages\Storage\MdeHub.cs" />
-    <Compile Include="Messaging\Messages\Storage\MdeRepositoryConfig.cs" />
-    <Compile Include="Messaging\Messages\Storage\MessageDataEntity.cs" />
     <Compile Include="Messaging\ReceiverHub.cs" />
     <Compile Include="Messaging\Users\IUserUpdater.cs" />
     <Compile Include="Messaging\Users\IUserLoader.cs" />
@@ -142,11 +139,13 @@
     <Compile Include="Messaging\Users\User.cs" />
     <Compile Include="Messaging\Users\UserData.cs" />
     <Compile Include="Messaging\Users\UserLoader.cs" />
+    <Compile Include="Messaging\Users\UserStatus.cs" />
     <Compile Include="Messaging\Users\UserStatusData.cs" />
     <Compile Include="Messaging\Users\UserUpdater.cs" />
     <Compile Include="Mock\Mocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UserParameters.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

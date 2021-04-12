@@ -10,5 +10,6 @@ namespace NetChat.Services.Caching
     public interface IDataCache
     {
         Task<TItem> GetOrCreate<TItem>(string key, Func<Task<TItem>> createItem, CacheItemPolicy cacheItemPolicy);
+        TItem GetItem<TItem>(string key);
     }
 }

@@ -195,7 +195,7 @@ namespace NetChat.Desktop.ViewModel.Messenger.ChatArea
                 _logger.Debug("Last read message id='{0}'", lastReadMessageId);
 
                 _logger.Debug("Loading init messages from MessageId='{0}'...");
-                loadedMessages = await _messageLoader.LoadMessagesAsync(null);
+                loadedMessages = await _messageLoader.GetChatHistoryAsync(10, default);
             }
             catch(Exception e)
             {

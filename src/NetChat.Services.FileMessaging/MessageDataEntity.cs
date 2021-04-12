@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace NetChat.Services.Messaging.Messages.Storage
+namespace NetChat.Services.FileMessaging
 {
     public class MessageDataEntity
     {

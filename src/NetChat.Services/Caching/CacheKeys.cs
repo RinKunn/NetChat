@@ -8,6 +8,7 @@ namespace NetChat.Services.Caching
 {
     public static class CacheKeys
     {
+        public static string CURRENTUSERNAME = "myusername";
         public static string ME = "me";
         public static string INITMESSDATA = "messinit";
         public static string USERDATA = "userdata_";

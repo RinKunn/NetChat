@@ -13,10 +13,15 @@ namespace NetChat.Services.Caching
         private readonly ConcurrentDictionary<string, SemaphoreSlim> _locks 
             = new ConcurrentDictionary<string, SemaphoreSlim>();
 
+        public TItem GetItem<TItem>(string key)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<TItem> GetOrCreate<TItem>(string key, Func<Task<TItem>> createItem, CacheItemPolicy cacheItemPolicy)
         {
             if (string.IsNullOrEmpty(key))
-                throw new CriticalException("Передан пустой ключ кэша",
+                throw new CriticalException("", "Передан пустой ключ кэша",
                     new ArgumentNullException(nameof(key)));
             TItem cacheEntry;
             if(!TryGetValue(key, out cacheEntry))

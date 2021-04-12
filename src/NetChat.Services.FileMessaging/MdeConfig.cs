@@ -1,10 +1,10 @@
 ﻿using System.Text;
 
-namespace NetChat.Services.Messaging.Messages.Storage
+namespace NetChat.Services.FileMessaging
 {
-    public class MdeRepositoryConfig
+    public class MdeConfig
     {
-        public MdeRepositoryConfig(string messagesSourcePath, Encoding messagesSourceEncoding)
+        public MdeConfig(string messagesSourcePath, Encoding messagesSourceEncoding)
         {
             MessagesSourcePath = messagesSourcePath;
             MessagesSourceEncoding = messagesSourceEncoding;

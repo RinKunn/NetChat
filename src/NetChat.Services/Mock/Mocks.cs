@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NetChat.Services.Authentication;
 using NetChat.Services.Messaging.Chats;
@@ -22,6 +23,11 @@ namespace NetChat.Services.Mock
         public Task Logout()
         {
             return Task.CompletedTask;
+        }
+
+        public Task SetupParameters()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -65,11 +71,9 @@ namespace NetChat.Services.Mock
             _cache.Set("User3", new UserData("User3", "User C.Three"), policy);
         }
 
-        public async Task<IList<Message>> LoadMessagesAsync(string fromMessId, int limit = 0)
+        public async Task<IList<Message>> GetChatHistoryAsync(int limit, CancellationToken token)
         {
             await Task.Delay(2000);
-            if (string.IsNullOrEmpty(fromMessId))
-                throw new ArgumentNullException(nameof(fromMessId));
 
             IList<Message> res = new List<Message>();
             res.Add(GetMessage("m1"));
@@ -81,15 +85,17 @@ namespace NetChat.Services.Mock
 
         private Message GetMessage(string messageId, bool withreply = true)
         {
-            var mes = _cache.Get(messageId) as MessageData;
-            if (mes == null) return null;
-            var us = _cache.Get(mes.SenderId) as UserData;
-            Message reply = null;
-            if(mes.ReplyToMessageId != null && withreply)
+            Message res = new Message();
+            res.MessageData = _cache.Get(messageId) as MessageData;
+            if (res.MessageData == null)
+                return null;
+            res.UserData = _cache.Get(res.MessageData.SenderId) as UserData;
+
+            if(res.MessageData.ReplyToMessageId != null && withreply)
             {
-                reply = GetMessage(mes.ReplyToMessageId, false);
+                res.ReplyToMessage = GetMessage(res.MessageData.ReplyToMessageId, false);
             }
-            return new Message(mes, us, reply);
+            return res;
         }
     }
 
@@ -118,15 +124,17 @@ namespace NetChat.Services.Mock
         private MemoryCache _cache = MemoryCache.Default;
         private Message GetMessage(string messageId)
         {
-            var mes = _cache.Get(messageId) as MessageData;
-            if (mes == null) return null;
-            var us = _cache.Get(mes.SenderId) as UserData;
-            Message reply = null;
-            if (mes.ReplyToMessageId != null)
+            Message res = new Message();
+            res.MessageData = _cache.Get(messageId) as MessageData;
+            if (res.MessageData == null)
+                return null;
+            res.UserData = _cache.Get(res.MessageData.SenderId) as UserData;
+
+            if (res.MessageData.ReplyToMessageId != null)
             {
-                reply = GetMessage(mes.ReplyToMessageId);
+                res.ReplyToMessage = GetMessage(res.MessageData.ReplyToMessageId);
             }
-            return new Message(mes, us, reply);
+            return res;
         }
     }
 
@@ -162,6 +170,11 @@ namespace NetChat.Services.Mock
 
     public class MockUserLoader : IUserLoader
     {
+        public Task<UserData> GetMeAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<int> GetOnlineUsersCount()
         {
             return Task.FromResult(3);

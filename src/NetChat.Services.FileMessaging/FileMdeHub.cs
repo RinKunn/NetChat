@@ -1,39 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NetChat.Services.Exceptions;
 using NLog;
 
-namespace NetChat.Services.Messaging.Messages.Storage
+namespace NetChat.Services.FileMessaging
 {
-    public class MdeHub : IMdeHub
+    public class FileMdeHub : IMdeHub
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        private string _lastReadedMessageId = null;
         private readonly IMdeRepository _repository;
         private readonly FileSystemWatcher _fileWatcher;
-        
-        public event OnUpdateHandler OnUpdate;
+
+        public event OnUpdateEventHandler OnUpdate;
         public bool IsConnected => _fileWatcher.EnableRaisingEvents;
 
-        public MdeHub(MdeRepositoryConfig repositoryConfigs)
+        public FileMdeHub(MdeConfig repositoryConfigs)
         {
             if (repositoryConfigs == null)
                 throw new ArgumentNullException(nameof(repositoryConfigs));
             if (string.IsNullOrWhiteSpace(repositoryConfigs.MessagesSourcePath))
                 throw new ArgumentNullException(nameof(repositoryConfigs.MessagesSourcePath));
-            
+
             string path = Path.GetFullPath(repositoryConfigs.MessagesSourcePath);
             string dir = Path.GetDirectoryName(path);
 
             if (!Directory.Exists(dir))
                 throw new DirectoryNotFoundException(dir);
+
+            _logger.Debug("Initing FileHub: path='{0}'", path);
 #if DEBUG
             if (!Directory.Exists(dir))
             {
-                _logger.Debug("FileWatcher's directory is not exists: {0}", path);
+                _logger.Debug("FileWatcher's directory is not exists: '{0}'", dir);
                 try
                 {
                     var dirInfo = Directory.CreateDirectory(dir);
@@ -73,7 +71,14 @@ namespace NetChat.Services.Messaging.Messages.Storage
 
         private void OnFileChangedHandler(object sender, FileSystemEventArgs e)
         {
-            _repository.ReadLastDataFromIndex();
+            var messages = _repository.GetMessagesFromId(_lastReadedMessageId);
+            if (messages == null || messages.Count == 0)
+            {
+                _logger.Warn("File changed, but readed messages list is empty from id: {0}", _lastReadedMessageId);
+                return;
+            }
+            _lastReadedMessageId = messages[messages.Count - 1].Id;
+            OnUpdate?.Invoke(new OnUpdateEventArgs(messages));
         }
 
         public void Dispose()
