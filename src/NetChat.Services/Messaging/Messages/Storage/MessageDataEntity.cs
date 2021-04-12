@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace NetChat.Services.FileMessaging
+namespace NetChat.Services.Messaging.Messages.Storage
 {
     public class MessageDataEntity
     {
@@ -33,7 +33,7 @@ namespace NetChat.Services.FileMessaging
             if (string.IsNullOrEmpty(message))
                 throw new ArgumentNullException(nameof(message));
             if (message.Contains("\n"))
-                throw new FormatException($"{this.GetType().Name} should't have newline symbol");
+                throw new FormatException($"{GetType().Name} should't have newline symbol");
             if (!string.IsNullOrEmpty(replyToMessageId)
                 && !IsIdMatchToFormat(replyToMessageId))
                 throw new FormatException($"Reply message id ('{replyToMessageId}') has wrong format");
@@ -50,9 +50,9 @@ namespace NetChat.Services.FileMessaging
             Regex regex = new Regex(IDFORMAT);
             var match = regex.Match(input);
             if (!match.Success
-                || (
+                ||
                     !DateTime.TryParseExact(match.Groups[1].Value, DATE_FORMAT_ALT, null, DateTimeStyles.None, out _)
-                    && !DateTime.TryParseExact(match.Groups[1].Value, DATE_FORMAT, null, DateTimeStyles.None, out _))
+                    && !DateTime.TryParseExact(match.Groups[1].Value, DATE_FORMAT, null, DateTimeStyles.None, out _)
                 || string.IsNullOrEmpty(match.Groups[3].Value)
                 || !IsLettersUpper(match.Groups[3].Value))
                 return false;
@@ -98,8 +98,8 @@ namespace NetChat.Services.FileMessaging
             var text = line.Substring(line.IndexOf('>') + 1).Trim();
             string replyId = null;
 
-            if ((text.Length > DATE_FORMAT.Length && text[DATE_FORMAT.Length] == '|')
-                || (text.Length > DATE_FORMAT_ALT.Length && text[DATE_FORMAT_ALT.Length] == '|'))
+            if (text.Length > DATE_FORMAT.Length && text[DATE_FORMAT.Length] == '|'
+                || text.Length > DATE_FORMAT_ALT.Length && text[DATE_FORMAT_ALT.Length] == '|')
             {
                 replyId = ExtractReplyId(text, DATE_FORMAT, out int replyIdLastIndex);
                 if (replyId == null)

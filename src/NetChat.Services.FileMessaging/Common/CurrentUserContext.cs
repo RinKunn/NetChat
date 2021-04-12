@@ -23,16 +23,6 @@ namespace NetChat.Services.FileMessaging.Common
             }
         }
 
-#if DEBUG
-        private static string GetCurrentSenderId()
-        {
-            string senderId = Environment.UserName;
-            string currentProcess = Process.GetCurrentProcess().ProcessName;
-            int runnedProc = Process.GetProcessesByName(currentProcess).Length;
-            if (runnedProc > 1)
-                senderId += runnedProc.ToString();
-            return senderId.ToUpper();
-        }
-#endif
+
     }
 }
