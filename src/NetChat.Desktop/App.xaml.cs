@@ -19,7 +19,8 @@ namespace NetChat.Desktop
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private IAuthenticator _authenticator;
         private IContainer _container;
-        
+        private ILifetimeScope _scope;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             _logger.Info(new string('-', 20));
@@ -31,7 +32,8 @@ namespace NetChat.Desktop
             _authenticator.Logon().Wait(1000);
             _logger.Info("Current user logged in");
 
-            _container.StartServices();
+            _scope = _container.BeginLifetimeScope();
+            
             _logger.Info("Connected to Hub");
 
             DispatcherHelper.Initialize();
@@ -44,7 +46,7 @@ namespace NetChat.Desktop
 
         protected override void OnExit(ExitEventArgs e)
         {
-            _container.StopServices();
+            _scope.Dispose();
             _authenticator.Logout().Wait(1000);
             _logger.Info("Current user logged out");
 

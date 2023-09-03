@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using NetChat.Services.Messaging;
 using NetChat.Desktop.ViewModel.Messenger.ChatArea.Messages;
+using NetChat.Desktop.Services.Messaging;
+using NetChat.Services.Messaging.Messages;
+using NetChat.Services.Messaging.Users;
 
 namespace NetChat.Test.Moqs
 {
@@ -14,7 +17,7 @@ namespace NetChat.Test.Moqs
         public bool IsConnected => _isConnected;
 
         private readonly Dictionary<object, Action<MessageObservable>> mess = new Dictionary<object, Action<MessageObservable>>(); 
-        private readonly Dictionary<object, Action<ParticipantObservable>> partic = new Dictionary<object, Action<ParticipantObservable>>(); 
+        //private readonly Dictionary<object, Action<ParticipantObservable>> partic = new Dictionary<object, Action<ParticipantObservable>>(); 
 
 
         public void Connect()
@@ -26,7 +29,7 @@ namespace NetChat.Test.Moqs
         {
             _isConnected = false;
             mess.Clear();
-            partic.Clear();
+            //partic.Clear();
         }
 
         public void Dispose()
@@ -39,10 +42,10 @@ namespace NetChat.Test.Moqs
             mess.Add(sender, callback);
         }
 
-        public void SubscribeUserStatusChanged(object sender, Action<ParticipantObservable> callback)
-        {
-            partic.Add(sender, callback);
-        }
+        //public void SubscribeUserStatusChanged(object sender, Action<ParticipantObservable> callback)
+        //{
+        //    partic.Add(sender, callback);
+        //}
 
         public void UnsubscribeMessageReceived(object sender)
         {
@@ -51,7 +54,7 @@ namespace NetChat.Test.Moqs
 
         public void UnsubscribeUserStatusChanged(object sender)
         {
-            partic.Remove(sender);
+            //partic.Remove(sender);
         }
 
 
@@ -65,13 +68,23 @@ namespace NetChat.Test.Moqs
             }
         }
 
-        public void RaiseParticipantReceived(ParticipantObservable participant)
+        //public void RaiseParticipantReceived(ParticipantObservable participant)
+        //{
+        //    if (!_isConnected) return;
+        //    foreach (var callback in partic.Values)
+        //    {
+        //        callback?.Invoke(participant);
+        //    }
+        //}
+
+        public void SubscribeMessageReceived(object sender, Action<Message> callback)
         {
-            if (!_isConnected) return;
-            foreach (var callback in partic.Values)
-            {
-                callback?.Invoke(participant);
-            }
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeUserStatusChanged(object sender, Action<User> callback)
+        {
+            throw new NotImplementedException();
         }
     }
 }

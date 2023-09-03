@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,14 +34,17 @@ namespace NetChat.Services.FileMessaging
 
         public Task<IList<MessageDataEntity>> Get(int fileOffset, int limit, CancellationToken token = default)
         {
-            byte[] encodedText = _encoding.GetBytes(messageData.ToString() + '\n');
-            using (FileStream stream =
-                new FileStream(_filename,
-                    FileMode.Append, FileAccess.Write, FileShare.Read,
-                    bufferSize: 4096, useAsync: true))
-            {
-                await stream.WriteAsync(encodedText, 0, encodedText.Length);
-            }
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<MessageDataEntity>> Get(string fromMessageId, int offset, int limit, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<MessageDataEntity>> Get(int limit, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<MessageDataEntity> GetById(string messageId, CancellationToken token = default)

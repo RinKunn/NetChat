@@ -7,7 +7,7 @@ using Moq;
 using NetChat.Services.Messaging;
 using NetChat.Services.Messaging.Messages;
 using NetChat.Services.Messaging.Users;
-using NetChat.Desktop.Commands;
+//using NetChat.Desktop.Commands;
 using NetChat.Desktop.InnerMessages;
 using NetChat.Desktop.ViewModel.Messenger;
 using NetChat.Test.Moqs;
